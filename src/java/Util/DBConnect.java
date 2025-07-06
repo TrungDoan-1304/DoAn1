@@ -6,8 +6,8 @@ package Util;
 
 /**
  *
- * @author PC
+ * @author LTuan
  */
-public class DBconnnext {
+public class DBConnect {
     
 }
