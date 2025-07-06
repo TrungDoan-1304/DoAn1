@@ -14,13 +14,23 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import Util.BDconnect;
 import jakarta.servlet.http.HttpSession;
-import java.sql.*;
 /**
  *
  * @author PC
  */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
+    private Connection getConnection() throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/banquanao"; // sửa tên database của bạn
+        String username = "root"; // sửa user nếu khác
+        String password = "";     // sửa password nếu có
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException(e);
+        }
+        return DriverManager.getConnection(url, username, password);
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,6 +56,7 @@ public class LoginServlet extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -75,8 +86,9 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-       String userName = request.getParameter("username");
-       String passWord = request.getParameter("password");
+       String userName = request.getParameter("username").trim();
+       String passWord = request.getParameter("password").trim();
+       System.out.println("username: " + userName + ", password: " + passWord);
        try (Connection conn = getConnection()){
            String sql = "SELECT * FROM user Where username =? AND password =?";
            PreparedStatement stmt = conn.prepareStatement(sql);
@@ -85,20 +97,17 @@ public class LoginServlet extends HttpServlet {
            ResultSet rs = stmt.executeQuery();
            if (rs.next()){
                String Role = rs.getString("role");
-               System.out.println("Vai trò đăng nhập: " + Role); 
+               System.out.println("Vai trò: " + Role);
                HttpSession  session = request.getSession();
                session.setAttribute("userName", userName);
                session.setAttribute("Role", Role);
                if("admin".equals(Role)){
                    response.sendRedirect("admin.jsp");
                }
-                else if("user".equalsIgnoreCase("role")){
+                else{
                     response.sendRedirect("user.jsp");
                     }  
-                else {
-                     request.setAttribute("thongbao", "Tài khoản không có quyền truy cập.");
-                     request.getRequestDispatcher("login.jsp").forward(request, response);
-                }
+                
                }
            
            else {
@@ -124,8 +133,6 @@ public class LoginServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private Connection getConnection() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    
 
 }

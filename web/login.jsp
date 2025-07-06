@@ -106,6 +106,9 @@
             <input type="text" name="username" placeholder="Tên đăng nhập" required />
             <input type="password" name="password" placeholder="Mật khẩu" required />
             <input type="submit" value="Đăng nhập" />
+            <% if (request.getAttribute("thongbao") != null) { %>
+            <p><%= request.getAttribute("thongbao") %></p>
+            <% } %>
         </form>
         
         <div style="margin-top: 10px;">

@@ -10,9 +10,9 @@ import java.sql.*;
  */
 public class BDconnect {
      private Connection getConnection() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/banquanao"; // sửa tên database của bạn
-        String username = "root"; // sửa user nếu khác
-        String password = "";     // sửa password nếu có
+        String url = "jdbc:mysql://localhost:3306/banquanao"; 
+        String username = "root"; 
+        String password = "";     
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
