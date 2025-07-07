@@ -99,17 +99,20 @@ public class LoginServlet extends HttpServlet {
                String Role = rs.getString("role");
                System.out.println("Vai trò: " + Role);
                HttpSession  session = request.getSession();
-               session.setAttribute("userName", userName);
+               session.setAttribute("userName", rs.getString("username"));
                session.setAttribute("Role", Role);
-               if("admin".equals(Role)){
+               if("admin".equalsIgnoreCase(Role)){
                    response.sendRedirect("admin.jsp");
                }
-                else{
+               else if ("user".equalsIgnoreCase(Role)){
+                   
                     response.sendRedirect("user.jsp");
                     }  
-                
+               else {
+                   request.setAttribute("thongbao", "Tài khoản không hợp lệ!");
+                   response.sendRedirect("login.jsp");
                }
-           
+               }   
            else {
                
                request.setAttribute("thongbao", "Sai tên đăng nhập hoặc mật khẩu!");

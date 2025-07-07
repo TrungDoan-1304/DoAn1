@@ -40,7 +40,7 @@
     <a class="navbar-brand text-primary fw-bold" href="#">🛍️ Shop Quần Áo Nam</a>
     <div class="d-flex">
       <span class="me-3 mt-2 fw-semibold">Xin chào, Admin</span>
-      <a href="logout.jsp" class="btn btn-outline-danger">Đăng xuất</a>
+      <a href="login.jsp" class="btn btn-outline-danger">Đăng xuất</a>
     </div>
   </div>
 </nav>
@@ -54,7 +54,7 @@
             <a href="admin-product.jsp"><i class="fas fa-tshirt"></i> Quản lý sản phẩm</a>
             <a href="admin-user.jsp"><i class="fas fa-users"></i> Quản lý người dùng</a>
             <a href="admin-order.jsp"><i class="fas fa-receipt"></i> Quản lý đơn hàng</a>
-            <a href="logout.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+            <a href="login.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
         </div>
 
         <!-- Main Content -->

@@ -1,11 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="navbar.jsp" %>
 <%
-    String username = (String) session.getAttribute("username");
-    if (username == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
+    String username = (String) session.getAttribute("userName");
+if (username == null) {
+    response.sendRedirect("login.jsp");
+} else {
+    out.println("Chào bạn: " + username);
+}
+    
 %>
 <!DOCTYPE html>
 <html>
