@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 03, 2025 at 06:12 AM
+-- Generation Time: Jul 09, 2025 at 05:08 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -31,7 +31,8 @@ CREATE TABLE `chitietdonhang` (
   `MaDonHang` int(11) NOT NULL,
   `MaSP` int(11) NOT NULL,
   `SLDaMua` int(11) NOT NULL,
-  `GiaBan` double NOT NULL
+  `GiaBan` double NOT NULL,
+  `ThanhTien` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -138,7 +139,7 @@ INSERT INTO `user` (`userId`, `username`, `password`, `HoTen`, `email`, `SDT`, `
 (2, 'linh456', 'linhpass', 'Trần Thị Linh', 'linh456@gmail.com', '0987654321', 'TP. HCM', 'user'),
 (3, 'tuan789', 'tuan789', 'Lương Tuấn', 'tuan789@yahoo.com', '0909009900', 'Đà Nẵng', 'user'),
 (4, 'hoa111', 'hoahoaha', 'Phạm Thị Hoa', 'hoa111@outlook.com', '0922334455', 'Huế', 'user'),
-(5, 'khoa222', 'khoa222', 'Lê Văn Khoa', 'khoa222@gmail.com', '0933445566', 'Cần Thơ', 'user');
+(5, 'khoa222', 'khoa222', 'Lê Văn Khoa', 'khoa222@gmail.com', '0933445566', 'Cần Thơ', 'staff');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

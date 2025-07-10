@@ -10,51 +10,54 @@ package Model;
  */
 public class SanPhamTrongGio {
 
-    private int maSanPham;
-    private String tenSanPham;
-    private int soLuong;
-    private double donGia;
+    private int MaSP;
+    private String TenSP;
+    private int SLTrongGio;
+    private double GiaBan;
 
     public SanPhamTrongGio() {
     }
 
-    public SanPhamTrongGio(int maSanPham, String tenSanPham, int soLuong, double donGia) {
-        this.maSanPham = maSanPham;
-        this.tenSanPham = tenSanPham;
-        this.soLuong = soLuong;
-        this.donGia = donGia;
+    public SanPhamTrongGio(int MaSP, String TenSP, int SLTrongGio, double GiaBan) {
+        this.MaSP = MaSP;
+        this.TenSP = TenSP;
+        this.SLTrongGio = SLTrongGio;
+        this.GiaBan = GiaBan;
     }
 
-    public int getMaSanPham() {
-        return maSanPham;
+    public int getMaSP() {
+        return MaSP;
     }
 
-    public void setMaSanPham(int maSanPham) {
-        this.maSanPham = maSanPham;
+    public void setMaSP(int MaSP) {
+        this.MaSP = MaSP;
     }
 
-    public String getTenSanPham() {
-        return tenSanPham;
+    public String getTenSP() {
+        return TenSP;
     }
 
-    public void setTenSanPham(String tenSanPham) {
-        this.tenSanPham = tenSanPham;
+    public void setTenSP(String TenSP) {
+        this.TenSP = TenSP;
     }
 
-    public int getSoLuong() {
-        return soLuong;
+    public int getSLTrongGio() {
+        return SLTrongGio;
     }
 
-    public void setSoLuong(int soLuong) {
-        this.soLuong = soLuong;
+    public void setSLTrongGio(int SLTrongGio) {
+        this.SLTrongGio = SLTrongGio;
     }
 
-    public double getDonGia() {
-        return donGia;
+    public double getGiaBan() {
+        return GiaBan;
     }
 
-    public void setDonGia(double donGia) {
-        this.donGia = donGia;
+    public void setGiaBan(double GiaBan) {
+        this.GiaBan = GiaBan;
     }
+
+
+   
 
 }

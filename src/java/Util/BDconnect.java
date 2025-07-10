@@ -9,7 +9,7 @@ import java.sql.*;
  * @author PC
  */
 public class BDconnect {
-     private Connection getConnection() throws SQLException {
+     public static Connection getConnection() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/banquanao"; 
         String username = "root"; 
         String password = "";     

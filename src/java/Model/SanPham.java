@@ -12,92 +12,83 @@ import java.util.Date;
  */
 public class SanPham {
 
-    private int maSanPham;
-    private String tenSanPham;
-    private String moTa;
-    private double gia;
-    private int soLuong;
-    private String hinhAnh;
-    private int maDanhMuc; // Foreign Key đến danh mục sản phẩm
-    private Date ngayThem;
+    private int MaSP;
+    private String TenSP;
+    private String MoTa;
+    private double GiaBan;
+    private int SLTrongKho;
+    private String DanhMuc; // Foreign Key đến danh mục sản phẩm
+    private Date NgayThemSP;
 
     public SanPham() {
     }
 
-    public SanPham(int maSanPham, String tenSanPham, String moTa, double gia,
-            int soLuong, String hinhAnh, int maDanhMuc, Date ngayThem) {
-        this.maSanPham = maSanPham;
-        this.tenSanPham = tenSanPham;
-        this.moTa = moTa;
-        this.gia = gia;
-        this.soLuong = soLuong;
-        this.hinhAnh = hinhAnh;
-        this.maDanhMuc = maDanhMuc;
-        this.ngayThem = ngayThem;
+    public SanPham(int MaSP, String TenSP, String MoTa, double GiaBan,
+            int SLTrongKho, String DanhMuc, Date NgayThemSP) {
+        this.MaSP = MaSP;
+        this.TenSP = TenSP;
+        this.MoTa = MoTa;
+        this.GiaBan = GiaBan;
+        this.SLTrongKho = SLTrongKho;
+        this.DanhMuc = DanhMuc;
+        this.NgayThemSP = NgayThemSP;
     }
 
-    public int getMaSanPham() {
-        return maSanPham;
+    public int getMaSP() {
+        return MaSP;
     }
 
-    public void setMaSanPham(int maSanPham) {
-        this.maSanPham = maSanPham;
+    public void setMaSP(int MaSP) {
+        this.MaSP = MaSP;
     }
 
-    public String getTenSanPham() {
-        return tenSanPham;
+    public String getTenSP() {
+        return TenSP;
     }
 
-    public void setTenSanPham(String tenSanPham) {
-        this.tenSanPham = tenSanPham;
+    public void setTenSP(String TenSP) {
+        this.TenSP = TenSP;
     }
 
     public String getMoTa() {
-        return moTa;
+        return MoTa;
     }
 
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
+    public void setMoTa(String MoTa) {
+        this.MoTa = MoTa;
     }
 
-    public double getGia() {
-        return gia;
+    public double getGiaBan() {
+        return GiaBan;
     }
 
-    public void setGia(double gia) {
-        this.gia = gia;
+    public void setGiaBan(double GiaBan) {
+        this.GiaBan = GiaBan;
     }
 
-    public int getSoLuong() {
-        return soLuong;
+    public int getSLTrongKho() {
+        return SLTrongKho;
     }
 
-    public void setSoLuong(int soLuong) {
-        this.soLuong = soLuong;
+    public void setSLTrongKho(int SLTrongKho) {
+        this.SLTrongKho = SLTrongKho;
     }
 
-    public String getHinhAnh() {
-        return hinhAnh;
+    public String getDanhMuc() {
+        return DanhMuc;
     }
 
-    public void setHinhAnh(String hinhAnh) {
-        this.hinhAnh = hinhAnh;
+    public void setDanhMuc(String DanhMuc) {
+        this.DanhMuc = DanhMuc;
     }
 
-    public int getMaDanhMuc() {
-        return maDanhMuc;
+
+    public Date getNgayThemSP() {
+        return NgayThemSP;
     }
 
-    public void setMaDanhMuc(int maDanhMuc) {
-        this.maDanhMuc = maDanhMuc;
-    }
-
-    public Date getNgayThem() {
-        return ngayThem;
-    }
-
-    public void setNgayThem(Date ngayThem) {
-        this.ngayThem = ngayThem;
+    public void setNgayThemSP(Date NgayThemSP) {
+        this.NgayThemSP = NgayThemSP;
     }
 
 }

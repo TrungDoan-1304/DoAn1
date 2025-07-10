@@ -10,50 +10,52 @@ package Model;
  */
 public class ChiTietDonHang {
 
-    private int maDonHang;
-    private int maSanPham;
-    private int soLuong;
-    private double donGia;
-    private double thanhTien;
+    private int MaDonHang;
+    private int MaSP;
+    private int SLDaMua;
+    private double GiaBan;
+    private double ThanhTien;
 
     public int getMaDonHang() {
-        return maDonHang;
+        return MaDonHang;
     }
 
-    public void setMaDonHang(int maDonHang) {
-        this.maDonHang = maDonHang;
+    public void setMaDonHang(int MaDonHang) {
+        this.MaDonHang = MaDonHang;
     }
 
-    public int getMaSanPham() {
-        return maSanPham;
+    public int getMaSP() {
+        return MaSP;
     }
 
-    public void setMaSanPham(int maSanPham) {
-        this.maSanPham = maSanPham;
+    public void setMaSP(int MaSP) {
+        this.MaSP = MaSP;
     }
 
-    public int getSoLuong() {
-        return soLuong;
+    public int getSLDaMua() {
+        return SLDaMua;
     }
 
-    public void setSoLuong(int soLuong) {
-        this.soLuong = soLuong;
+    public void setSLDaMua(int SLDaMua) {
+        this.SLDaMua = SLDaMua;
     }
 
-    public double getDonGia() {
-        return donGia;
+    public double getGiaBan() {
+        return GiaBan;
     }
 
-    public void setDonGia(double donGia) {
-        this.donGia = donGia;
+    public void setGiaBan(double GiaBan) {
+        this.GiaBan = GiaBan;
     }
 
     public double getThanhTien() {
-        return thanhTien;
+        return ThanhTien;
     }
 
-    public void setThanhTien(double thanhTien) {
-        this.thanhTien = thanhTien;
+    public void setThanhTien(double ThanhTien) {
+        this.ThanhTien = ThanhTien;
     }
+
+    
 
 }

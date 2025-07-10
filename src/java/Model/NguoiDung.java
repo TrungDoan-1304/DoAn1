@@ -10,62 +10,62 @@ package Model;
  */
 public class NguoiDung {
 
-    private int maNguoiDung;
-    private String tenDangNhap;
-    private String matKhau;
-    private String hoTen;
+    private int userId;
+    private String username;
+    private String password;
+    private String HoTen;
     private String email;
-    private String soDienThoai;
-    private String diaChi;
-    private String vaiTro; // "admin" hoặc "customer"
+    private String SDT;
+    private String DiaChi;
+    private String role; // "admin" hoặc "customer"
    
 
     public NguoiDung() {
     }
 
-    public NguoiDung(int maNguoiDung, String tenDangNhap, String matKhau, String hoTen,
-            String email, String soDienThoai, String diaChi, String vaiTro) {
-        this.maNguoiDung = maNguoiDung;
-        this.tenDangNhap = tenDangNhap;
-        this.matKhau = matKhau;
-        this.hoTen = hoTen;
+    public NguoiDung(int userId, String username, String password, String HoTen,
+            String email, String SDT, String DiaChi, String role) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.HoTen = HoTen;
         this.email = email;
-        this.soDienThoai = soDienThoai;
-        this.diaChi = diaChi;
-        this.vaiTro = vaiTro;
+        this.SDT = SDT;
+        this.DiaChi = DiaChi;
+        this.role = role;
         
     }
 
-    public int getMaNguoiDung() {
-        return maNguoiDung;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setMaNguoiDung(int maNguoiDung) {
-        this.maNguoiDung = maNguoiDung;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public String getTenDangNhap() {
-        return tenDangNhap;
+    public String getUsername() {
+        return username;
     }
 
-    public void setTenDangNhap(String tenDangNhap) {
-        this.tenDangNhap = tenDangNhap;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getMatKhau() {
-        return matKhau;
+    public String getPassword() {
+        return password;
     }
 
-    public void setMatKhau(String matKhau) {
-        this.matKhau = matKhau;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getHoTen() {
-        return hoTen;
+        return HoTen;
     }
 
-    public void setHoTen(String hoTen) {
-        this.hoTen = hoTen;
+    public void setHoTen(String HoTen) {
+        this.HoTen = HoTen;
     }
 
     public String getEmail() {
@@ -76,29 +76,31 @@ public class NguoiDung {
         this.email = email;
     }
 
-    public String getSoDienThoai() {
-        return soDienThoai;
+    public String getSDT() {
+        return SDT;
     }
 
-    public void setSoDienThoai(String soDienThoai) {
-        this.soDienThoai = soDienThoai;
+    public void setSDT(String SDT) {
+        this.SDT = SDT;
     }
 
     public String getDiaChi() {
-        return diaChi;
+        return DiaChi;
     }
 
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
+    public void setDiaChi(String DiaChi) {
+        this.DiaChi = DiaChi;
     }
 
-    public String getVaiTro() {
-        return vaiTro;
+    public String getRole() {
+        return role;
     }
 
-    public void setVaiTro(String vaiTro) {
-        this.vaiTro = vaiTro;
+    public void setRole(String role) {
+        this.role = role;
     }
+
+    
 
   
 

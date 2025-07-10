@@ -22,8 +22,8 @@ public class GioHang {
 // Thêm sản phẩm vào giỏ
     public void themSanPham(SanPhamTrongGio sp) {
         for (SanPhamTrongGio item : danhSachSanPham) {
-            if (item.getMaSanPham() == sp.getMaSanPham()) {
-                item.setSoLuong(item.getSoLuong() + sp.getSoLuong());
+            if (item.getMaSP()== sp.getMaSP()) {
+                item.setSLTrongGio(item.getSLTrongGio()+ sp.getSLTrongGio());
                 return;
             }
         }
@@ -31,15 +31,15 @@ public class GioHang {
     }
 
 // Xóa sản phẩm theo mã
-    public void xoaSanPham(int maSanPham) {
-        danhSachSanPham.removeIf(sp -> sp.getMaSanPham() == maSanPham);
+    public void xoaSanPham(int MaSP) {
+        danhSachSanPham.removeIf(sp -> sp.getMaSP()== MaSP);
     }
 
 // Tính tổng tiền
     public double getTongTien() {
         double tong = 0;
         for (SanPhamTrongGio sp : danhSachSanPham) {
-            tong += sp.getSoLuong() * sp.getDonGia();
+            tong += sp.getSLTrongGio()* sp.getGiaBan();
         }
         return tong;
     }

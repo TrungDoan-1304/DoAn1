@@ -13,31 +13,31 @@ import java.util.List;
  */
 public class DonHang {
 
-    private int maDonHang;
+    private int MaDonHang;
     private int userId;
-    private Date ngayDatHang;
-    private double tongTien;
-    private String trangThai;
+    private Date NgayDatHang;
+    private double TongTienDH;
+    private String TrangThaiDH;
     private List<ChiTietDonHang> danhSachChiTiet;
 
 // Constructors
     public DonHang() {
     }
 
-    public DonHang(int maDonHang, int userId, Date ngayDatHang, double tongTien, String trangThai) {
-        this.maDonHang = maDonHang;
+    public DonHang(int MaDonHang, int userId, Date NgayDatHang, double TongTienDH, String TrangThaoDH) {
+        this.MaDonHang = MaDonHang;
         this.userId = userId;
-        this.ngayDatHang = ngayDatHang;
-        this.tongTien = tongTien;
-        this.trangThai = trangThai;
+        this.NgayDatHang = NgayDatHang;
+        this.TongTienDH = TongTienDH;
+        this.TrangThaiDH = TrangThaoDH;
     }
 
     public int getMaDonHang() {
-        return maDonHang;
+        return MaDonHang;
     }
 
-    public void setMaDonHang(int maDonHang) {
-        this.maDonHang = maDonHang;
+    public void setMaDonHang(int MaDonHang) {
+        this.MaDonHang = MaDonHang;
     }
 
     public int getUserId() {
@@ -49,27 +49,27 @@ public class DonHang {
     }
 
     public Date getNgayDatHang() {
-        return ngayDatHang;
+        return NgayDatHang;
     }
 
-    public void setNgayDatHang(Date ngayDatHang) {
-        this.ngayDatHang = ngayDatHang;
+    public void setNgayDatHang(Date NgayDatHang) {
+        this.NgayDatHang = NgayDatHang;
     }
 
-    public double getTongTien() {
-        return tongTien;
+    public double getTongTienDH() {
+        return TongTienDH;
     }
 
-    public void setTongTien(double tongTien) {
-        this.tongTien = tongTien;
+    public void setTongTienDH(double TongTienDH) {
+        this.TongTienDH = TongTienDH;
     }
 
-    public String getTrangThai() {
-        return trangThai;
+    public String getTrangThaiDH() {
+        return TrangThaiDH;
     }
 
-    public void setTrangThai(String trangThai) {
-        this.trangThai = trangThai;
+    public void setTrangThaiDH(String TrangThaiDH) {
+        this.TrangThaiDH = TrangThaiDH;
     }
 
     public List<ChiTietDonHang> getDanhSachChiTiet() {
@@ -79,5 +79,7 @@ public class DonHang {
     public void setDanhSachChiTiet(List<ChiTietDonHang> danhSachChiTiet) {
         this.danhSachChiTiet = danhSachChiTiet;
     }
+
+    
 
 }
