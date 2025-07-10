@@ -1,80 +1,103 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="navbar.jsp" %>
-<%
-    String username = (String) session.getAttribute("userName");
-if (username == null) {
-    response.sendRedirect("login.jsp");
-} else {
-    out.println("Chào bạn: " + username);
-}
-    
-%>
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Trang Người Dùng</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: url('media/anh1.jpg') no-repeat center center fixed;
-            background-size: cover;
-            font-family: 'Segoe UI', sans-serif;
-            color: white;
-        }
-        .overlay {
-            background-color: rgba(0, 0, 0, 0.65);
-            min-height: 100vh;
-            padding: 60px 20px;
-        }
-        .card {
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            transition: 0.3s;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 15px rgba(0,255,100,0.6);
-        }
-        .welcome {
-            text-align: center;
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            text-shadow: 0 0 10px #00ffcc;
-        }
-    </style>
-</head>
-<body>
-    <div class="overlay">
-        <div class="container">
-            <div class="welcome">👋 Xin chào <%= username %>! Chào mừng bạn trở lại!</div>
-            <div class="row justify-content-center g-4">
-                <div class="col-md-3">
-                    <div class="card text-center p-3">
-                        <h5>🛒 Xem Sản Phẩm</h5>
-                        <p>Khám phá bộ sưu tập thời trang nam hot nhất.</p>
-                        <a href="list.jsp" class="btn btn-outline-light">Xem ngay</a>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-center p-3">
-                        <h5>📦 Đơn Hàng</h5>
-                        <p>Kiểm tra trạng thái và lịch sử đơn hàng của bạn.</p>
-                        <a href="orders.jsp" class="btn btn-outline-light">Xem đơn hàng</a>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-center p-3">
-                        <h5>👤 Thông Tin Cá Nhân</h5>
-                        <p>Cập nhật hồ sơ người dùng của bạn dễ dàng.</p>
-                        <a href="profile.jsp" class="btn btn-outline-light">Cập nhật</a>
-                    </div>
-                </div>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Trang Người Dùng</title>
+        <link rel="stylesheet" href="style/user.css"/>
+    </head>
+    <body>
+
+        <div class="navbar">
+            <div class="logo">Shop Quần Áo Nam</div>
+
+            <div class="nav-links"> 
+                <a href="user_list.jsp">Sản phẩm</a>
+                <a href="cart.jsp">Giỏ hàng</a>
+                <a href="user_profile.jsp">Tài Khoản</a>
             </div>
+
+            <div class="search-cart">
+                <div class="search-box">
+                    <input type="text" placeholder="Tìm sản phẩm...">
+                    <button>&#128269;</button>
+                </div>
+                <div class="cart-icon">&#128722;</div>
+            </div>
+
+            <%
+    String username = (String) session.getAttribute("username");
+    if (username != null) {
+%>
+    <div class="user-menu" onclick="toggleDropdown()">
+        <img src="https://i.imgur.com/8Km9tLL.png" alt="avatar" style="width: 36px; height: 36px; border-radius: 50%;">
+        <span style="margin-left: 8px; font-weight: 500;"><%= username %></span>
+        <div class="dropdown" id="dropdownMenu">
+            <a href="profile.jsp">Tài Khoản Của Tôi</a>
+            <a href="orders.jsp">Đơn Mua</a>
+            <a href="logout.jsp">Đăng Xuất</a>
         </div>
     </div>
-    <%@ include file="footer.jsp" %>
-</body>
+<%
+    } else {
+%>
+    <a href="login.jsp" class="login-link" style="color: white; font-weight: 500;">Đăng nhập</a>
+<%
+    }
+%>
+
+
+
+        </div>
+
+        <div class="banner">
+            <h1>Chào mừng bạn đến với <span>SHOP QUẦN ÁO NAM</span></h1>
+            <p>Khám phá thời trang hiện đại và cá tính</p>
+        </div>
+
+        <div class="section-title">Sản phẩm nổi bật</div>
+        <div class="product-container">
+            <div class="product-card">
+                <img src="images/white-shirt.jpg" alt="Áo sơ mi trắng">
+                <h3>Áo sơ mi trắng</h3>
+                <p class="price">320.000₫</p>
+                <button>Thêm vào giỏ</button>
+            </div>
+            <div class="product-card">
+                <img src="images/black-tee.jpg" alt="Áo thun đen">
+                <h3>Áo thun đen</h3>
+                <p class="price">250.000₫</p>
+                <button>Thêm vào giỏ</button>
+            </div>
+            <div class="product-card">
+                <img src="images/kaki-pants.jpg" alt="Quần kaki">
+                <h3>Quần kaki nam</h3>
+                <p class="price">450.000₫</p>
+                <button>Thêm vào giỏ</button>
+            </div>
+        </div>
+
+        <%@ include file="footer.jsp" %>
+        
+     
+
+<script>
+    function toggleDropdown() {
+        const menu = document.getElementById("dropdownMenu");
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+
+    // Ẩn dropdown nếu click ra ngoài
+    document.addEventListener("click", function(e) {
+        const userMenu = document.querySelector(".user-menu");
+        const dropdown = document.getElementById("dropdownMenu");
+        if (!userMenu.contains(e.target)) {
+            dropdown.style.display = "none";
+        }
+    });
+</script>
+
+
+    </body>
 </html>
