@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.*;
 import Model.NguoiDung;
 import Util.BDconnect;
+import com.sun.tools.xjc.reader.xmlschema.bindinfo.BIConversion.User;
 
 /**
  *
@@ -112,7 +113,6 @@ public class NguoiDungDAO {
                 user.setSDT(rs.getString("SDT"));
                 user.setDiaChi(rs.getString("DiaChi"));
                 user.setRole(rs.getString("role"));
-                
 
                 list.add(user);
             }
@@ -122,6 +122,23 @@ public class NguoiDungDAO {
         }
 
         return list;
+    }
+
+    public boolean updateUserInfo(NguoiDung user) {
+        String sql = "UPDATE user SET HoTen = ?, email = ?, SDT = ?, DiaChi = ? WHERE userId = ?";
+        try (Connection conn = BDconnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getHoTen());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getSDT());
+            ps.setString(4, user.getDiaChi());
+            ps.setInt(5, user.getUserId());
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+
     }
 
 }

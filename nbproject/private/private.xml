@@ -3,7 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/DoAn/DoAn1/src/java/DAO/DatHangDAO.java</file>
+            <file>file:/D:/DoAn/DoAn1/src/java/DAO/DonHangDAO.java</file>
+            <file>file:/D:/DoAn/DoAn1/src/java/DAO/NguoiDungDAO.java</file>
+            <file>file:/D:/DoAn/DoAn1/src/java/Model/GioHang.java</file>
+            <file>file:/D:/DoAn/DoAn1/src/java/Util/banquanao.sql</file>
+            <file>file:/D:/DoAn/DoAn1/src/java/Model/NguoiDung.java</file>
+            <file>file:/D:/DoAn/DoAn1/src/java/DAO/GioHangDAO.java</file>
         </group>
     </open-files>
 </project-private>

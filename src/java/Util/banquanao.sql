@@ -139,7 +139,7 @@ INSERT INTO `user` (`userId`, `username`, `password`, `HoTen`, `email`, `SDT`, `
 (2, 'linh456', 'linhpass', 'Trần Thị Linh', 'linh456@gmail.com', '0987654321', 'TP. HCM', 'user'),
 (3, 'tuan789', 'tuan789', 'Lương Tuấn', 'tuan789@yahoo.com', '0909009900', 'Đà Nẵng', 'user'),
 (4, 'hoa111', 'hoahoaha', 'Phạm Thị Hoa', 'hoa111@outlook.com', '0922334455', 'Huế', 'user'),
-(5, 'khoa222', 'khoa222', 'Lê Văn Khoa', 'khoa222@gmail.com', '0933445566', 'Cần Thơ', 'staff');
+(5, 'khoa222', 'khoa222', 'Lê Văn Khoa', 'khoa222@gmail.com', '0933445566', 'Cần Thơ', 'user');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
