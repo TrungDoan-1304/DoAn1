@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Quản lý Sản phẩm</title>
+    <title>Thêm sản phẩm</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -26,11 +26,11 @@
             background-color: rgba(255,255,255,0.1);
             border-left: 4px solid #fff;
         }
-        .table th {
-            background-color: #f1f3f9;
-        }
-        .btn-action {
-            margin-right: 5px;
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
     </style>
 </head>
@@ -62,50 +62,43 @@
 
         <!-- Content -->
         <div class="col-md-10 p-4">
-            <h3 class="mb-4"><i class="fas fa-tshirt"></i> Danh sách sản phẩm</h3>
+            <h3 class="mb-4"><i class="fas fa-plus-circle"></i> Thêm sản phẩm mới</h3>
 
-            <div class="mb-3 text-end">
-                <a href="add_product.jsp" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Thêm sản phẩm
-                </a>
+            <div class="form-container">
+                <form action="AddProductServlet" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="productId" class="form-label">Mã sản phẩm</label>
+                        <input type="text" class="form-control" id="productId" name="productId" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productName" class="form-label">Tên sản phẩm</label>
+                        <input type="text" class="form-control" id="productName" name="productName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Giá</label>
+                        <input type="number" class="form-control" id="price" name="price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Số lượng</label>
+                        <input type="number" class="form-control" id="quantity" name="quantity" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Mô tả</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Ảnh sản phẩm</label>
+                        <input class="form-control" type="file" id="image" name="image" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Lưu sản phẩm</button>
+                    <a href="admin_product.jsp" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
+                </form>
             </div>
-
-            <table class="table table-bordered table-hover text-center">
-                <thead>
-                    <tr>
-                        <th>Mã</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Giá</th>
-                        <th>Ảnh</th>
-                        <th>Mô tả</th>
-                        <th>Số lượng</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>SP001</td>
-                        <td>Áo sơ mi trắng</td>
-                        <td>150,000đ</td>
-                        <td><img src="media/ao1.webp" width="50" height="50"></td>
-                        <td>Chất liệu cotton, thoáng mát</td>
-                        <td>25</td>
-                        <td>
-                            <a href="edit_product.jsp?id=SP001" class="btn btn-sm btn-warning btn-action">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a href="delete_product.jsp?id=SP001" class="btn btn-sm btn-danger btn-action" onclick="return confirm('Xóa sản phẩm này?')">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <!-- Thêm sản phẩm khác ở đây -->
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
 
+<!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

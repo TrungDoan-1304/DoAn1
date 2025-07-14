@@ -22,35 +22,35 @@
                 padding: 15px 30px;
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             }
-            
+
             .search-box {
-    position: relative;
-}
+                position: relative;
+            }
 
-.search-box input {
-    padding: 6px 10px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    width: 180px;
-}
+            .search-box input {
+                padding: 6px 10px;
+                border-radius: 20px;
+                border: 1px solid #ccc;
+                width: 180px;
+            }
 
-.search-box button {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #00cec9;
-    font-size: 16px;
-    cursor: pointer;
-}
+            .search-box button {
+                position: absolute;
+                right: 5px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                color: #00cec9;
+                font-size: 16px;
+                cursor: pointer;
+            }
 
             .logo {
                 font-size: 24px;
-    font-weight: 700;
-    color: #00cec9;
-    text-transform: uppercase;
+                font-weight: 700;
+                color: #00cec9;
+                text-transform: uppercase;
             }
 
             .nav-links a {
@@ -144,8 +144,8 @@
                 <a href="cart.jsp">Giỏ hàng</a>
                 <a href="user_profile.jsp">Tài khoản</a>
             </div>
-            
-        <div class="search-cart">
+
+            <div class="search-cart">
                 <div class="search-box">
                     <input type="text" placeholder="Tìm sản phẩm...">
                     <button>&#128269;</button>
@@ -161,21 +161,42 @@
 
         <div class="product-list">
             <div class="product-card" data-category="ao">
-                <img src="images/ao1.jpg" alt="Áo sơ mi trắng">
+                <img src="media/somi1.jpg" alt="Áo sơ mi trắng">
                 <h3>Áo sơ mi trắng</h3>
                 <p class="price">320.000đ</p>
                 <button>Thêm vào giỏ</button>
             </div>
 
+            <div class="product-card" data-category="ao">
+                <img src="media/ao1.webp" alt="Áo thun basic">
+                <h3>Áo thun đen basic</h3>
+                <p class="price">220.000đ</p>
+                <button>Thêm vào giỏ</button>
+            </div>
+            
             <div class="product-card" data-category="quan">
-                <img src="images/quan1.jpg" alt="Quần kaki nam">
-                <h3>Quần kaki nam</h3>
+                <img src="media/quandui1.jpg" alt="Quần đùi nam">
+                <h3>Quần Đùi nam</h3>
+                <p class="price">160.000đ</p>
+                <button>Thêm vào giỏ</button>
+            </div>
+            
+            <div class="product-card" data-category="ao">
+                <img src="media/aohoodie.jpeg" alt="Áo Hoodie">
+                <h3>Áo Hoodie</h3>
+                <p class="price">300.000đ</p>
+                <button>Thêm vào giỏ</button>
+            </div>
+            
+            <div class="product-card" data-category="quan">
+                <img src="media/quanbo1.jpg" alt="Quần Jean nam">
+                <h3>Quần Jean đen</h3>
                 <p class="price">450.000đ</p>
                 <button>Thêm vào giỏ</button>
             </div>
 
             <div class="product-card" data-category="phukien">
-                <img src="images/non1.jpg" alt="Nón lưỡi trai">
+                <img src="media/mu1.jpeg" alt="Nón lưỡi trai">
                 <h3>Nón lưỡi trai</h3>
                 <p class="price">120.000đ</p>
                 <button>Thêm vào giỏ</button>
@@ -194,7 +215,7 @@
                 });
             }
         </script>
-        
-          <%@ include file="footer.jsp" %>
+
+        <%@ include file="footer.jsp" %>
     </body>
 </html>

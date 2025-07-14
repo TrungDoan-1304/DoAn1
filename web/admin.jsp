@@ -61,8 +61,8 @@
                     <h4 class="mt-4 ms-3"><i class="fas fa-user-shield"></i> Admin</h4>
                     <a href="admin.jsp"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                     <a href="admin_product.jsp"><i class="fas fa-tshirt"></i> Quản lý sản phẩm</a>
-                    <a href="admin-user.jsp"><i class="fas fa-users"></i> Quản lý người dùng</a>
-                    <a href="admin-order.jsp"><i class="fas fa-receipt"></i> Quản lý đơn hàng</a>
+                    <a href="admin_user.jsp"><i class="fas fa-users"></i> Quản lý người dùng</a>
+                    <a href="admin_order.jsp"><i class="fas fa-receipt"></i> Quản lý đơn hàng</a>
                     <a href="logout.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
                 </div>
 

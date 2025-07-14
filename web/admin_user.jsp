@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Quản lý Sản phẩm</title>
+    <title>Quản lý người dùng</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -11,26 +11,38 @@
             background-color: #f8f9fc;
             font-family: 'Segoe UI', sans-serif;
         }
+
         .sidebar {
             background: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
             min-height: 100vh;
             color: white;
         }
+
         .sidebar a {
             color: white;
             text-decoration: none;
             padding: 12px;
             display: block;
         }
+
         .sidebar a:hover {
             background-color: rgba(255,255,255,0.1);
             border-left: 4px solid #fff;
         }
+
         .table th {
             background-color: #f1f3f9;
         }
+
         .btn-action {
             margin-right: 5px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -62,50 +74,42 @@
 
         <!-- Content -->
         <div class="col-md-10 p-4">
-            <h3 class="mb-4"><i class="fas fa-tshirt"></i> Danh sách sản phẩm</h3>
-
-            <div class="mb-3 text-end">
-                <a href="add_product.jsp" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Thêm sản phẩm
-                </a>
+            <div class="top-bar">
+                <h3><i class="fas fa-users"></i> Danh sách người dùng</h3>
+                <a href="add_user.jsp" class="btn btn-primary"><i class="fas fa-user-plus"></i> Thêm người dùng</a>
             </div>
 
             <table class="table table-bordered table-hover text-center">
                 <thead>
                     <tr>
-                        <th>Mã</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Giá</th>
-                        <th>Ảnh</th>
-                        <th>Mô tả</th>
-                        <th>Số lượng</th>
+                        <th>ID</th>
+                        <th>Tên đăng nhập</th>
+                        <th>Email</th>
+                        <th>Vai trò</th>
+                        <th>Trạng thái</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>SP001</td>
-                        <td>Áo sơ mi trắng</td>
-                        <td>150,000đ</td>
-                        <td><img src="media/ao1.webp" width="50" height="50"></td>
-                        <td>Chất liệu cotton, thoáng mát</td>
-                        <td>25</td>
+                        <td>U001</td>
+                        <td>cubin2k4</td>
+                        <td>cubin2k4@gmail.com</td>
+                        <td>Khách hàng</td>
+                        <td>Hoạt động</td>
                         <td>
-                            <a href="edit_product.jsp?id=SP001" class="btn btn-sm btn-warning btn-action">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a href="delete_product.jsp?id=SP001" class="btn btn-sm btn-danger btn-action" onclick="return confirm('Xóa sản phẩm này?')">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
+                            <a href="edit_user.jsp?id=U001" class="btn btn-sm btn-warning btn-action"><i class="fas fa-edit"></i></a>
+                            <a href="ban_user.jsp?id=U001" class="btn btn-sm btn-danger btn-action" onclick="return confirm('Bạn có chắc muốn chặn người dùng này?')"><i class="fas fa-ban"></i></a>
                         </td>
                     </tr>
-                    <!-- Thêm sản phẩm khác ở đây -->
+                    <!-- Lặp thêm user nếu có -->
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
+<!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

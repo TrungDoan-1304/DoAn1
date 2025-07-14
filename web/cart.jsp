@@ -1,134 +1,180 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="javax.servlet.http.*,javax.servlet.*" %>
-<%
-    HttpSession session = request.getSession(false);
-    String username = (String) session.getAttribute("username");
-    if (username == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-%>
 <!DOCTYPE html>
-<html>
-    <head>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Giỏ Hàng</title>
+    <style>
+        body {
+            background: url('media/anh1.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-        <meta charset="UTF-8">
-        <title>Giỏ hàng</title>
-        <link rel="stylesheet" href="css/style.css">
-        <style>
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
 
-            body {
-                background: url('media/anh1.jpg') no-repeat center center fixed;
-                background-size: cover;
-                font-family: 'Segoe UI', sans-serif;
-                overflow-x: hidden;
-            }
-            .cart-container {
-                max-width: 1000px;
-                margin: 50px auto;
-                background: #fff;
-                padding: 30px;
-                border-radius: 12px;
-                box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
-            }
+        h2 {
+            color: #2d3436;
+            margin-bottom: 30px;
+        }
 
-            .cart-title {
-                text-align: center;
-                font-size: 28px;
-                margin-bottom: 30px;
-                color: #2f3640;
-            }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-            .cart-item {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                border-bottom: 1px solid #eee;
-                padding: 15px 0;
-            }
+        table thead {
+            background-color: #dfe6e9;
+        }
 
-            .cart-item img {
-                width: 100px;
-                height: auto;
-                border-radius: 8px;
-            }
+        table th, table td {
+            padding: 15px;
+            text-align: center;
+            font-size: 15px;
+            border-bottom: 1px solid #eee;
+        }
 
-            .cart-info {
-                flex: 1;
-                margin-left: 20px;
-            }
+        table img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
 
-            .cart-info h3 {
-                margin: 0;
-                color: #2f3640;
-            }
+        input[type="number"] {
+            width: 60px;
+            padding: 6px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
 
-            .cart-info p {
-                margin: 5px 0;
-                color: #636e72;
-            }
+        .btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
 
-            .cart-actions {
-                text-align: right;
-            }
+        .btn-update {
+            background-color: #00b894;
+            color: white;
+        }
 
-            .total {
-                text-align: right;
-                font-size: 20px;
-                font-weight: bold;
-                margin-top: 20px;
-            }
+        .btn-delete {
+            background-color: #d63031;
+            color: white;
+        }
 
-            .checkout-btn {
-                background-color: #00cec9;
-                border: none;
-                color: white;
-                padding: 12px 25px;
-                border-radius: 8px;
-                cursor: pointer;
-                font-size: 16px;
-                transition: background-color 0.3s ease;
-            }
+        .btn:hover {
+            opacity: 0.9;
+        }
 
-            .checkout-btn:hover {
-                background-color: #00b894;
-            }
-        </style>
-    </head>
-    <body>
+        .cart-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 0 0 12px 12px;
+}
 
-        <div class="cart-container">
-            <h2 class="cart-title">🛒 Giỏ hàng của bạn</h2>
+.total {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2d3436;
+}
 
-            <!-- Ví dụ 1 sản phẩm, có thể lặp qua list từ servlet -->
-            <div class="cart-item">
-                <img src="images/product1.jpg" alt="Áo thun">
-                <div class="cart-info">
-                    <h3>Áo thun nam cao cấp</h3>
-                    <p>Size: M</p>
-                    <p>Giá: 250,000đ</p>
-                </div>
-                <div class="cart-actions">
-                    <label>Số lượng: </label>
-                    <input type="number" value="1" min="1" style="width: 60px; padding: 5px;">
-                    <br><br>
-                    <form action="RemoveFromCartServlet" method="post">
-                        <input type="hidden" name="productId" value="1">
-                        <button type="submit" class="checkout-btn" style="background-color: #d63031;">Xoá</button>
-                    </form>
-                </div>
-            </div>
+.checkout-btn {
+    padding: 12px 22px;
+    background-color: #0984e3;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-            <!-- Tổng tiền -->
-            <div class="total">Tổng cộng: 250,000đ</div>
+.checkout-btn:hover {
+    background-color: #d63031;
+}
 
-            <!-- Nút thanh toán -->
-            <div style="text-align: right; margin-top: 20px;">
-                <form action="CheckoutServlet" method="post">
-                    <button type="submit" class="checkout-btn">Tiến hành thanh toán</button>
-                </form>
-            </div>
-        </div>
+    </style>
+</head>
+<body>
 
-    </body>
+<div class="container">
+    <h2>🛒 Giỏ Hàng Của Bạn</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Đơn giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Sản phẩm 1 -->
+            <tr>
+                <td><img src="media/somi1.jpg" alt="Áo sơ mi trắng"></td>
+                <td>Áo sơ mi trắng</td>
+                <td>150,000đ</td>
+                <td><input type="number" value="2" min="1"></td>
+                <td>300,000đ</td>
+                <td>
+                    <button class="btn btn-update" onclick="alert('Đã cập nhật số lượng')">Sửa</button>
+                    <button class="btn btn-delete" onclick="deleteRow(this)">Xóa</button>
+                </td>
+            </tr>
+
+            <!-- Sản phẩm 2 -->
+            <tr>
+                <td><img src="media/quanbo1.jpg" alt="Quần jeans đen"></td>
+                <td>Quần jeans đen</td>
+                <td>350,000đ</td>
+                <td><input type="number" value="1" min="1"></td>
+                <td>350,000đ</td>
+                <td>
+                    <button class="btn btn-update" onclick="alert('Đã cập nhật số lượng')">Sửa</button>
+                    <button class="btn btn-delete" onclick="deleteRow(this)">Xóa</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+   <div class="cart-footer">
+    <p class="total">Tổng cộng: 650,000đ</p>
+    <button class="checkout-btn" onclick="window.location.href='checkout.jsp'">🧾 Thanh Toán</button>
+</div>
+
+</div>
+
+<script>
+    function deleteRow(button) {
+        if (confirm("Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?")) {
+            const row = button.closest('tr');
+            row.remove();
+        }
+    }
+</script>
+
+</body>
 </html>
