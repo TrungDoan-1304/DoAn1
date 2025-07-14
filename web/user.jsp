@@ -16,7 +16,7 @@
                 <a href="user_list.jsp">Sản phẩm</a>
                 <a href="cart.jsp">Giỏ hàng</a>
                 <a href="order.jsp">Đơn Hàng</a>
-                <a href="user_profile.jsp">Tài Khoản</a>
+                <a href="ProfileServlet">Tài Khoản</a>
             </div>
 
             <div class="search-cart">

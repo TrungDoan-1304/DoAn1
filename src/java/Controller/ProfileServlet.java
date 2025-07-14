@@ -4,7 +4,6 @@
  */
 package Controller;
 
-import java.sql.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,25 +11,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.*;
 import Util.BDconnect;
 import jakarta.servlet.http.HttpSession;
+
 /**
  *
  * @author PC
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
-    private Connection getConnection() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/banquanao"; // sửa tên database của bạn
-        String username = "root"; // sửa user nếu khác
-        String password = "";     // sửa password nếu có
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new SQLException(e);
-        }
-        return DriverManager.getConnection(url, username, password);
-    }
+@WebServlet(name = "ProfileServlet", urlPatterns = {"/ProfileServlet"})
+public class ProfileServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,14 +39,13 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet NguoiDung</title>");            
+            out.println("<title>Servlet ProfileServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet NguoiDung at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ProfileServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -71,7 +60,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       doPost(request, response);
     }
 
     /**
@@ -85,47 +74,38 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-       String username = request.getParameter("username").trim();
-       String password = request.getParameter("password").trim();
-       System.out.println("username: " + username + ", password: " + password);
-       try (Connection conn = getConnection()){
-           String sql = "SELECT * FROM user Where username =? AND password =?";
-           PreparedStatement stmt = conn.prepareStatement(sql);
-           stmt.setString(1, username);
-           stmt.setString(2, password);
-           ResultSet rs = stmt.executeQuery();
-           if (rs.next()){
-               String role = rs.getString("role");
-               System.out.println("Vai trò: " + role);
-               HttpSession  session = request.getSession();
-               session.setAttribute("username", rs.getString("username"));
-               session.setAttribute("role", role);
-               if("admin".equalsIgnoreCase(role)){
-                   response.sendRedirect("admin.jsp");
-               }
-               else if ("user".equalsIgnoreCase(role)){
-                   
-                    response.sendRedirect("user.jsp");
-                    
-                    }  
-               else {
-                   request.setAttribute("thongbao", "Tài khoản không hợp lệ!");
-                   response.sendRedirect("login.jsp");
-               }
-                    
-               }   
-           else {
-               
-               request.setAttribute("thongbao", "Sai tên đăng nhập hoặc mật khẩu!");
-               request.getRequestDispatcher("login.jsp").forward(request, response);
-           }
-       }catch( SQLException e){
-           throw new ServletException("Lỗi kết nối CSDL",e);
-       }
-       
-       
         
+     HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("username");
+
+        if (username == null) {
+            // Chưa đăng nhập thì đá về login
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        try (Connection conn = BDconnect.getConnection()) {
+            String sql = "SELECT * FROM user WHERE username = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                request.setAttribute("username", rs.getString("username"));
+                request.setAttribute("HoTen", rs.getString("HoTen"));
+                request.setAttribute("email", rs.getString("email"));
+                request.setAttribute("SDT", rs.getString("SDT"));
+                request.setAttribute("DiaChi", rs.getString("DiaChi"));
+              
+            }
+
+          request.getRequestDispatcher("user_profile.jsp").forward(request, response);
+         
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -137,7 +117,5 @@ public class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    
 
 }

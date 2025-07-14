@@ -181,21 +181,26 @@
     <!-- Hồ sơ -->
     <div class="profile-form" id="profile">
         <h2>Hồ Sơ Của Tôi</h2>
+    <form action="UpdateProfileServlet" method="post">
         <div class="form-group">
             <label for="username">Tên đăng nhập</label>
-            <input type="text" id="username" value="cubin2k4" disabled>
+            <input type="text" name="username" value="${username}" readonly>
         </div>
         <div class="form-group">
             <label for="name">Tên</label>
-            <input type="text" id="name" value="Hoàng">
+            <input type="text" name="HoTen" value="${HoTen}" readonly>
         </div>
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" value="hu********@gmail.com">
+            <input type="email" name="email" value="${email}">
         </div>
         <div class="form-group">
-            <label for="phone">Số điện thoại</label>
-            <input type="text" id="phone" value="*******42">
+            <label for="SDT">Số điện thoại</label>
+            <input type="text" name="SDT" value="${SDT}">
+        </div>
+        <div class="form-group">
+            <label for="address">Địa chỉ</label>
+            <input type="text" name="DiaChi" value="${DiaChi}">
         </div>
         <div class="form-group">
             <label>Giới tính</label>
@@ -214,7 +219,7 @@
             <img src="https://i.imgur.com/placeholder.png" alt="avatar" class="avatar">
             <input type="file" accept="image/*">
         </div>
-        <button class="submit-btn" onclick="alert('Thông tin đã được lưu!')">💾 Lưu</button>
+        <button type="submit" class="submit-btn">💾 Lưu</button>
     </div>
 
     <!-- Đơn hàng -->

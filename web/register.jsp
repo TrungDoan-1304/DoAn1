@@ -50,12 +50,22 @@
         </style>
     </head>
     <body>
+        
         <%@ include file="navbar.jsp" %>
         <div class="register-box text-center">
             <h2 class="fw-bold mb-4">ĐĂNG KÝ TÀI KHOẢN</h2>
+                <%
+                 String tb = (String) request.getAttribute("thongbao");
+                  if (tb != null) {
+                %>
+                <div style="color:red;"><%= tb %></div>
+                <%
+                    }
+                %>
             <form action="RegisterServlet" method="post">
+                
                 <div class="mb-3">
-                    <input type="text" class="form-control" name="fullname" placeholder="Họ và tên" required>
+                    <input type="text" class="form-control" name="HoTen" placeholder="Họ và tên" required>
                 </div>
                 <div class="mb-3">
                     <input type="text" class="form-control" name="username" placeholder="Tên đăng nhập" required>
