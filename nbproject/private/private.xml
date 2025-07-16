@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/D:/DoAn1/DoAn1/web/footer.jsp</file>
             <file>file:/D:/DoAn1/DoAn1/web/user_profile.jsp</file>
             <file>file:/D:/DoAn1/DoAn1/web/admin_product.jsp</file>
@@ -15,6 +16,33 @@
             <file>file:/D:/DoAn1/DoAn1/web/cart.jsp</file>
             <file>file:/D:/DoAn1/DoAn1/web/edit_profile.jsp</file>
             <file>file:/D:/DoAn1/DoAn1/web/user.jsp</file>
+=======
+            <file>file:/D:/Documents/DoAn/DoAn1/web/user_profile.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Model/NguoiDung.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/UpdateProfileServlet.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/XLSanPham.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Util/BDconnect.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/XLGioHang.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/register.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/cart.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Util/banquanao.sql</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/XLDonHang.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/RegisterServlet.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/order.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/DAO/SanPhamDAO.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/user.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/login.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/index.html</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/DAO/DatHangDAO.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/logout.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/Home.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/DAO/NguoiDungDAO.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/user_list.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/ProfileServlet.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/LoginServlet.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/admin.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Model/ChiTietDonHang.java</file>
+>>>>>>> 00b0b60b08d7391481257f20db1cf94779e0006b
         </group>
     </open-files>
 </project-private>
