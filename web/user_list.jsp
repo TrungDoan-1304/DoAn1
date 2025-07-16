@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="Model.Product" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -159,49 +161,34 @@
             <button onclick="filterProducts('phukien')">Phụ kiện</button>
         </div>
 
-        <div class="product-list">
-            <div class="product-card" data-category="ao">
-                <img src="media/somi1.jpg" alt="Áo sơ mi trắng">
-                <h3>Áo sơ mi trắng</h3>
-                <p class="price">320.000đ</p>
-                <button>Thêm vào giỏ</button>
-            </div>
-
-            <div class="product-card" data-category="ao">
-                <img src="media/ao1.webp" alt="Áo thun basic">
-                <h3>Áo thun đen basic</h3>
-                <p class="price">220.000đ</p>
-                <button>Thêm vào giỏ</button>
-            </div>
-            
-            <div class="product-card" data-category="quan">
-                <img src="media/quandui1.jpg" alt="Quần đùi nam">
-                <h3>Quần Đùi nam</h3>
-                <p class="price">160.000đ</p>
-                <button>Thêm vào giỏ</button>
-            </div>
-            
-            <div class="product-card" data-category="ao">
-                <img src="media/aohoodie.jpeg" alt="Áo Hoodie">
-                <h3>Áo Hoodie</h3>
-                <p class="price">300.000đ</p>
-                <button>Thêm vào giỏ</button>
-            </div>
-            
-            <div class="product-card" data-category="quan">
-                <img src="media/quanbo1.jpg" alt="Quần Jean nam">
-                <h3>Quần Jean đen</h3>
-                <p class="price">450.000đ</p>
-                <button>Thêm vào giỏ</button>
-            </div>
-
-            <div class="product-card" data-category="phukien">
-                <img src="media/mu1.jpeg" alt="Nón lưỡi trai">
-                <h3>Nón lưỡi trai</h3>
-                <p class="price">120.000đ</p>
-                <button>Thêm vào giỏ</button>
-            </div>
+<div class="product-list">
+    <%
+        if (productList != null && !productList.isEmpty()) {
+            for(Product product : productList) {
+                String category = "";
+                String nameLower = product.getTensanpham().toLowerCase();
+                if(nameLower.contains("áo")) category = "ao";
+                else if(nameLower.contains("quần")) category = "quan";
+                else category = "phukien";
+    %>
+        <div class="product-card" data-category="<%= category %>">
+            <img src="<%= product.getHinhanh() %>" alt="<%= product.getTensanpham() %>">
+            <h3><%= product.getTensanpham() %></h3>
+            <p class="price"><%= String.format("%,d", product.getGia()) %>đ</p>
+            <form action="ProductDetailServlet" method="get">
+                <input type="hidden" name="productID" value="<%= product.getProductID() %>"/>
+                <input type="submit" value="Thêm vào giỏ hàng"/>
+            </form>
         </div>
+    <%
+            }
+        } else {
+    %>
+        <p>Không có sản phẩm nào để hiển thị</p>
+    <%
+        }
+    %>
+    </div>
 
         <script>
             function filterProducts(category) {

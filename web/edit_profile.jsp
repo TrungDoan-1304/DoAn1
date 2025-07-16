@@ -118,27 +118,13 @@
 
 <div class="container">
     <h2>Chỉnh Sửa Thông Tin Cá Nhân</h2>
-    <form action="UpdateProfileServlet" method="post">
-        <!-- Thông tin cá nhân -->
-        <div class="form-group">
-            <label for="username">Tên đăng nhập</label>
-            <input type="text" id="username" name="username" value="cubin2k4" disabled>
-        </div>
-
-        <div class="form-group">
-            <label for="name">Họ tên</label>
-            <input type="text" id="name" name="name" value="Hoàng Văn Tuyên">
-        </div>
-
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" value="abc@gmail.com">
-        </div>
-
-        <div class="form-group">
-            <label for="phone">Số điện thoại</label>
-            <input type="tel" id="phone" name="phone" value="0987654321">
-        </div>
+       <!-- Thông tin cá nhân -->
+                <form action="UpdateProfileServlet" method="post">
+                <p>Email: <input type="text" name="email" value="${email}"></p>
+                <p>Số điện thoại: <input type="text" name="SDT" value="${SDT}"></p>
+                <p>Địa chỉ: <input type="text" name="DiaChi" value="${DiaChi}"></p>
+                <button type="submit" class="submit-btn">💾 Lưu Thông Tin</button>
+                </form>
 
         <!-- Đổi mật khẩu -->
         <div class="form-section">
@@ -162,7 +148,7 @@
 
         <div class="btn-group">
             <button type="submit" class="submit-btn">💾 Lưu Thay Đổi</button>
-            <button type="button" class="back-btn" onclick="window.location.href='user_profile.jsp'">🔙 Quay về Hồ sơ</button>
+            <button type="button" class="back-btn" onclick="window.location.href='ProfileServlet'">🔙 Quay về Hồ sơ</button>
         </div>
     </form>
 </div>

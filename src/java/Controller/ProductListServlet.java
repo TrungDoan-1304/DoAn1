@@ -4,23 +4,22 @@
  */
 package Controller;
 
+import DAO.ProductDAO;
+import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.*;
-import Util.BDconnect;
-import jakarta.servlet.http.HttpSession;
-
+import Model.Product;
+import java.util.List;
 /**
  *
  * @author PC
  */
-@WebServlet(name = "ProfileServlet", urlPatterns = {"/ProfileServlet"})
-public class ProfileServlet extends HttpServlet {
+@WebServlet(name = "ProductListServlet", urlPatterns = {"/ProductListServlet"})
+public class ProductListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +38,10 @@ public class ProfileServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ProfileServlet</title>");            
+            out.println("<title>Servlet ProductListServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ProfileServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ProductListServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,37 +59,10 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-          HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
-
-        if (username == null) {
-            // Chưa đăng nhập thì đá về login
-            response.sendRedirect("login.jsp");
-            return;
-        }
-
-        try (Connection conn = BDconnect.getConnection()) {
-            String sql = "SELECT * FROM user WHERE username = ?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                request.setAttribute("username", rs.getString("username"));
-                request.setAttribute("HoTen", rs.getString("HoTen"));
-                request.setAttribute("email", rs.getString("email"));
-                request.setAttribute("SDT", rs.getString("SDT"));
-                request.setAttribute("DiaChi", rs.getString("DiaChi"));
-              
-            }
-
-          request.getRequestDispatcher("user_profile.jsp").forward(request, response);
-         
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+                ProductDAO productDAO = new ProductDAO();
+        List<Product> productList = productDAO.getAllProducts();
+        request.setAttribute("productList", productList);
+        request.getRequestDispatcher("user_list.jsp").forward(request, response);
     }
 
     /**
@@ -104,8 +76,7 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-     
+        processRequest(request, response);
     }
 
     /**

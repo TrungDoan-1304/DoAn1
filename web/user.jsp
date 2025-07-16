@@ -16,7 +16,7 @@
                 <a href="user_list.jsp">Sản phẩm</a>
                 <a href="cart.jsp">Giỏ hàng</a>
                 <a href="order.jsp">Đơn Hàng</a>
-                <a href="user_profile.jsp">Tài Khoản</a>
+                <a href="ProfileServlet">Tài Khoản</a>
             </div>
 
             <div class="search-cart">
@@ -34,7 +34,7 @@
             <div class="user-menu" onclick="toggleDropdown()">
                 <span style="margin-left: 8px; font-weight: 500; color: white">Xin chào <%= username %></span>
                 <div class="dropdown" id="dropdownMenu">
-                    <a href="user_profile.jsp">Tài Khoản Của Tôi</a>
+                    <a href="ProfileServlet">Tài Khoản Của Tôi</a>
                     <a href="order.jsp">Đơn Mua</a>
                     <a href="logout.jsp">Đăng Xuất</a>
                 </div>

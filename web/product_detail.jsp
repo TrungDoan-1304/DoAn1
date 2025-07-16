@@ -102,22 +102,21 @@
     </div>
 
     <!-- Thông tin sản phẩm -->
-    <div class="product-info">
-        <div class="code">Mã sản phẩm: <strong>SP001</strong></div>
-        <h2>Áo sơ mi trắng form rộng</h2>
-        <div class="price">Giá: 150,000đ</div>
-
-        <label>Mô tả:</label>
-        <p>
-            Áo sơ mi trắng thiết kế đơn giản, form rộng thoải mái, chất liệu cotton thoáng mát phù hợp cho mọi dịp.
-        </p>
-
-        <label for="quantity">Số lượng:</label>
-        <input type="number" id="quantity" value="1" min="1">
-
-        <br>
-        <button class="add-cart-btn" onclick="alert('Đã thêm vào giỏ hàng!')">🛒 Thêm vào giỏ hàng</button>
-    </div>
+    <form method="post" action="AddToCartServlet">
+    <input type="hidden" name="productID" value="${product.productID}" />
+    <p>Tên sản phẩm: ${product.tensanpham}</p>
+    <p>Giá: ${product.gia} VNĐ</p>
+    <p>Size:
+        <select name="size">
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+        </select>
+    </p>
+    <p>Số lượng: <input type="number" name="quantity" value="1" min="1" /></p>
+    <input type="submit" value="Thêm vào giỏ hàng" />
+    </form>
 </div>
 
 </body>

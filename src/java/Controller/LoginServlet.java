@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import Util.BDconnect;
 import jakarta.servlet.http.HttpSession;
 /**
  *
@@ -104,13 +103,8 @@ public class LoginServlet extends HttpServlet {
                if("admin".equalsIgnoreCase(role)){
                    response.sendRedirect("admin.jsp");
                }
-<<<<<<< HEAD
-               else if ("user".equalsIgnoreCase(Role)){
-                   session.setAttribute("username", userName);
-=======
                else if ("user".equalsIgnoreCase(role)){
-                   
->>>>>>> 00b0b60b08d7391481257f20db1cf94779e0006b
+                   session.setAttribute("username", username);                  
                     response.sendRedirect("user.jsp");
                     
                     }  
@@ -125,6 +119,7 @@ public class LoginServlet extends HttpServlet {
                request.setAttribute("thongbao", "Sai tên đăng nhập hoặc mật khẩu!");
                request.getRequestDispatcher("login.jsp").forward(request, response);
            }
+           
        }catch( SQLException e){
            throw new ServletException("Lỗi kết nối CSDL",e);
        }
@@ -142,7 +137,6 @@ public class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+}
     
 
-}

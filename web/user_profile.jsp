@@ -198,22 +198,13 @@
             <!-- Hồ sơ -->
             <div class="profile-form" id="profile">
                 <h2>Hồ Sơ Của Tôi</h2>
-                <div class="form-group">
-                    <label for="username">Tên đăng nhập</label>
-                    <input type="text" id="username" value="cubin2k4" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="name">Tên</label>
-                    <input type="text" id="name" value="Hoàng">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" value="hu********@gmail.com">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Số điện thoại</label>
-                    <input type="text" id="phone" value="*******42">
-                </div>
+                <form action="ProfileServlet" method="post">
+                <p>Họ tên: <input type="text" name="email" value="${HoTen}"></p>
+                <p>Email: <input type="text" name="email" value="${email}"></p>
+                <p>Số điện thoại: <input type="text" name="SDT" value="${SDT}"></p>
+                <p>Địa chỉ: <input type="text" name="DiaChi" value="${DiaChi}"></p>
+                
+                </form>
 
                 <button class="submit-btn" onclick="window.location.href='edit_profile.jsp'">💾 Chỉnh Sửa Thông Tin</button>
             </div>
