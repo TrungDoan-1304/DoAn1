@@ -14,6 +14,29 @@
             background-color: #f0f2f5;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background-color: #006466;
+            padding: 15px 30px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
         }
 
         .container {
@@ -23,6 +46,7 @@
             background-color: #fff;
             border-radius: 12px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+            flex: 1;
         }
 
         h2, h3 {
@@ -103,13 +127,30 @@
             background-color: #d63031;
         }
 
-        .note {
-            font-size: 14px;
-            color: #666;
+        footer {
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer a {
+            color: #00cec9;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
+
+<div class="navbar">
+    <h1>🛍 Shop Quần Áo Nam</h1>
+    <a href="user.jsp">🏠 Trang chủ</a>
+</div>
 
 <div class="container">
     <h2>🧾 Xác Nhận Thanh Toán</h2>
@@ -185,6 +226,15 @@
     <!-- Nút xác nhận -->
     <button class="checkout-btn" onclick="alert('🛒 Đặt hàng thành công!')">✅ Xác nhận & Thanh toán</button>
 </div>
+
+<footer>
+    <p>&copy; 2025 Shop Quần Áo Nam. All rights reserved.</p>
+    <p>📍 218 Lĩnh Nam, Hoàng Mai, Hà Nội | ☎ 0987 123 456</p>
+    <p>
+        ✉ <a href="mailto:shopquannaonam@gmail.com">Email</a> |
+        🌐 <a href="https://facebook.com/tuyens.hoangs.33" target="_blank">Facebook</a>
+    </p>
+</footer>
 
 </body>
 </html>

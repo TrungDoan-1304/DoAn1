@@ -105,7 +105,7 @@ public class LoginServlet extends HttpServlet {
                    response.sendRedirect("admin.jsp");
                }
                else if ("user".equalsIgnoreCase(Role)){
-                   
+                   session.setAttribute("username", userName);
                     response.sendRedirect("user.jsp");
                     }  
                else {

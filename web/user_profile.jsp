@@ -9,11 +9,25 @@
             box-sizing: border-box;
         }
 
-        body {
+        html, body {
+            height: 100%;
             margin: 0;
+        }
+
+        body {
             font-family: "Segoe UI", sans-serif;
             background-color: #f0f2f5;
             color: #2c3e50;
+        }
+
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .page-content {
+            flex: 1;
         }
 
         .navbar {
@@ -163,147 +177,146 @@
     </style>
 </head>
 <body>
+<div class="page-wrapper">
 
-<div class="navbar">
+    <div class="navbar">
     <h1>🛍 Shop Quần Áo Nam</h1>
+    <a href="user.jsp" style="color:white; text-decoration:none; font-weight:bold;">🏠 Trang chủ</a>
 </div>
 
-<div class="container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <a onclick="showTab('notifications')">🔔 Thông báo</a>
-        <a onclick="showTab('orders')">📦 Đơn hàng</a>
-        <a onclick="showTab('cart')">🛒 Giỏ hàng</a>
-        <a onclick="showTab('profile')">👤 Tài khoản</a>
-        <a href="#">🚪 Đăng xuất</a>
-    </div>
+    <div class="page-content">
+        <div class="container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <a onclick="showTab('notifications')">🔔 Thông báo</a>
+                <a onclick="showTab('orders')">📦 Đơn hàng</a>
+                <a onclick="showTab('cart')">🛒 Giỏ hàng</a>
+                <a onclick="showTab('profile')">👤 Tài khoản</a>
+                <a href="logout.jsp">🚪 Đăng xuất</a>
+            </div>
 
-    <!-- Hồ sơ -->
-    <div class="profile-form" id="profile">
-        <h2>Hồ Sơ Của Tôi</h2>
-        <div class="form-group">
-            <label for="username">Tên đăng nhập</label>
-            <input type="text" id="username" value="cubin2k4" disabled>
-        </div>
-        <div class="form-group">
-            <label for="name">Tên</label>
-            <input type="text" id="name" value="Hoàng">
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" value="hu********@gmail.com">
-        </div>
-        <div class="form-group">
-            <label for="phone">Số điện thoại</label>
-            <input type="text" id="phone" value="*******42">
-        </div>
-        <div class="form-group">
-            <label>Giới tính</label>
-            <div class="radio-group">
-                <label><input type="radio" name="gender" value="Nam" checked> Nam</label>
-                <label><input type="radio" name="gender" value="Nữ"> Nữ</label>
-                <label><input type="radio" name="gender" value="Khác"> Khác</label>
+            <!-- Hồ sơ -->
+            <div class="profile-form" id="profile">
+                <h2>Hồ Sơ Của Tôi</h2>
+                <div class="form-group">
+                    <label for="username">Tên đăng nhập</label>
+                    <input type="text" id="username" value="cubin2k4" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="name">Tên</label>
+                    <input type="text" id="name" value="Hoàng">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" value="hu********@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Số điện thoại</label>
+                    <input type="text" id="phone" value="*******42">
+                </div>
+
+                <button class="submit-btn" onclick="window.location.href='edit_profile.jsp'">💾 Chỉnh Sửa Thông Tin</button>
+            </div>
+
+            <!-- Đơn hàng -->
+            <div class="profile-form" id="orders" style="display: none">
+                <h2>Đơn hàng của tôi</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Ngày đặt</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>DH001</td>
+                        <td>10/07/2025</td>
+                        <td>350,000đ</td>
+                        <td>Đã giao</td>
+                        <td>
+                            <button onclick="alert('Chi tiết đơn DH001')">Xem</button>
+                            <button onclick="deleteRow(this)">Xóa</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>DH002</td>
+                        <td>11/07/2025</td>
+                        <td>420,000đ</td>
+                        <td>Đang xử lý</td>
+                        <td>
+                            <button onclick="alert('Chi tiết đơn DH002')">Xem</button>
+                            <button onclick="deleteRow(this)">Xóa</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Giỏ hàng -->
+            <div class="profile-form" id="cart" style="display: none">
+                <h2>Giỏ hàng</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Thành tiền</th>
+                        <th>Hành động</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Áo sơ mi trắng</td>
+                        <td><input type="number" value="2" style="width: 60px;"></td>
+                        <td>150,000đ</td>
+                        <td>300,000đ</td>
+                        <td>
+                            <button onclick="alert('Đã cập nhật!')">Sửa</button>
+                            <button onclick="deleteRow(this)">Xóa</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Quần jeans đen</td>
+                        <td><input type="number" value="1" style="width: 60px;"></td>
+                        <td>350,000đ</td>
+                        <td>350,000đ</td>
+                        <td>
+                            <button onclick="alert('Đã cập nhật!')">Sửa</button>
+                            <button onclick="deleteRow(this)">Xóa</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p style="text-align: right; margin-top: 20px;"><strong>Tổng cộng: 650,000đ</strong></p>
+                <button class="submit-btn" style="float: right;">🧾 Thanh toán</button>
+            </div>
+
+            <!-- Thông báo -->
+            <div class="profile-form" id="notifications" style="display: none">
+                <h2>Thông báo</h2>
+                <ul>
+                    <li>Bạn đã đặt hàng thành công lúc 10:00 ngày 10/07/2025.</li>
+                    <li>Chào mừng bạn đến với Shop Quần Áo Nam!</li>
+                    <li>Khuyến mãi: Giảm 20% cho đơn hàng đầu tiên!</li>
+                </ul>
             </div>
         </div>
-        <div class="form-group">
-            <label for="dob">Ngày sinh</label>
-            <input type="date" id="dob" value="2004-01-01">
-        </div>
-        <div class="form-group">
-            <label>Ảnh đại diện</label>
-            <img src="https://i.imgur.com/placeholder.png" alt="avatar" class="avatar">
-            <input type="file" accept="image/*">
-        </div>
-        <button class="submit-btn" onclick="alert('Thông tin đã được lưu!')">💾 Lưu</button>
     </div>
 
-    <!-- Đơn hàng -->
-    <div class="profile-form" id="orders" style="display: none">
-        <h2>Đơn hàng của tôi</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Mã đơn</th>
-                <th>Ngày đặt</th>
-                <th>Tổng tiền</th>
-                <th>Trạng thái</th>
-                <th>Hành động</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>DH001</td>
-                <td>10/07/2025</td>
-                <td>350,000đ</td>
-                <td>Đã giao</td>
-                <td>
-                    <button onclick="alert('Chi tiết đơn DH001')">Xem</button>
-                    <button onclick="deleteRow(this)">Xóa</button>
-                </td>
-            </tr>
-            <tr>
-                <td>DH002</td>
-                <td>11/07/2025</td>
-                <td>420,000đ</td>
-                <td>Đang xử lý</td>
-                <td>
-                    <button onclick="alert('Chi tiết đơn DH002')">Xem</button>
-                    <button onclick="deleteRow(this)">Xóa</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <footer style="background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); color:white; padding:20px; text-align:center;">
+        <p>&copy; 2025 Shop Quần Áo Nam. All rights reserved.</p>
+        <p>📍 218 Lĩnh Nam, Hoàng Mai, Hà Nội | ☎ 0987 123 456</p>
+        <p>
+            ✉ <a href="mailto:shopquannaonam@gmail.com" style="color:#00cec9;">Email</a> |
+            🌐 <a href="https://facebook.com/tuyens.hoangs.33" style="color:#00cec9;" target="_blank">Facebook</a>
+        </p>
+    </footer>
 
-    <!-- Giỏ hàng -->
-    <div class="profile-form" id="cart" style="display: none">
-        <h2>Giỏ hàng</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Sản phẩm</th>
-                <th>Số lượng</th>
-                <th>Đơn giá</th>
-                <th>Thành tiền</th>
-                <th>Hành động</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Áo sơ mi trắng</td>
-                <td><input type="number" value="2" style="width: 60px;"></td>
-                <td>150,000đ</td>
-                <td>300,000đ</td>
-                <td>
-                    <button onclick="alert('Đã cập nhật!')">Sửa</button>
-                    <button onclick="deleteRow(this)">Xóa</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Quần jeans đen</td>
-                <td><input type="number" value="1" style="width: 60px;"></td>
-                <td>350,000đ</td>
-                <td>350,000đ</td>
-                <td>
-                    <button onclick="alert('Đã cập nhật!')">Sửa</button>
-                    <button onclick="deleteRow(this)">Xóa</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <p style="text-align: right; margin-top: 20px;"><strong>Tổng cộng: 650,000đ</strong></p>
-        <button class="submit-btn" style="float: right;">🧾 Thanh toán</button>
-    </div>
-
-    <!-- Thông báo -->
-    <div class="profile-form" id="notifications" style="display: none">
-        <h2>Thông báo</h2>
-        <ul>
-            <li>Bạn đã đặt hàng thành công lúc 10:00 ngày 10/07/2025.</li>
-            <li>Chào mừng bạn đến với Shop Quần Áo Nam!</li>
-            <li>Khuyến mãi: Giảm 20% cho đơn hàng đầu tiên!</li>
-        </ul>
-    </div>
 </div>
 
 <script>

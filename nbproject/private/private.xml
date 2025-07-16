@@ -3,12 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/DoAn/DoAn1/src/java/DAO/DonHangDAO.java</file>
-            <file>file:/D:/DoAn/DoAn1/src/java/DAO/NguoiDungDAO.java</file>
-            <file>file:/D:/DoAn/DoAn1/src/java/Model/GioHang.java</file>
-            <file>file:/D:/DoAn/DoAn1/src/java/Util/banquanao.sql</file>
-            <file>file:/D:/DoAn/DoAn1/src/java/Model/NguoiDung.java</file>
-            <file>file:/D:/DoAn/DoAn1/src/java/DAO/GioHangDAO.java</file>
+            <file>file:/D:/DoAn1/DoAn1/web/footer.jsp</file>
+            <file>file:/D:/DoAn1/DoAn1/web/user_profile.jsp</file>
+            <file>file:/D:/DoAn1/DoAn1/web/admin_product.jsp</file>
+            <file>file:/D:/DoAn1/DoAn1/web/admin_order.jsp</file>
+            <file>file:/D:/DoAn1/DoAn1/web/order.jsp</file>
+            <file>file:/D:/DoAn1/DoAn1/web/Home.jsp</file>
+            <file>file:/D:/DoAn1/DoAn1/web/checkout.jsp</file>
+            <file>file:/D:/DoAn1/DoAn1/web/admin.jsp</file>
+            <file>file:/D:/DoAn1/DoAn1/web/style/user.css</file>
+            <file>file:/D:/DoAn1/DoAn1/web/cart.jsp</file>
+            <file>file:/D:/DoAn1/DoAn1/web/edit_profile.jsp</file>
+            <file>file:/D:/DoAn1/DoAn1/web/user.jsp</file>
         </group>
     </open-files>
 </project-private>

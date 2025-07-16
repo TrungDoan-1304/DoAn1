@@ -65,7 +65,7 @@
 
 <div class="container">
     <div class="form-container">
-        <a href="admin-user.jsp" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại danh sách</a>
+        <a href="admin_user.jsp" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại danh sách</a>
 
         <h3><i class="fas fa-user-plus text-primary"></i> Thêm người dùng mới</h3>
 

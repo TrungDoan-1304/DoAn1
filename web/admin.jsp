@@ -33,13 +33,13 @@
                 border-left: 4px solid #4e73df;
                 box-shadow: 0 0 15px rgba(0,0,0,0.05);
             }
-            
+
             .chart-container {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
+                background: white;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            }
         </style>
     </head>
     <body>
@@ -110,76 +110,76 @@
                     <div class="card mt-4">
                         <div class="card-header">
                             Biểu đồ doanh thu
-                                                    <div class="chart-container">
-    <canvas id="orderChart" height="120"></canvas>
-</div>
+                            <div class="chart-container">
+                                <canvas id="orderChart" height="120"></canvas>
+                            </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <script>
             const ctx = document.getElementById('orderChart').getContext('2d');
-const orderChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
-        datasets: [{
-            label: 'Đơn hàng trong tuần',
-            data: [12, 19, 3, 5, 2, 7, 14],
-            fill: true,
-            backgroundColor: 'rgba(9, 132, 227, 0.15)',
-            borderColor: '#0984e3',
-            borderWidth: 3,
-            tension: 0.5,
-            pointBackgroundColor: '#0984e3',
-            pointRadius: 5,
-            pointHoverRadius: 7
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true,
-                position: 'top',
-                labels: {
-                    font: {
-                        size: 14
+            const orderChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+                    datasets: [{
+                            label: 'Đơn hàng trong tuần',
+                            data: [12, 19, 3, 5, 2, 7, 14],
+                            fill: true,
+                            backgroundColor: 'rgba(9, 132, 227, 0.15)',
+                            borderColor: '#0984e3',
+                            borderWidth: 3,
+                            tension: 0.5,
+                            pointBackgroundColor: '#0984e3',
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#2f3640',
+                            titleColor: '#ffffff',
+                            bodyColor: '#dcdde1',
+                            borderColor: '#00cec9',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#2f3640',
+                                font: {
+                                    size: 13
+                                }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#2f3640',
+                                font: {
+                                    size: 13
+                                }
+                            }
+                        }
                     }
                 }
-            },
-            tooltip: {
-                backgroundColor: '#2f3640',
-                titleColor: '#ffffff',
-                bodyColor: '#dcdde1',
-                borderColor: '#00cec9',
-                borderWidth: 1
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    color: '#2f3640',
-                    font: {
-                        size: 13
-                    }
-                }
-            },
-            x: {
-                ticks: {
-                    color: '#2f3640',
-                    font: {
-                        size: 13
-                    }
-                }
-            }
-        }
-    }
-});
+            });
 
         </script>
 
