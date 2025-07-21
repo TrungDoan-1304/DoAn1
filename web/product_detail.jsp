@@ -114,26 +114,30 @@
             <img src="<%= request.getContextPath() + "/" + product.getHinhanh() %>" alt="Sản phẩm">
         </div>
 
-        <!-- Thông tin sản phẩm -->
-        <div class="product-info">
-            <h2><%= product.getTensanpham() %></h2>
-            <p class="price"><%= product.getGia() %> VNĐ</p>
+            <!-- Thông tin sản phẩm -->
+            <div class="product-info">
+                <h2><%= product.getProductName() %></h2>
+                <p class="price"><%= product.getGia() %> VNĐ</p>
 
-            <form action="AddToCartServlet" method="post">               
-                <input type="hidden" name="productID" value="${product.productID}">
-                <input type="hidden" name="tensanpham" value="${product.tensanpham}">
-                <input type="hidden" name="price" value="${product.gia}">
-                <label>Chọn size:</label>
-                <select name="size">
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                </select>
-                <label>Số lượng:</label>
-                <input type="number" name="quantity" value="1" min="1">
-                <button type="submit">Thêm vào giỏ hàng</button>
-            </form>
-        </div>
+                <form method="post" action="AddToCartServlet">
+                    <input type="hidden" name="productID" value="<%= product.getProductID() %>">
+                    <input type="hidden" name="productName" value="<%= product.getProductName() %>">
+                    <input type="hidden" name="price" value="<%= product.getGia() %>">
+
+                    <label for="size">Size:</label>
+                    <select name="size" required>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                    </select>
+
+                    <label for="quantity">Số lượng:</label>
+                    <input type="number" name="quantity" min="1" value="1" required>
+
+                    <button type="submit">🛒 Thêm vào giỏ hàng</button>
+                </form>
+            </div>
     </div>
 
 </body>

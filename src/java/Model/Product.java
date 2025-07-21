@@ -12,16 +12,16 @@ import jakarta.resource.cci.ResultSet;
  */
 public class Product {
     private int productID ;
-    private String tensanpham;
+    private String productName;
     private String hinhanh;
     private int gia;
 
     public Product() {
     }
 
-    public Product(int productID, String tensanpham, String hinhanh, int gia) {
+    public Product(int productID, String productName, String hinhanh, int gia) {
         this.productID = productID;
-        this.tensanpham = tensanpham;
+        this.productName = productName;
         this.hinhanh = hinhanh;
         this.gia = gia;
     }
@@ -34,12 +34,12 @@ public class Product {
         this.productID = productID;
     }
 
-    public String getTensanpham() {
-        return tensanpham;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setTensanpham(String tensanpham) {
-        this.tensanpham = tensanpham;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getHinhanh() {

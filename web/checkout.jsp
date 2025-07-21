@@ -221,7 +221,7 @@
                            total += itemTotal;
                 %>
                     <tr>
-                        <td><%= item.getTensanpham() %></td>
+                        <td><%= item.getProductName() %></td>
                         <td><%= item.getQuantity() %></td>
                         <td><%= String.format("%,.0f", item.getPrice()) %>đ</td>
                         <td><%= String.format("%,.0f", itemTotal) %>đ</td>

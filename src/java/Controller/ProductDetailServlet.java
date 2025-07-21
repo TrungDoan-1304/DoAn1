@@ -59,16 +59,16 @@ public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    String productIdParam = request.getParameter("productId");
-    if (productIdParam == null || productIdParam.isEmpty()) {
+    String productIDParam = request.getParameter("productID");
+    if (productIDParam == null || productIDParam.isEmpty()) {
         response.sendRedirect("ProductListServlet"); // fallback nếu không có productId
         return;
     }
 
-    int productId = Integer.parseInt(productIdParam);
+    int productID = Integer.parseInt(productIDParam);
 
     ProductDAO dao = new ProductDAO();
-    Product product = dao.getProductById(productId);
+    Product product = dao.getProductById(productID);
 
     request.setAttribute("product", product);
     RequestDispatcher dispatcher = request.getRequestDispatcher("product_detail.jsp");

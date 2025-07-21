@@ -84,12 +84,12 @@ public class AddToCartServlet extends HttpServlet {
 
     try {
         // Lấy và kiểm tra thông số productId
-        String productIdParam = request.getParameter("productId");
-        int productId = 0;
+        String productIdParam = request.getParameter("productID");
+        int productID = 0;
         if (productIdParam != null && !productIdParam.trim().isEmpty()) {
-            productId = Integer.parseInt(productIdParam);
+            productID = Integer.parseInt(productIdParam);
         } else {
-            throw new IllegalArgumentException("Thiếu productId");
+            throw new IllegalArgumentException("Thiếu productID");
         }
 
         // Lấy và kiểm tra thông số quantity
@@ -108,20 +108,23 @@ public class AddToCartServlet extends HttpServlet {
         if (size == null) size = "S";
 
             CartItem item = new CartItem();
-            item.setProductID(productId);
-            item.setTensanpham(productName);
+            item.setProductID(productID);
+            item.setProductName(productName);
             item.setPrice(price);
             item.setQuantity(quantity);
             item.setSize(size);
             item.setUsername(username);
 
-            CartDAO cartDAO = new CartDAO();  
-            cartDAO.addToCart(username, productId, size, quantity, price, productName);
+            CartDAO cartDAO = new CartDAO(); 
+            String cartID = cartDAO.getOrCreateCartIdByUsername(username);
+            cartDAO.addToCart( cartID , productID, productName, size, quantity, price,username);
 
-            request.getRequestDispatcher("CartServlet").forward(request, response);
+            response.sendRedirect("CartServlet");
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("home.jsp");
+                e.printStackTrace();
+                request.setAttribute("error", "Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
+                request.getRequestDispatcher("product_detail.jsp").forward(request, response);
         }
     }
 

@@ -9,71 +9,81 @@ import java.util.List;
 import java.sql.*;
 import Util.BDconnect;
 import java.util.ArrayList;
+import java.util.Random;
 /**
  *
  * @author PC
  */
 public class CartDAO {
-     public int getOrCreateCartId(String username) {
-        int cartId = -1;
+    private String generateCartID() {
+    Random rand = new Random();
+    int number = 100000 + rand.nextInt(900000); // Số ngẫu nhiên 6 chữ số
+    return "GH" + number;
+}
+    public String getOrCreateCartIdByUsername(String username) throws SQLException {
+    String cartId = null;
 
-        try (Connection conn = BDconnect.getConnection()) {
-            String selectQuery = "SELECT MaGioHang FROM carts WHERE username = ?";
-            PreparedStatement ps = conn.prepareStatement(selectQuery);
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
+    try (Connection conn = BDconnect.getConnection()) {
+        // Kiểm tra xem user đã có giỏ hàng chưa
+        String checkSql = "SELECT CartID FROM carts WHERE username = ?";
+        PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+        checkStmt.setString(1, username);
+        ResultSet rs = checkStmt.executeQuery();
 
-            if (rs.next()) {
-                cartId = rs.getInt("MaGioHang");
-            } else {
-                // Chưa có thì tạo mới
-                String insertQuery = "INSERT INTO carts (username) VALUES (?)";
-                PreparedStatement insertPs = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
-                insertPs.setString(1, username);
-                insertPs.executeUpdate();
+        if (rs.next()) {
+            cartId = rs.getString("CartID");
+        } else {
+            // Tạo mã giỏ hàng mới
+            cartId = generateCartID();
 
-                ResultSet generatedKeys = insertPs.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    cartId = generatedKeys.getInt(1);
-                }
-            }
+            // Chèn vào bảng carts
+            String insertSql = "INSERT INTO carts (CartID, username) VALUES (?, ?)";
+            PreparedStatement insertStmt = conn.prepareStatement(insertSql);
+            insertStmt.setString(1, cartId);
+            insertStmt.setString(2, username);
+            insertStmt.executeUpdate();
+        }
+    }
+
+    return cartId;
+}
+    public void addToCart(int productID, String productName, String size, int quantity, double price, String username) {
+        try {
+            String cartID = getOrCreateCartIdByUsername(username);  // Lấy cartID đúng
+            addToCart(cartID, productID, productName, size, quantity, price, username);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return cartId;
     }
 
-    // Thêm sản phẩm vào giỏ hàng
-    public void addToCart(String MaGioHang, int productID, String size, int quantity, double price, String tensanpham) {
+    // Thêm sản phẩm vào bảng cart_items
+    public void addToCart(String cartID, int productID, String productName, String size, int quantity, double price, String username) {
         try (Connection conn = BDconnect.getConnection()) {
-            // Kiểm tra sản phẩm đã tồn tại chưa
-            String checkSQL = "SELECT * FROM cart_items WHERE MaGioHang = ? AND productID = ? AND size = ?";
+            String checkSQL = "SELECT * FROM cart_items WHERE cartID = ? AND productID = ? AND size = ?";
             PreparedStatement checkStmt = conn.prepareStatement(checkSQL);
-            checkStmt.setString(1, MaGioHang);
+            checkStmt.setString(1, cartID);
             checkStmt.setInt(2, productID);
             checkStmt.setString(3, size);
             ResultSet rs = checkStmt.executeQuery();
 
             if (rs.next()) {
-                // Nếu đã có thì cập nhật số lượng
-                String updateSQL = "UPDATE cart_items SET quantity = quantity + ? WHERE MaGioHang = ? AND productID = ? AND size = ?";
+                String updateSQL = "UPDATE cart_items SET quantity = quantity + ? WHERE cartID = ? AND productID = ? AND size = ?";
                 PreparedStatement updateStmt = conn.prepareStatement(updateSQL);
                 updateStmt.setInt(1, quantity);
-                updateStmt.setString(1, MaGioHang);
+                updateStmt.setString(2, cartID);
                 updateStmt.setInt(3, productID);
                 updateStmt.setString(4, size);
                 updateStmt.executeUpdate();
             } else {
-                // Nếu chưa có thì thêm mới
-                String insertSQL = "INSERT INTO cart_items (MaGioHang, productID, size, quantity, price, tensanpham) VALUES (?, ?, ?, ?, ?, ?)";
+                String insertSQL = "INSERT INTO cart_items (cartID, productID, productName, size, quantity, price, username) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement insertStmt = conn.prepareStatement(insertSQL);
-                insertStmt.setString(1, MaGioHang);
+                insertStmt.setString(1, cartID);
                 insertStmt.setInt(2, productID);
-                insertStmt.setString(3, size);
-                insertStmt.setInt(4, quantity);
-                insertStmt.setDouble(5, price);
-                insertStmt.setString(6, tensanpham);
+                insertStmt.setString(3, productName);
+                insertStmt.setString(4, size);
+                insertStmt.setInt(5, quantity);
+                insertStmt.setDouble(6, price);
+                insertStmt.setString(7, username);
                 insertStmt.executeUpdate();
             }
         } catch (Exception e) {
@@ -86,7 +96,7 @@ public class CartDAO {
         List<CartItem> items = new ArrayList<>();
 
         try (Connection conn = BDconnect.getConnection()) {
-            String sql = "SELECT ci.* FROM cart_items ci JOIN carts c ON ci.MaGioHang = c.MaGioHang WHERE c.username = ?";
+            String sql = "SELECT ci.* FROM cart_items ci JOIN carts c ON ci.cartID = c.cartID WHERE c.username = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
@@ -97,8 +107,8 @@ public class CartDAO {
                 item.setSize(rs.getString("size"));
                 item.setQuantity(rs.getInt("quantity"));
                 item.setPrice(rs.getDouble("price"));
-                item.setTensanpham(rs.getString("tensanpham"));
-                item.setMaGioHang(rs.getString("MaGioHang"));
+                item.setProductName(rs.getString("productName"));
+                item.setCartID(rs.getString("cartID"));
 
                 items.add(item);
             }
@@ -112,7 +122,7 @@ public class CartDAO {
     // Cập nhật số lượng hoặc size sản phẩm trong giỏ
     public void updateCartItem(String username, int productID, String oldSize, String newSize, int quantity) {
         try (Connection conn = BDconnect.getConnection()) {
-            String sql = "UPDATE cart_items SET size = ?, quantity = ? WHERE MaGioHang = (SELECT MaGioHang FROM carts WHERE username = ?) AND productID = ? AND size = ?";
+            String sql = "UPDATE cart_items SET size = ?, quantity = ? WHERE cartID = (SELECT cartID FROM carts WHERE username = ?) AND productID = ? AND size = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, newSize);
             ps.setInt(2, quantity);
@@ -129,7 +139,7 @@ public class CartDAO {
     // Xóa sản phẩm khỏi giỏ hàng
     public void removeCartItem(String username, int productID, String size) {
         try (Connection conn = BDconnect.getConnection()) {
-            String sql = "DELETE FROM cart_items WHERE MaGioHang = (SELECT MaGioHang FROM carts WHERE username = ?) AND productID = ? AND size = ?";
+            String sql = "DELETE FROM cart_items WHERE cartID = (SELECT cartID FROM carts WHERE username = ?) AND productID = ? AND size = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);
             ps.setInt(2, productID);
@@ -143,7 +153,7 @@ public class CartDAO {
     // Xóa toàn bộ giỏ hàng sau khi đặt hàng
     public void clearCart(String username) {
         try (Connection conn = BDconnect.getConnection()) {
-            String sql = "DELETE FROM cart_items WHERE MaGioHang = (SELECT MaGioHang FROM carts WHERE username = ?)";
+            String sql = "DELETE FROM cart_items WHERE cartID = (SELECT cartID FROM carts WHERE username = ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);
             ps.executeUpdate();

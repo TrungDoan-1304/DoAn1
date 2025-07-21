@@ -26,7 +26,7 @@ public class ProductDAO {
         while (rs.next()) {
             Product product = new Product();
             product.setProductID(rs.getInt("productID"));
-            product.setTensanpham(rs.getString("tensanpham"));
+            product.setProductName(rs.getString("productName"));
             product.setHinhanh(rs.getString("hinhanh"));
             product.setGia(rs.getInt("gia"));
            
@@ -50,7 +50,7 @@ public class ProductDAO {
         if (rs.next()) {
             return new Product(
                 rs.getInt("productID"),
-                rs.getString("tensanpham"),
+                rs.getString("productName"),
                 rs.getString("hinhanh"),
                 rs.getInt("gia")
             );

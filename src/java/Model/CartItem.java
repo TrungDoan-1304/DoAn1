@@ -5,10 +5,10 @@
 package Model;
 
 public class CartItem {
-    private String MaGioHang;
+    private String cartID;
     private String username;
     private int productID;
-    private String tensanpham;
+    private String productName;
     private String size;
     private int quantity;
     private double price;
@@ -17,22 +17,22 @@ public class CartItem {
     public CartItem() {
     }
 
-    public CartItem(String MaGioHang, String username, int productID, String tensanpham, String size, int quantity, double price) {
-        this.MaGioHang = MaGioHang;
+    public CartItem(String cartID, String username, int productID, String productName, String size, int quantity, double price) {
+        this.cartID = cartID;
         this.username = username;
         this.productID = productID;
-        this.tensanpham = tensanpham;
+        this.productName = productName;
         this.size = size;
         this.quantity = quantity;
         this.price = price;
     }
 
-    public String getMaGioHang() {
-        return MaGioHang;
+    public String getCartID() {
+        return cartID;
     }
 
-    public void setMaGioHang(String MaGioHang) {
-        this.MaGioHang = MaGioHang;
+    public void setCartID(String cartID) {
+        this.cartID = cartID;
     }
 
     public String getUsername() {
@@ -51,12 +51,12 @@ public class CartItem {
         this.productID = productID;
     }
 
-    public String getTensanpham() {
-        return tensanpham;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setTensanpham(String tensanpham) {
-        this.tensanpham = tensanpham;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
 

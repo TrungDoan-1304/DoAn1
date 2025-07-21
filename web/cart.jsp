@@ -2,34 +2,11 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.sql.*, java.util.*, Model.CartItem, DAO.CartDAO" %>
 <%
-    String username = (String) session.getAttribute("username");
-    if (username == null) {
-        response.sendRedirect("login.jsp");
-        return;
+    List<CartItem> cartItems = (List<CartItem>) request.getAttribute("cartItems");
+    if (cartItems == null) {
+        cartItems = new java.util.ArrayList<>();
     }
-
-    List<Map<String, Object>> cartItems = new ArrayList<>();
-    try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/banquanao", "root", ""); // Cập nhật nếu cần
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM cart_items WHERE username = ?");
-        ps.setString(1, username);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Map<String, Object> item = new HashMap<>();
-            item.put("productID", rs.getInt("productID"));
-            item.put("tensanpham", rs.getString("tensanpham"));
-            item.put("size", rs.getString("size"));
-            item.put("quantity", rs.getInt("quantity"));
-            item.put("price", rs.getDouble("price"));
-            cartItems.add(item);
-        }
-        rs.close();
-        ps.close();
-        conn.close();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+     String username = (String) session.getAttribute("username");
 %>
 <!DOCTYPE html>
 <html lang="vi">
@@ -182,6 +159,37 @@
             .dropdown a:hover {
                 background-color: #f0f0f0;
             }
+            .cart-actions {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 25px;
+                padding-top: 15px;
+                border-top: 1px solid #ccc;
+            }
+
+            .btn-action {
+                padding: 10px 20px;
+                font-size: 15px;
+                font-weight: 600;
+                text-decoration: none;
+                color: white;
+                background-color: #00b894;
+                border-radius: 6px;
+                transition: background-color 0.3s ease;
+            }
+
+            .btn-action:hover {
+                background-color: #d63031;
+            }
+
+            .btn-action.left {
+                margin-right: auto;
+            }
+
+            .btn-action.right {
+                margin-left: auto;
+            }
         </style>
     </head>
     <body>
@@ -192,7 +200,7 @@
 
             <div class="nav-links">
                 <a href="ProductListServlet">Sản phẩm</a>
-                <a href="CartServlet.jsp">Giỏ hàng</a>
+                <a href="CartServlet">Giỏ hàng</a>
                 <a href="OrderServlet">Đơn Hàng</a>
                 <a href="ProfileServlet">Tài Khoản</a>
             </div>
@@ -228,49 +236,60 @@
 
         <!-- Nội dung giỏ hàng -->
         <div class="container">
-    <h2>🛒 Giỏ hàng của bạn</h2>
-
-    <c:if test="${empty cartItems}">
-        <div class="empty-cart">Giỏ hàng của bạn hiện đang trống.</div>
-    </c:if>
-
-    <c:if test="${not empty cartItems}">
-        <table>
-            <tr>
-                <th>Tên sản phẩm</th>
-                <th>Size</th>
-                <th>Số lượng</th>
-                <th>Giá</th>
-                <th>Thành tiền</th>
-                <th>Thao tác</th>
-            </tr>
-            <c:forEach var="item" items="${cartItems}">
-                <tr>
-                    <td>${item.tensanpham}</td>
-                    <td>${item.size}</td>
-                    <td>
-                        <form action="UpdateCartServlet" method="post">
-                            <input type="hidden" name="productID" value="${item.productID}" />
-                            <input type="hidden" name="size" value="${item.size}" />
-                            <input type="number" name="quantity" value="${item.quantity}" min="1" />
-                            <button type="submit">Cập nhật</button>
-                        </form>
-                    </td>
-                    <td>${item.price}</td>
-                    <td>${item.quantity * item.price}</td>
-                    <td>
-                        <form action="RemoveFromCartServlet" method="post">
-                            <input type="hidden" name="productID" value="${item.productID}" />
-                            <input type="hidden" name="size" value="${item.size}" />
-                            <button type="submit" class="delete-btn" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này không?');">Xóa</button>
-                        </form>
-                    </td>
-                </tr>
-            </c:forEach>
-        </table>
-    </c:if>
+            <h2>🛒 Giỏ hàng của bạn</h2>
+            <%
+                if (cartItems.isEmpty()) {
+            %>
+            <p>Không có sản phẩm nào trong giỏ hàng.</p>
+            <%
+                } else {
+            %>
+            <form method="post" action="UpdateCartServlet">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Size</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Tổng</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% double total = 0; 
+                           for (CartItem item : cartItems) {
+                               double itemTotal = item.getPrice() * item.getQuantity();
+                               total += itemTotal;
+                        %>
+                        <tr>
+                            <td><%= item.getProductName() %></td>
+                            <td><input type="text" name="newSize_<%= item.getProductID() %>" value="<%= item.getSize() %>" /></td>
+                            <td><%= item.getPrice() %>đ</td>
+                            <td>
+                                <input type="number" name="quantity_<%= item.getProductID() %>" value="<%= item.getQuantity() %>" min="1" />
+                                <input type="hidden" name="oldSize_<%= item.getProductID() %>" value="<%= item.getSize() %>"/>
+                            </td>
+                            <td><%= itemTotal %>đ</td>
+                            <td>
+                                <button class="action-btn btn-update" formaction="UpdateCartServlet?productID=<%= item.getProductID() %>">Cập nhật</button>
+                                <button class="action-btn btn-delete" formaction="RemoveFromCartServlet?productID=<%= item.getProductID() %>&size=<%= item.getSize() %>">Xóa</button>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <div style="text-align: right; margin-top: 20px;">
+                    <strong>Tổng cộng: <%= total %> đ</strong>
+                </div>
+                <div class="cart-actions">
+                    <a href="ProductListServlet" class="btn-action left">⬅ Tiếp tục mua</a>
+                    <a href="checkout.jsp" class="btn-action right">Thanh toán ➡</a>
+                </div>
+            </form>
+            <% } %>
         </div>
-            
+
 
         <script>
             function deleteRow(button) {

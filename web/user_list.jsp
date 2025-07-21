@@ -171,16 +171,16 @@
         if (productList != null && !productList.isEmpty()) {
             for(Product product : productList) {
                 String category = "";
-                String nameLower = product.getTensanpham().toLowerCase();
+                String nameLower = product.getProductName().toLowerCase();
                 if(nameLower.contains("áo")) category = "ao";
                 else if(nameLower.contains("quần")) category = "quan";
                 else category = "phukien";
         %>
         <div class="product-card" data-category="<%= category %>">
-            <img src="<%= product.getHinhanh() %>" alt="<%= product.getTensanpham() %>">
-            <h3><%= product.getTensanpham() %></h3>
+            <img src="<%= product.getHinhanh() %>" alt="<%= product.getProductName() %>">
+            <h3><%= product.getProductName() %></h3>
             <p class="price"><%= String.format("%,d", product.getGia()) %>đ</p>
-            <form action="ProductDetailServlet?productId=<%= product.getProductID() %>" method="get">
+            <form action="ProductDetailServlet?productID=<%= product.getProductID() %>" method="get">
                 <input type="hidden" name="productID" value="<%= product.getProductID() %>"/>
                 <input type="submit" value="Thêm vào giỏ hàng"/>
             </form>

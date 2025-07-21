@@ -18,7 +18,7 @@
         while (rs.next()) {
             Map<String, Object> item = new HashMap<>();
             item.put("productID", rs.getInt("productID"));
-            item.put("tensanpham", rs.getString("tensanpham"));
+            item.put("productName", rs.getString("productName"));
             item.put("size", rs.getString("size"));
             item.put("quantity", rs.getInt("quantity"));
             item.put("price", rs.getDouble("price"));
@@ -309,7 +309,7 @@
                     double total = quantity * price;
             %>
             <tr>
-                <td><%= item.get("tensanpham") %></td>
+                <td><%= item.get("productName") %></td>
                 <td><%= item.get("size") %></td>
                 <td>
                     <form action="UpdateCartServlet" method="post" style="display:inline;">

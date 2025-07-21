@@ -48,7 +48,7 @@ public class OrderDAO {
 
     // Lưu chi tiết đơn hàng vào bảng order_details
     private boolean saveOrderDetails(Connection conn, int orderId, List<CartItem> cartItems) {
-        String sql = "INSERT INTO order_details (orderID, productID, size, quantity, price, tensanpham) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO order_details (orderID, productID, size, quantity, price, productName) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             for (CartItem item : cartItems) {
@@ -57,7 +57,7 @@ public class OrderDAO {
                 ps.setString(3, item.getSize());
                 ps.setInt(4, item.getQuantity());
                 ps.setDouble(5, item.getPrice());
-                ps.setString(6, item.getTensanpham());
+                ps.setString(6, item.getProductName());
                 ps.addBatch();
             }
             ps.executeBatch();

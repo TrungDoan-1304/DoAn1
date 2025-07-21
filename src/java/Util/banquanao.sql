@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th7 21, 2025 lúc 02:41 PM
+-- Thời gian đã tạo: Th7 21, 2025 lúc 05:22 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -24,27 +24,11 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `cartdetails`
---
-
-CREATE TABLE `cartdetails` (
-  `cartID` int(11) NOT NULL,
-  `MaGioHang` int(11) NOT NULL,
-  `productID` int(11) NOT NULL,
-  `size` varchar(10) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `price` double NOT NULL,
-  `total` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Cấu trúc bảng cho bảng `carts`
 --
 
 CREATE TABLE `carts` (
-  `MaGioHang` varchar(30) NOT NULL,
+  `cartID` varchar(30) NOT NULL,
   `username` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -52,8 +36,8 @@ CREATE TABLE `carts` (
 -- Đang đổ dữ liệu cho bảng `carts`
 --
 
-INSERT INTO `carts` (`MaGioHang`, `username`) VALUES
-('GH1753067834718', 'tuan789');
+INSERT INTO `carts` (`cartID`, `username`) VALUES
+('GH242069', 'tuan789');
 
 -- --------------------------------------------------------
 
@@ -62,14 +46,21 @@ INSERT INTO `carts` (`MaGioHang`, `username`) VALUES
 --
 
 CREATE TABLE `cart_items` (
-  `MaGioHang` varchar(30) NOT NULL,
+  `cartID` varchar(30) NOT NULL,
   `productID` int(11) NOT NULL,
-  `tensanpham` varchar(30) NOT NULL,
+  `productName` varchar(30) NOT NULL,
   `size` varchar(5) DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `price` double NOT NULL,
   `username` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `cart_items`
+--
+
+INSERT INTO `cart_items` (`cartID`, `productID`, `productName`, `size`, `quantity`, `price`, `username`) VALUES
+('GH242069', 1, 'Áo sơ mi trắng', 'S', 1, 320000, 'tuan789');
 
 -- --------------------------------------------------------
 
@@ -139,7 +130,7 @@ CREATE TABLE `order_details` (
 
 CREATE TABLE `product` (
   `productID` int(11) NOT NULL,
-  `tensanpham` varchar(30) NOT NULL,
+  `productName` varchar(30) NOT NULL,
   `hinhanh` varchar(30) NOT NULL,
   `gia` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -148,7 +139,7 @@ CREATE TABLE `product` (
 -- Đang đổ dữ liệu cho bảng `product`
 --
 
-INSERT INTO `product` (`productID`, `tensanpham`, `hinhanh`, `gia`) VALUES
+INSERT INTO `product` (`productID`, `productName`, `hinhanh`, `gia`) VALUES
 (1, 'Áo sơ mi trắng', 'media/somi1.jpg', 320000),
 (2, 'Áo thun đen basic', 'media/ao1.webp', 220000),
 (3, 'Quần Đùi nam', 'media/quandui1.jpg', 160000),
@@ -218,16 +209,10 @@ INSERT INTO `user` (`userId`, `username`, `password`, `HoTen`, `email`, `SDT`, `
 --
 
 --
--- Chỉ mục cho bảng `cartdetails`
---
-ALTER TABLE `cartdetails`
-  ADD PRIMARY KEY (`cartID`);
-
---
 -- Chỉ mục cho bảng `carts`
 --
 ALTER TABLE `carts`
-  ADD PRIMARY KEY (`MaGioHang`);
+  ADD PRIMARY KEY (`cartID`);
 
 --
 -- Chỉ mục cho bảng `order_details`
@@ -256,12 +241,6 @@ ALTER TABLE `user`
 --
 -- AUTO_INCREMENT cho các bảng đã đổ
 --
-
---
--- AUTO_INCREMENT cho bảng `cartdetails`
---
-ALTER TABLE `cartdetails`
-  MODIFY `cartID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `order_details`
