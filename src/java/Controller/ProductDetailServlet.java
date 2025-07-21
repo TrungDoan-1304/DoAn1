@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import DAO.ProductDAO;
 import Model.Product;
+import jakarta.servlet.RequestDispatcher;
 /**
  *
  * @author PC
@@ -58,11 +59,20 @@ public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         int productID = Integer.parseInt(request.getParameter("productID"));
-            ProductDAO dao = new ProductDAO();
-            Product product = dao.getProductById(productID);
-            request.setAttribute("product", product);
-            request.getRequestDispatcher("product_detail.jsp").forward(request, response);
+    String productIdParam = request.getParameter("productId");
+    if (productIdParam == null || productIdParam.isEmpty()) {
+        response.sendRedirect("ProductListServlet"); // fallback nếu không có productId
+        return;
+    }
+
+    int productId = Integer.parseInt(productIdParam);
+
+    ProductDAO dao = new ProductDAO();
+    Product product = dao.getProductById(productId);
+
+    request.setAttribute("product", product);
+    RequestDispatcher dispatcher = request.getRequestDispatcher("product_detail.jsp");
+    dispatcher.forward(request, response);
     }
     
 

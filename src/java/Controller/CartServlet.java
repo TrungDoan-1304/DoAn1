@@ -5,6 +5,9 @@
 package Controller;
 
 import DAO.CartDAO;
+import Model.CartItem;
+import Util.BDconnect;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,16 +15,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.*;
-import Util.BDconnect;
 import jakarta.servlet.http.HttpSession;
-
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author PC
  */
-@WebServlet(name = "UpdateCartServlet", urlPatterns = {"/UpdateCartServlet"})
-public class UpdateCartServlet extends HttpServlet {
+@WebServlet(name = "CartServlet", urlPatterns = {"/CartServlet"})
+public class CartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +43,10 @@ public class UpdateCartServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateCartServlet</title>");            
+            out.println("<title>Servlet CartServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateCartServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CartServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,8 +64,21 @@ public class UpdateCartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("username");
+
+        if (username == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        CartDAO cartDAO = new CartDAO();
+        List<CartItem> cartItems = cartDAO.getCartItems(username);
+
+        request.setAttribute("cartItems", cartItems);
+        request.getRequestDispatcher("cart.jsp").forward(request, response);
     }
+    
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -75,41 +91,8 @@ public class UpdateCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
-
-        if (username == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
-
-        // Lấy thông tin từ form
-        String productIdStr = request.getParameter("productID");
-        String oldSize = request.getParameter("oldSize"); // size cũ để xác định sản phẩm gốc
-        String newSize = request.getParameter("newSize");
-        String quantityStr = request.getParameter("quantity");
-
-        if (productIdStr != null && oldSize != null && newSize != null && quantityStr != null) {
-            try {
-                int productID = Integer.parseInt(productIdStr);
-                int quantity = Integer.parseInt(quantityStr);
-
-                // Gọi DAO để cập nhật
-                CartDAO cartDAO = new CartDAO();
-                cartDAO.updateCartItem(username, productID, oldSize, newSize, quantity);
-
-            } catch (NumberFormatException e) {
-                e.printStackTrace(); // hoặc log lỗi nếu cần
-            }
-        }
-
-        // Quay lại trang trước
-        String referer = request.getHeader("referer");
-        response.sendRedirect(referer != null ? referer : "cart.jsp");
+        processRequest(request, response);
     }
-    
-    
 
     /**
      * Returns a short description of the servlet.

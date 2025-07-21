@@ -4,6 +4,7 @@
  */
 package Controller;
 
+import DAO.CartDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,14 +12,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import DAO.ProductDAO;
-import Model.Product;
 import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
 import Model.CartItem;
-import java.util.List;
-/**
- *
+ /*
  * @author PC
  */
 @WebServlet(name = "AddToCartServlet", urlPatterns = {"/AddToCartServlet"})
@@ -76,29 +72,61 @@ public class AddToCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int productID = Integer.parseInt(request.getParameter("productID"));
-    String size = request.getParameter("size");
-    int quantity = Integer.parseInt(request.getParameter("quantity"));
-    ProductDAO dao = new ProductDAO();
-    Product product = dao.getProductById(productID);
-    double price = product.getGia();
-    double total = price * quantity;
-
-    // Tạo object CartItem
-    CartItem item = new CartItem(productID, product.getTensanpham(), size, quantity, price, total);
-
-    // Lưu vào session
+    request.setCharacterEncoding("UTF-8");
+    response.setContentType("text/html;charset=UTF-8");
     HttpSession session = request.getSession();
-    List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-    if (cart == null) {
-        cart = new ArrayList<>();
-    }
-    cart.add(item);
-    session.setAttribute("cart", cart);
+    String username = (String) session.getAttribute("username");
 
-    response.sendRedirect("cart.jsp");
+    if (username == null) {
+        response.sendRedirect("login.jsp");
+        return;
     }
+
+    try {
+        // Lấy và kiểm tra thông số productId
+        String productIdParam = request.getParameter("productId");
+        int productId = 0;
+        if (productIdParam != null && !productIdParam.trim().isEmpty()) {
+            productId = Integer.parseInt(productIdParam);
+        } else {
+            throw new IllegalArgumentException("Thiếu productId");
+        }
+
+        // Lấy và kiểm tra thông số quantity
+        String quantityParam = request.getParameter("quantity");
+        int quantity = 1; // Giá trị mặc định nếu thiếu
+        if (quantityParam != null && !quantityParam.trim().isEmpty()) {
+            quantity = Integer.parseInt(quantityParam);
+        }
+
+        String productName = request.getParameter("productName");
+        String priceParam = request.getParameter("price");
+        double price = (priceParam != null && !priceParam.trim().isEmpty())
+                ? Double.parseDouble(priceParam) : 0.0;
+
+        String size = request.getParameter("size");
+        if (size == null) size = "S";
+
+            CartItem item = new CartItem();
+            item.setProductID(productId);
+            item.setTensanpham(productName);
+            item.setPrice(price);
+            item.setQuantity(quantity);
+            item.setSize(size);
+            item.setUsername(username);
+
+            CartDAO cartDAO = new CartDAO();  
+            cartDAO.addToCart(username, productId, size, quantity, price, productName);
+
+            request.getRequestDispatcher("CartServlet").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("home.jsp");
+        }
+    }
+
     
+
 
     /**
      * Returns a short description of the servlet.

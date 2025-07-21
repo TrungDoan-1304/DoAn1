@@ -4,43 +4,49 @@
  */
 package Model;
 
-public class CartItem {
-    private String MaGioHang;
-    private String username;
+/**
+ *
+ * @author LTuan
+ */
+public class order_details {
+
+    private int detailId;
+    private int orderID;
     private int productID;
-    private String tensanpham;
     private String size;
+    private String tensanpham;
     private int quantity;
     private double price;
-   
+    private double total;
 
-    public CartItem() {
+    public order_details() {
     }
 
-    public CartItem(String MaGioHang, String username, int productID, String tensanpham, String size, int quantity, double price) {
-        this.MaGioHang = MaGioHang;
-        this.username = username;
+    public order_details(int detailId, int orderID, int productID, String size, String tensanpham, int quantity, double price, double total) {
+        this.detailId = detailId;
+        this.orderID = orderID;
         this.productID = productID;
-        this.tensanpham = tensanpham;
         this.size = size;
+        this.tensanpham = tensanpham;
         this.quantity = quantity;
         this.price = price;
+        this.total = total;
     }
 
-    public String getMaGioHang() {
-        return MaGioHang;
+    public int getDetailId() {
+        return detailId;
     }
 
-    public void setMaGioHang(String MaGioHang) {
-        this.MaGioHang = MaGioHang;
+    public void setDetailId(int detailId) {
+        this.detailId = detailId;
     }
 
-    public String getUsername() {
-        return username;
+    public int getOrderID() {
+        return orderID;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
 
     public int getProductID() {
@@ -51,22 +57,20 @@ public class CartItem {
         this.productID = productID;
     }
 
-    public String getTensanpham() {
-        return tensanpham;
-    }
-
-    public void setTensanpham(String tensanpham) {
-        this.tensanpham = tensanpham;
-    }
-
-
-
     public String getSize() {
         return size;
     }
 
     public void setSize(String size) {
         this.size = size;
+    }
+
+    public String getTensanpham() {
+        return tensanpham;
+    }
+
+    public void setTensanpham(String tensanpham) {
+        this.tensanpham = tensanpham;
     }
 
     public int getQuantity() {
@@ -83,9 +87,18 @@ public class CartItem {
 
     public void setPrice(double price) {
         this.price = price;
-   
     }
-     public double getTotal()
-     { return price * quantity; }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
     
+
+    
+
 }

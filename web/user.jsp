@@ -13,9 +13,9 @@
             <div class="logo">Shop Quần Áo Nam</div>
 
             <div class="nav-links"> 
-                <a href="user_list.jsp">Sản phẩm</a>
+                <a href="ProductListServlet">Sản phẩm</a>
                 <a href="cart.jsp">Giỏ hàng</a>
-                <a href="order.jsp">Đơn Hàng</a>
+                <a href="OrderServlet">Đơn Hàng</a>
                 <a href="ProfileServlet">Tài Khoản</a>
             </div>
 
@@ -65,7 +65,7 @@
                 <form action="addToCart.jsp" method="post">
                     <input type="hidden" name="product_id" value="1">
                     <input type="hidden" name="quantity" value="1">
-                    <button type="submit">Thêm vào giỏ</button>
+                 
                 </form>
             </div>
 
@@ -76,7 +76,7 @@
                 <form action="addToCart.jsp" method="post">
                     <input type="hidden" name="product_id" value="2">
                     <input type="hidden" name="quantity" value="1">
-                    <button type="submit">Thêm vào giỏ</button>
+                 
                 </form>
             </div>
 
@@ -87,7 +87,7 @@
                 <form action="addToCart.jsp" method="post">
                     <input type="hidden" name="product_id" value="3">
                     <input type="hidden" name="quantity" value="1">
-                    <button type="submit">Thêm vào giỏ</button>
+    
                 </form>
             </div>
 

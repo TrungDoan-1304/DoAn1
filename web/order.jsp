@@ -1,210 +1,223 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="Model.Order" %>
+
+<%
+    List<Order> orders = (List<Order>) request.getAttribute("orders");
+    String username = (String) session.getAttribute("username");
+%>
 <!DOCTYPE html>
 <html lang="vi">
-    <head>
-        <meta charset="UTF-8">
-        <title>Đơn Mua</title>
-        <link rel="stylesheet" href="style/user.css" />
-        <style>
-            body {
-                margin: 0;
-                font-family: "Segoe UI", sans-serif;
-                background: url('media/anh1.jpg') no-repeat center center fixed;
-                background-size: cover;
-                color: #2f3640;
-            }
+<head>
+    <meta charset="UTF-8">
+    <title>Đơn Mua</title>
+    <link rel="stylesheet" href="style/user.css" />
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: url('media/anh1.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #2f3640;
+        }
 
-            .container {
-                max-width: 900px;
-                margin: 40px auto;
-                padding: 30px;
-                background-color: white;
-                border-radius: 12px;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
 
-            h2 {
-                color: #006466;
-                margin-bottom: 25px;
-            }
+        h2 {
+            color: #006466;
+            margin-bottom: 25px;
+        }
 
-            .order {
-                border: 1px solid #ddd;
-                border-radius: 10px;
-                padding: 20px;
-                margin-bottom: 20px;
-                background-color: #fafafa;
-            }
+        .navbar {
+            background-color: #006466;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-            .order-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 10px;
-                font-weight: bold;
-            }
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
 
-            .order-body {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                padding-left: 10px;
-            }
+        .nav-links a {
+            margin-left: 20px;
+            color: white;
+            text-decoration: none;
+        }
 
-            .order-item {
-                display: flex;
-                justify-content: space-between;
-                font-size: 14px;
-            }
+        .order {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fafafa;
+        }
 
-            .order-total {
-                text-align: right;
-                font-size: 15px;
-                font-weight: bold;
-                margin-top: 10px;
-            }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
 
-            .order-actions {
-                display: flex;
-                justify-content: flex-end;
-                margin-top: 10px;
-                gap: 10px;
-            }
+        .order-body {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-left: 10px;
+        }
 
-            .btn {
-                padding: 8px 14px;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-                font-size: 14px;
-            }
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
 
-            .btn-view {
-                background-color: #00b894;
-                color: white;
-            }
+        .order-total {
+            text-align: right;
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
 
-            .btn-cancel {
-                background-color: #d63031;
-                color: white;
-            }
+        .order-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+            gap: 10px;
+        }
 
-            .status {
-                padding: 4px 10px;
-                background-color: #ffeaa7;
-                color: #e17055;
-                border-radius: 6px;
-                font-size: 13px;
-            }
-        </style>
-    </head>
-    <body>
+        .btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
 
-        <!-- Navbar giống trang user -->
-        <div class="navbar">
-            <div class="logo">Shop Quần Áo Nam</div>
+        .btn-view {
+            background-color: #00b894;
+            color: white;
+        }
 
-            <div class="nav-links"> 
-                <a href="user_list.jsp">Sản phẩm</a>
-                <a href="cart.jsp">Giỏ hàng</a>
-                <a href="order.jsp">Đơn Hàng</a>
-                <a href="user_profile.jsp">Tài Khoản</a>
-            </div>
+        .btn-cancel {
+            background-color: #d63031;
+            color: white;
+        }
 
-            <div class="search-cart">
-                <div class="search-box">
-                    <input type="text" placeholder="Tìm sản phẩm...">
-                    <button>&#128269;</button>
-                </div>
-                <div class="cart-icon">&#128722;</div>
-            </div>
+        .status {
+            padding: 4px 10px;
+            background-color: #ffeaa7;
+            color: #e17055;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+    </style>
+</head>
 
-            <%
-                String username = (String) session.getAttribute("username");
-                if (username != null) {
-            %>
-            <div class="user-menu" onclick="toggleDropdown()">
-                <span style="margin-left: 8px; font-weight: 500; color: white">Xin chào <%= username %></span>
-                <div class="dropdown" id="dropdownMenu">
-                    <a href="user_profile.jsp">Tài Khoản Của Tôi</a>
-                    <a href="order.jsp">Đơn Mua</a>
-                    <a href="logout.jsp">Đăng Xuất</a>
-                </div>
-            </div>
-            <% } else { %>
-            <a href="login.jsp" class="login-link" style="color: white; font-weight: 500;">Đăng nhập</a>
-            <% } %>
+<!-- Thân trang sử dụng flexbox để đẩy footer xuống dưới -->
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+<!-- Navbar -->
+<div class="navbar">
+    <div class="logo">Shop Quần Áo Nam</div>
+
+    <div class="nav-links"> 
+        <a href="ProductListServlet">Sản phẩm</a>
+        <a href="cart.jsp">Giỏ hàng</a>
+        <a href="order.jsp">Đơn Hàng</a>
+        <a href="ProfileServlet">Tài Khoản</a>
+    </div>
+
+    <div class="search-cart">
+        <div class="search-box">
+            <input type="text" placeholder="Tìm sản phẩm...">
+            <button>&#128269;</button>
         </div>
+        <div class="cart-icon">&#128722;</div>
+    </div>
 
-        <!-- Nội dung đơn hàng -->
-        <div class="container">
-            <h2>🧾 Đơn Mua</h2>
-
-            <!-- Đơn hàng 1 -->
-            <div class="order">
-                <div class="order-header">
-                    <span>📅 Ngày đặt: 10/07/2025</span>
-                    <span class="status">Đang xử lý</span>
-                </div>
-                <div class="order-body">
-                    <div class="order-item">
-                        <span>Áo sơ mi trắng (x2)</span>
-                        <span>300,000đ</span>
-                    </div>
-                    <div class="order-item">
-                        <span>Quần jeans đen (x1)</span>
-                        <span>350,000đ</span>
-                    </div>
-                </div>
-                <div class="order-total">Tổng: 650,000đ</div>
-                <div class="order-actions">
-                    <button class="btn btn-view" onclick="alert('Xem chi tiết DH001')">Xem chi tiết</button>
-                    <button class="btn btn-cancel" onclick="confirm('Bạn có chắc muốn hủy đơn hàng?')">Hủy đơn</button>
-                </div>
-            </div>
-
-            <!-- Đơn hàng 2 -->
-            <div class="order">
-                <div class="order-header">
-                    <span>📅 Ngày đặt: 08/07/2025</span>
-                    <span class="status" style="background-color:#dff9fb; color:#0984e3;">Đã giao</span>
-                </div>
-                <div class="order-body">
-                    <div class="order-item">
-                        <span>Áo thun đen (x1)</span>
-                        <span>200,000đ</span>
-                    </div>
-                </div>
-                <div class="order-total">Tổng: 200,000đ</div>
-                <div class="order-actions">
-                    <button class="btn btn-view" onclick="alert('Xem chi tiết DH002')">Xem chi tiết</button>
-                </div>
+    <% if (username != null) { %>
+        <div class="user-menu" onclick="toggleDropdown()">
+            <span style="margin-left: 8px; font-weight: 500; color: white">Xin chào <%= username %></span>
+            <div class="dropdown" id="dropdownMenu">
+                <a href="ProfileServlet">Tài Khoản Của Tôi</a>
+                <a href="order.jsp">Đơn Mua</a>
+                <a href="logout.jsp">Đăng Xuất</a>
             </div>
         </div>
+    <% } else { %>
+        <a href="login.jsp" class="login-link" style="color: white; font-weight: 500;">Đăng nhập</a>
+    <% } %>
+</div>
 
-        <script>
-            function toggleDropdown() {
-                const dropdown = document.getElementById('dropdownMenu');
-                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-            }
+<!-- Nội dung chính -->
+<div style="flex: 1;">
+    <div class="container">
+        <h2>🧾 Danh sách đơn hàng</h2>
+        <table border="1" width="100%">
+            <thead>
+                <tr>
+                    <th>Mã đơn</th>
+                    <th>Ngày đặt</th>
+                    <th>Phương thức thanh toán</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (orders != null && !orders.isEmpty()) {
+                       for (Order order : orders) { %>
+                    <tr>
+                        <td><%= order.getOrderID() %></td>
+                        <td><%= order.getNgayDatHang() %></td>
+                        <td><%= order.getPaymentMethod() %></td>
+                        <td><%= String.format("%,.0f", order.getTotalAmount()) %>đ</td>
+                        <td><%= order.getStatus() %></td>
+                    </tr>
+                <% }
+                   } else { %>
+                    <tr><td colspan="5">Bạn chưa có đơn hàng nào.</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-            document.addEventListener('click', function (event) {
-                const userMenu = document.querySelector('.user-menu');
-                const dropdown = document.getElementById('dropdownMenu');
-                if (userMenu && !userMenu.contains(event.target)) {
-                    dropdown.style.display = 'none';
-                }
-            });
-        </script>
+<!-- Footer cố định dưới cùng -->
+<footer style="background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); color:white; padding:20px; text-align:center;">
+    <p>&copy; 2025 Shop Quần Áo Nam. All rights reserved.</p>
+    <p>📍 218 Lĩnh Nam, Hoàng Mai, Hà Nội | ☎ 0987 123 456</p>
+    <p>
+        ✉ <a href="mailto:shopquannaonam@gmail.com" style="color:#00cec9;">Email</a> |
+        🌐 <a href="https://facebook.com/tuyens.hoangs.33" style="color:#00cec9;" target="_blank">Facebook</a>
+    </p>
+</footer>
 
+<script>
+    function toggleDropdown() {
+        const dropdown = document.getElementById('dropdownMenu');
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
 
-        <footer style= "background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px);color:white; padding:20px; text-align:center;">
-            <p>&copy; 2025 Shop Quần Áo Nam. All rights reserved.</p>
-            <p>📍 218 Lĩnh Nam, Hoàng Mai, Hà Nội | ☎ 0987 123 456</p>
-            <p>
-                ✉ <a href="mailto:shopquannaonam@gmail.com" style="color:#00cec9;">Email</a> |
-                🌐 <a href="https://facebook.com/tuyens.hoangs.33" style="color:#00cec9;" target="_blank">Facebook</a>
-            </p>
-        </footer>
-    </body>
+    document.addEventListener('click', function (event) {
+        const userMenu = document.querySelector('.user-menu');
+        const dropdown = document.getElementById('dropdownMenu');
+        if (userMenu && !userMenu.contains(event.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+</script>
+</body>
 </html>

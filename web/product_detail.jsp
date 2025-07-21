@@ -1,9 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="Model.Product" %>
+
+<%
+    Product product = (Product) request.getAttribute("product");
+%>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <title>Chi Tiết Sản Phẩm</title>
+            
     <style>
         body {
             background: url('media/anh1.jpg') no-repeat center center fixed;
@@ -12,7 +19,14 @@
             margin: 0;
             padding: 0;
         }
-
+        .navbar {
+                background-color: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 30px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
         .container {
             max-width: 1000px;
             margin: 50px auto;
@@ -55,12 +69,6 @@
             margin-bottom: 15px;
         }
 
-        .product-info .code {
-            color: #777;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
         label {
             font-weight: 500;
             display: block;
@@ -92,32 +100,41 @@
             background-color: #d63031;
         }
     </style>
+            <div class="navbar">
+                <h1 style="color: #00ffcc;">🛍 Shop Quần Áo Nam</h1>
+            <a href="user.jsp" style="color:white; text-decoration:none; font-weight:bold;">🏠 Trang chủ</a>
+            </div>
 </head>
 <body>
 
-<div class="container">
-    <!-- Ảnh sản phẩm -->
-    <div class="product-image">
-        <img src="https://i.imgur.com/placeholder.png" alt="Sản phẩm">
-    </div>
+    <div class="container">
 
-    <!-- Thông tin sản phẩm -->
-    <form method="post" action="AddToCartServlet">
-    <input type="hidden" name="productID" value="${product.productID}" />
-    <p>Tên sản phẩm: ${product.tensanpham}</p>
-    <p>Giá: ${product.gia} VNĐ</p>
-    <p>Size:
-        <select name="size">
-            <option value="S">S</option>
-            <option value="M">M</option>
-            <option value="L">L</option>
-            <option value="XL">XL</option>
-        </select>
-    </p>
-    <p>Số lượng: <input type="number" name="quantity" value="1" min="1" /></p>
-    <input type="submit" value="Thêm vào giỏ hàng" />
-    </form>
-</div>
+        <!-- Ảnh sản phẩm -->
+        <div class="product-image">
+            <img src="<%= request.getContextPath() + "/" + product.getHinhanh() %>" alt="Sản phẩm">
+        </div>
+
+        <!-- Thông tin sản phẩm -->
+        <div class="product-info">
+            <h2><%= product.getTensanpham() %></h2>
+            <p class="price"><%= product.getGia() %> VNĐ</p>
+
+            <form action="AddToCartServlet" method="post">               
+                <input type="hidden" name="productID" value="${product.productID}">
+                <input type="hidden" name="tensanpham" value="${product.tensanpham}">
+                <input type="hidden" name="price" value="${product.gia}">
+                <label>Chọn size:</label>
+                <select name="size">
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                </select>
+                <label>Số lượng:</label>
+                <input type="number" name="quantity" value="1" min="1">
+                <button type="submit">Thêm vào giỏ hàng</button>
+            </form>
+        </div>
+    </div>
 
 </body>
 </html>

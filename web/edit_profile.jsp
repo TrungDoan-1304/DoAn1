@@ -127,31 +127,66 @@
                 </form>
 
         <!-- Đổi mật khẩu -->
+        <form method="post" action="ChangePasswordServlet">
         <div class="form-section">
+            
             <h3>Đổi Mật Khẩu</h3>
+            <% if (request.getAttribute("message") != null) { %>
+            <p style="color: green;"><%= request.getAttribute("message") %></p>
+            <% } %>
+            <% if (request.getAttribute("error") != null) { %>
+            <p style="color: red;"><%= request.getAttribute("error") %></p>
+            <% } %>
 
             <div class="form-group">
-                <label for="oldPassword">Mật khẩu hiện tại</label>
-                <input type="password" id="oldPassword" name="oldPassword">
+                <label for="password">Mật khẩu hiện tại</label>
+                <div style="position: relative;">
+                    <input type="password" id="password" name="password">
+                    <span onclick="togglePassword('password', this)" 
+                          style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">
+                        👁️
+                    </span>
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="newPassword">Mật khẩu mới</label>
-                <input type="password" id="newPassword" name="newPassword">
+                <div style="position: relative;">
+                    <input type="password" id="newPassword" name="newPassword">
+                    <span onclick="togglePassword('newPassword', this)" 
+                          style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">
+                        👁️
+                    </span>
+                </div>
             </div>
-
             <div class="form-group">
                 <label for="confirmPassword">Xác nhận mật khẩu mới</label>
-                <input type="password" id="confirmPassword" name="confirmPassword">
+                <div style="position: relative;">
+                    <input type="password" id="confirmPassword" name="confirmPassword">
+                    <span onclick="togglePassword('confirmPassword', this)" 
+                          style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">
+                        👁️
+                    </span>
+                </div>
             </div>
-        </div>
-
         <div class="btn-group">
+            
             <button type="submit" class="submit-btn">💾 Lưu Thay Đổi</button>
+            
             <button type="button" class="back-btn" onclick="window.location.href='ProfileServlet'">🔙 Quay về Hồ sơ</button>
         </div>
-    </form>
-</div>
-
+             </div>
+        </form>
+<script>
+function togglePassword(fieldId, icon) {
+    var field = document.getElementById(fieldId);
+    if (field.type === "password") {
+        field.type = "text";
+        icon.textContent = "🙈"; 
+    } else {
+        field.type = "password";
+        icon.textContent = "👁️";
+    }
+}
+</script>
 </body>
 </html>

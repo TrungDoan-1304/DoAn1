@@ -4,7 +4,10 @@
  */
 package Controller;
 
-import DAO.CartDAO;
+import DAO.UserDAO;
+import Model.EmailUtil;
+import Model.User;
+import jakarta.mail.MessagingException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,16 +15,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.*;
-import Util.BDconnect;
-import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author PC
  */
-@WebServlet(name = "UpdateCartServlet", urlPatterns = {"/UpdateCartServlet"})
-public class UpdateCartServlet extends HttpServlet {
+@WebServlet(name = "ForgotPasswordServlet", urlPatterns = {"/ForgotPasswordServlet"})
+public class ForgotPasswordServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +40,10 @@ public class UpdateCartServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateCartServlet</title>");            
+            out.println("<title>Servlet ForgotPasswordServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateCartServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ForgotPasswordServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -75,40 +75,30 @@ public class UpdateCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
+    String email = request.getParameter("email");
 
-        if (username == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
+    // Tìm password từ database (viết bằng DAO của bạn)
+    String password = UserDAO.getPasswordByEmail(email);
 
-        // Lấy thông tin từ form
-        String productIdStr = request.getParameter("productID");
-        String oldSize = request.getParameter("oldSize"); // size cũ để xác định sản phẩm gốc
-        String newSize = request.getParameter("newSize");
-        String quantityStr = request.getParameter("quantity");
+    if (password != null) {
+        String subject = "Khoi phuc mat khau";
+        String body = "Mat khau cua ban la : " + password;
 
-        if (productIdStr != null && oldSize != null && newSize != null && quantityStr != null) {
-            try {
-                int productID = Integer.parseInt(productIdStr);
-                int quantity = Integer.parseInt(quantityStr);
-
-                // Gọi DAO để cập nhật
-                CartDAO cartDAO = new CartDAO();
-                cartDAO.updateCartItem(username, productID, oldSize, newSize, quantity);
-
-            } catch (NumberFormatException e) {
-                e.printStackTrace(); // hoặc log lỗi nếu cần
-            }
-        }
-
-        // Quay lại trang trước
-        String referer = request.getHeader("referer");
-        response.sendRedirect(referer != null ? referer : "cart.jsp");
+        // Gửi email
+try {
+    EmailUtil.sendEmail(email, subject, body);
+    request.setAttribute("message", "Mật khẩu đã được gửi đến email của bạn!");
+} catch (MessagingException e) {
+    e.printStackTrace();
+    request.setAttribute("error", "Gửi email thất bại: " + e.getMessage());
+}
+        request.setAttribute("message", "Mật khẩu đã được gửi đến email của bạn.");
+    } else {
+        request.setAttribute("error", "Email không tồn tại trong hệ thống.");
     }
-    
+
+    request.getRequestDispatcher("forgot.jsp").forward(request, response);
+    }
     
 
     /**

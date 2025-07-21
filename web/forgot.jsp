@@ -54,13 +54,13 @@
         <%@ include file="navbar.jsp" %>
         <div class="forgot-box text-center">
             <h2 class="fw-bold mb-4">KHÔI PHỤC MẬT KHẨU</h2>
-            <p class="mb-3">Nhập địa chỉ email bạn đã đăng ký. Chúng tôi sẽ gửi hướng dẫn đặt lại mật khẩu.</p>
+            <p class="mb-3">Nhập địa chỉ email bạn đã đăng ký. Chúng tôi sẽ gửi lại mật khẩu tới email đăng ký của bạn .</p>
 
             <form action="ForgotPasswordServlet" method="post">
                 <div class="mb-3">
                     <input type="email" class="form-control" name="email" placeholder="Email của bạn" required>
                 </div>
-                <button type="submit" class="btn btn-forgot w-100">GỬI YÊU CẦU</button>
+                <input type="submit" value="Lấy lại mật khẩu" />
             </form>
 
             <div class="mt-3 back-login">

@@ -1,4 +1,36 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.sql.*, java.util.*, Model.CartItem, DAO.CartDAO" %>
+<%
+    String username = (String) session.getAttribute("username");
+    if (username == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+
+    List<Map<String, Object>> cartItems = new ArrayList<>();
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/banquanao", "root", ""); // Cập nhật nếu cần
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM cart_items WHERE username = ?");
+        ps.setString(1, username);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("productID", rs.getInt("productID"));
+            item.put("tensanpham", rs.getString("tensanpham"));
+            item.put("size", rs.getString("size"));
+            item.put("quantity", rs.getInt("quantity"));
+            item.put("price", rs.getDouble("price"));
+            cartItems.add(item);
+        }
+        rs.close();
+        ps.close();
+        conn.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+%>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -159,10 +191,10 @@
             <div class="logo">Shop Quần Áo Nam</div>
 
             <div class="nav-links">
-                <a href="user_list.jsp">Sản phẩm</a>
-                <a href="cart.jsp">Giỏ hàng</a>
-                <a href="order.jsp">Đơn Hàng</a>
-                <a href="user_profile.jsp">Tài Khoản</a>
+                <a href="ProductListServlet">Sản phẩm</a>
+                <a href="CartServlet.jsp">Giỏ hàng</a>
+                <a href="OrderServlet">Đơn Hàng</a>
+                <a href="ProfileServlet">Tài Khoản</a>
             </div>
 
             <div class="search-cart">
@@ -174,7 +206,7 @@
             </div>
 
             <%
-                String username = (String) session.getAttribute("username");
+               
                 if (username != null) {
             %>
             <div class="user-menu" onclick="toggleDropdown()">
@@ -196,53 +228,49 @@
 
         <!-- Nội dung giỏ hàng -->
         <div class="container">
-            <h2>🛒 Giỏ Hàng Của Bạn</h2>
+    <h2>🛒 Giỏ hàng của bạn</h2>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Ảnh</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Đơn giá</th>
-                        <th>Số lượng</th>
-                        <th>Thành tiền</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Sản phẩm 1 -->
-                    <tr>
-                        <td><img src="media/somi1.jpg" alt="Áo sơ mi trắng"></td>
-                        <td>Áo sơ mi trắng</td>
-                        <td>150,000đ</td>
-                        <td><input type="number" value="2" min="1"></td>
-                        <td>300,000đ</td>
-                        <td>
-                            <button class="btn btn-update" onclick="alert('Đã cập nhật số lượng')">Sửa</button>
-                            <button class="btn btn-delete" onclick="deleteRow(this)">Xóa</button>
-                        </td>
-                    </tr>
+    <c:if test="${empty cartItems}">
+        <div class="empty-cart">Giỏ hàng của bạn hiện đang trống.</div>
+    </c:if>
 
-                    <!-- Sản phẩm 2 -->
-                    <tr>
-                        <td><img src="media/quanbo1.jpg" alt="Quần jeans đen"></td>
-                        <td>Quần jeans đen</td>
-                        <td>350,000đ</td>
-                        <td><input type="number" value="1" min="1"></td>
-                        <td>350,000đ</td>
-                        <td>
-                            <button class="btn btn-update" onclick="alert('Đã cập nhật số lượng')">Sửa</button>
-                            <button class="btn btn-delete" onclick="deleteRow(this)">Xóa</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="cart-footer">
-                <p class="total">Tổng cộng: 650,000đ</p>
-                <button class="checkout-btn" onclick="window.location.href = 'checkout.jsp'">🧾 Thanh Toán</button>
-            </div>
+    <c:if test="${not empty cartItems}">
+        <table>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Size</th>
+                <th>Số lượng</th>
+                <th>Giá</th>
+                <th>Thành tiền</th>
+                <th>Thao tác</th>
+            </tr>
+            <c:forEach var="item" items="${cartItems}">
+                <tr>
+                    <td>${item.tensanpham}</td>
+                    <td>${item.size}</td>
+                    <td>
+                        <form action="UpdateCartServlet" method="post">
+                            <input type="hidden" name="productID" value="${item.productID}" />
+                            <input type="hidden" name="size" value="${item.size}" />
+                            <input type="number" name="quantity" value="${item.quantity}" min="1" />
+                            <button type="submit">Cập nhật</button>
+                        </form>
+                    </td>
+                    <td>${item.price}</td>
+                    <td>${item.quantity * item.price}</td>
+                    <td>
+                        <form action="RemoveFromCartServlet" method="post">
+                            <input type="hidden" name="productID" value="${item.productID}" />
+                            <input type="hidden" name="size" value="${item.size}" />
+                            <button type="submit" class="delete-btn" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này không?');">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:if>
         </div>
+            
 
         <script>
             function deleteRow(button) {

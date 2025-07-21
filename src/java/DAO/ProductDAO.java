@@ -17,7 +17,8 @@ public class ProductDAO {
     public List<Product> getAllProducts() {
     List<Product> list = new ArrayList<>();
     String sql = "SELECT * FROM product";
-
+    System.out.println(">>> Bắt đầu getAllProducts()");
+    System.out.println(">>> SQL: SELECT * FROM product");
     try (Connection conn = BDconnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql);
          ResultSet rs = ps.executeQuery()) {
@@ -26,17 +27,18 @@ public class ProductDAO {
             Product product = new Product();
             product.setProductID(rs.getInt("productID"));
             product.setTensanpham(rs.getString("tensanpham"));
-            product.setHinhanh(rs.getString("hinh anh"));
+            product.setHinhanh(rs.getString("hinhanh"));
             product.setGia(rs.getInt("gia"));
            
             list.add(product);
         }
-
+        System.out.println(">>> Số lượng sản phẩm lấy được = " + list.size());
     } catch (Exception e) {
         e.printStackTrace();
     }
 
     return list;
+    
 }
     
     public Product getProductById(int productID) {

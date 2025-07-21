@@ -4,6 +4,7 @@
  */
 package Controller;
 
+import DAO.CartDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,9 +13,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import Model.CartItem;
-import java.util.Iterator;
+import java.sql.*;
+import Util.BDconnect;
 /**
  *
  * @author PC
@@ -74,24 +74,29 @@ public class RemoveFromCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int productID = Integer.parseInt(request.getParameter("productID"));
-        String size = request.getParameter("size");
-
         HttpSession session = request.getSession();
-        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        String username = (String) session.getAttribute("username");
 
-        if (cart != null) {
-            Iterator<CartItem> iterator = cart.iterator();
-            while (iterator.hasNext()) {
-                CartItem item = iterator.next();
-                if (item.getProductID() == productID && item.getSize().equals(size)) {
-                    iterator.remove();
-                    break;
-                }
-            }
+        if (username == null) {
+            response.sendRedirect("login.jsp");
+            return;
         }
 
-        response.sendRedirect("cart.jsp");
+        // Lấy thông tin từ request
+        String productIdStr = request.getParameter("productID");
+        String size = request.getParameter("size");
+
+        if (productIdStr != null && size != null) {
+            int productID = Integer.parseInt(productIdStr);
+
+            // Gọi DAO để xóa sản phẩm trong cart của user
+            CartDAO cartDAO = new CartDAO();
+            cartDAO.removeCartItem(username, productID, size);
+        }
+
+        // Quay lại trang trước
+        String referer = request.getHeader("referer");
+        response.sendRedirect(referer != null ? referer : "cart.jsp");
     }
 
     /**

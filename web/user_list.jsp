@@ -1,9 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="Model.Product" %>
+<%@ page import="DAO.ProductDAO" %>
+<%@ page import="Controller.ProductListServlet" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
+        <%
+        List<Product> productList = (List<Product>) request.getAttribute("productList");
+        %>
         <meta charset="UTF-8">
         <title>Danh sách sản phẩm</title>
         <style>
@@ -143,8 +148,8 @@
             <div class="logo">Shop Quần Áo Nam</div>
             <div class="nav-links">
                 <a href="user.jsp">Trang chủ</a>
-                <a href="cart.jsp">Giỏ hàng</a>
-                <a href="user_profile.jsp">Tài khoản</a>
+                <a href="CartServlet">Giỏ hàng</a>
+                <a href="ProfileServlet">Tài khoản</a>
             </div>
 
             <div class="search-cart">
@@ -161,8 +166,8 @@
             <button onclick="filterProducts('phukien')">Phụ kiện</button>
         </div>
 
-<div class="product-list">
-    <%
+        <div class="product-list">
+        <%
         if (productList != null && !productList.isEmpty()) {
             for(Product product : productList) {
                 String category = "";
@@ -170,12 +175,12 @@
                 if(nameLower.contains("áo")) category = "ao";
                 else if(nameLower.contains("quần")) category = "quan";
                 else category = "phukien";
-    %>
+        %>
         <div class="product-card" data-category="<%= category %>">
             <img src="<%= product.getHinhanh() %>" alt="<%= product.getTensanpham() %>">
             <h3><%= product.getTensanpham() %></h3>
             <p class="price"><%= String.format("%,d", product.getGia()) %>đ</p>
-            <form action="ProductDetailServlet" method="get">
+            <form action="ProductDetailServlet?productId=<%= product.getProductID() %>" method="get">
                 <input type="hidden" name="productID" value="<%= product.getProductID() %>"/>
                 <input type="submit" value="Thêm vào giỏ hàng"/>
             </form>

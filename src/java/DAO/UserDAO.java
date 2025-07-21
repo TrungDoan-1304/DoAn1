@@ -6,18 +6,18 @@ package DAO;
 
 import java.sql.*;
 import java.util.*;
-import Model.NguoiDung;
+import Model.User;
 import Util.BDconnect;
-import com.sun.tools.xjc.reader.xmlschema.bindinfo.BIConversion.User;
+
 
 /**
  *
  * @author PC
  */
-public class NguoiDungDAO {
+public class UserDAO {
 
-    public NguoiDung checkLogin(String username, String password) {
-        NguoiDung user = null;
+    public User checkLogin(String username, String password) {
+        User user = null;
         String sql = "SELECT * FROM user WHERE username = ? AND password = ? AND TrangThaiHD = 1";
 
         try (Connection conn = BDconnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -28,7 +28,7 @@ public class NguoiDungDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                user = new NguoiDung();
+                user = new User();
                 user.setUserId(rs.getInt("userId"));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
@@ -47,7 +47,7 @@ public class NguoiDungDAO {
         return user;
     }
 
-    public boolean insertUser(NguoiDung user) {
+    public boolean insertUser(User user) {
         String sql = "INSERT INTO user (username, password, HoTen, email, SDT, DiaChi, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = BDconnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -68,17 +68,17 @@ public class NguoiDungDAO {
         }
     }
 
-    public NguoiDung getUserById(int id) {
-        NguoiDung user = null;
-        String sql = "SELECT * FROM user WHERE userId = ?";
+    public User getUserByusername(String username) {
+        User user = null;
+        String sql = "SELECT * FROM user WHERE username = ?";
 
         try (Connection conn = BDconnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, id);
+            ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                user = new NguoiDung();
+                user = new User();
                 user.setUserId(rs.getInt("userId"));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
@@ -97,14 +97,14 @@ public class NguoiDungDAO {
         return user;
     }
 
-    public List<NguoiDung> getAllUsers() {
-        List<NguoiDung> list = new ArrayList<>();
+    public List<User> getAllUsers() {
+        List<User> list = new ArrayList<>();
         String sql = "SELECT * FROM user";
 
         try (Connection conn = BDconnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                NguoiDung user = new NguoiDung();
+                User user = new User();
                 user.setUserId(rs.getInt("userId"));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
@@ -124,7 +124,7 @@ public class NguoiDungDAO {
         return list;
     }
 
-    public boolean updateUserInfo(NguoiDung user) {
+    public boolean updateUserInfo(User user) {
         String sql = "UPDATE user SET HoTen = ?, email = ?, SDT = ?, DiaChi = ? WHERE userId = ?";
         try (Connection conn = BDconnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getHoTen());
@@ -140,5 +140,25 @@ public class NguoiDungDAO {
         return false;
 
     }
+public static String getPasswordByEmail(String email) {
+    String password = null;
+    String sql = "SELECT password FROM user WHERE email = ?";
+
+    try (Connection conn = BDconnect.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, email);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            password = rs.getString("password");
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return password;
+}
 
 }

@@ -8,7 +8,7 @@ package Model;
  *
  * @author PC
  */
-public class NguoiDung {
+public class User {
 
     private int userId;
     private String username;
@@ -17,13 +17,13 @@ public class NguoiDung {
     private String email;
     private String SDT;
     private String DiaChi;
-    private String role; // "admin" hoặc "customer"
+    private String role; // "admin" hoặc "user"
    
 
-    public NguoiDung() {
+    public User() {
     }
 
-    public NguoiDung(int userId, String username, String password, String HoTen,
+    public User(int userId, String username, String password, String HoTen,
             String email, String SDT, String DiaChi, String role) {
         this.userId = userId;
         this.username = username;
