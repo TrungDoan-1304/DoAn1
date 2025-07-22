@@ -16,11 +16,11 @@ import jakarta.servlet.http.HttpSession;
 import Model.CartItem;
 import java.util.List;
 import DAO.OrderDAO;
+import DAO.OrderDetailDAO;
 import DAO.UserDAO;
 import Model.Order;
 import Model.User;
-import java.time.LocalDate;
-import java.util.Date;
+
 /**
  *
  * @author PC
@@ -108,28 +108,28 @@ public class ConfirmOrderServlet extends HttpServlet {
             return;
         }
 
-        // Lấy thông tin đơn hàng từ form
+        // Lấy dữ liệu từ form
         String note = request.getParameter("note");
         String paymentMethod = request.getParameter("paymentMethod");
-            String status;
-            switch (paymentMethod) {
-                      case "COD":
-                     status = "Chưa thanh toán";
-                      break;
-                     case "BANK":
-                     case "MOMO":
-                      status = "Đang giao hàng";
-                    break;
-                    default:
-              status = "Không xác định";
-                    }
-            
+        String status;
+        switch (paymentMethod) {
+            case "COD":
+                status = "Chưa thanh toán";
+                break;
+            case "BANK":
+            case "MOMO":
+                status = "Đang giao hàng";
+                break;
+            default:
+                status = "Không xác định";
+        }
+
         double totalAmount = 0;
         for (CartItem item : cartItems) {
             totalAmount += item.getQuantity() * item.getPrice();
         }
 
-        // Tạo đơn hàng
+        // Tạo đối tượng đơn hàng
         Order order = new Order();
         order.setUsername(username);
         order.setHoTen(user.getHoTen());
@@ -143,31 +143,40 @@ public class ConfirmOrderServlet extends HttpServlet {
 
         // Lưu đơn hàng vào DB
         OrderDAO orderDAO = new OrderDAO();
-        boolean success = orderDAO.saveOrder(order, cartItems);
+        int orderID = orderDAO.saveOrder(order); // Trả về orderID
 
-        if (success) {
-            // Xóa giỏ hàng sau khi lưu đơn hàng
-            cartDAO.clearCart(username);
+        if (orderID > 0) {
+            // Lưu chi tiết đơn hàng
+            OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+            boolean detailsSaved = orderDetailDAO.saveOrderDetails(orderID,username, cartItems);
 
-            // Điều hướng theo phương thức thanh toán
-            switch (paymentMethod) {
-                case "COD":
-                    response.sendRedirect("success.jsp");
-                    break;
-                case "BANK":
-                    response.sendRedirect("bank_payment.jsp");
-                    break;
-                case "MOMO":
-                    response.sendRedirect("momo_payment.jsp");
-                    break;
-                default:
-                    response.sendRedirect("order.jsp");
+            if (detailsSaved) {
+                // Xóa giỏ hàng sau khi lưu đơn hàng
+                cartDAO.clearCart(username);
+
+                // Điều hướng theo phương thức thanh toán
+                switch (paymentMethod) {
+                    case "COD":
+                        response.sendRedirect("success.jsp");
+                        break;
+                    case "BANK":
+                        response.sendRedirect("bank_payment.jsp");
+                        break;
+                    case "MOMO":
+                        response.sendRedirect("momo_payment.jsp");
+                        break;
+                    default:
+                        response.sendRedirect("order.jsp");
+                }
+                return;
             }
-        } else {
-            request.setAttribute("errorMessage", "Không thể lưu đơn hàng.");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
+
+        // Nếu lỗi xảy ra
+        request.setAttribute("errorMessage", "Không thể lưu đơn hàng.");
+        request.getRequestDispatcher("error.jsp").forward(request, response);
     }
+    
 
     /**
      * Returns a short description of the servlet.

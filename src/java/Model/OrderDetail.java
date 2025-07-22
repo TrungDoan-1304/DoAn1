@@ -4,35 +4,37 @@
  */
 package Model;
 
-public class CartItem {
-    private String cartID;
+/**
+ *
+ * @author PC
+ */
+public class OrderDetail {
+    private int detailID;
+    private int orderID;
     private String username;
     private int productID;
     private String productName;
     private String size;
     private int quantity;
     private double price;
-   
+    private double totalAmount;
 
-    public CartItem() {
+    // Getter và Setter
+
+    public int getDetailID() {
+        return detailID;
     }
 
-    public CartItem(String cartID, String username, int productID, String productName, String size, int quantity, double price) {
-        this.cartID = cartID;
-        this.username = username;
-        this.productID = productID;
-        this.productName = productName;
-        this.size = size;
-        this.quantity = quantity;
-        this.price = price;
+    public void setDetailID(int detailID) {
+        this.detailID = detailID;
     }
 
-    public String getCartID() {
-        return cartID;
+    public int getOrderID() {
+        return orderID;
     }
 
-    public void setCartID(String cartID) {
-        this.cartID = cartID;
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
 
     public String getUsername() {
@@ -59,8 +61,6 @@ public class CartItem {
         this.productName = productName;
     }
 
-
-
     public String getSize() {
         return size;
     }
@@ -83,9 +83,14 @@ public class CartItem {
 
     public void setPrice(double price) {
         this.price = price;
-   
     }
-     public double getTotalAmount()
-     { return price * quantity; }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
     
 }

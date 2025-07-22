@@ -180,6 +180,7 @@
             <img src="<%= product.getHinhanh() %>" alt="<%= product.getProductName() %>">
             <h3><%= product.getProductName() %></h3>
             <p class="price"><%= String.format("%,d", product.getGia()) %>đ</p>
+            <p class="sltrongkho"><%= String.format("%,d", product.getSluongtrongkho()) %>đ</p>
             <form action="ProductDetailServlet?productID=<%= product.getProductID() %>" method="get">
                 <input type="hidden" name="productID" value="<%= product.getProductID() %>"/>
                 <input type="submit" value="Thêm vào giỏ hàng"/>

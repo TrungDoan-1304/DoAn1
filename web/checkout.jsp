@@ -1,11 +1,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="Model.CartItem" %>
 <%@ page import="Model.User" %>
+<%@ page import="DAO.CartDAO" %>
+<%
+    String username = (String) session.getAttribute("username");
+    List<CartItem> cart = new ArrayList<>();
+    double total = 0;
+
+    if (username != null) {
+        CartDAO dao = new CartDAO();
+        cart = dao.getCartItems(username); // Lấy từ database
+    }
+%>
 <%
     User user = (User) session.getAttribute("user");
-    List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-    double total = 0;
 %>
 <!DOCTYPE html>
 <html lang="vi">

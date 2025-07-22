@@ -8,7 +8,6 @@
             <file>file:/D:/Documents/DoAn/DoAn1/web/bank_payment.jsp</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Model/order_details.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/UpdateProfileServlet.java</file>
-            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Model/SanPham.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/ForgotPasswordServlet.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Util/BDconnect.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Model/Order.java</file>
@@ -16,36 +15,40 @@
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Util/banquanao.sql</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/OrderServlet.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/success.jsp</file>
-            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/XLDonHang.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/RegisterServlet.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/DAO/SanPhamDAO.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/error.jsp</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/user.jsp</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/forgot.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/OrderDetailServlet.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/list.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/admin_order.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/AdminOrderServlet.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Model/OrderDetail.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/Home.jsp</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/momo_payment.jsp</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/ProfileServlet.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/edit_profile.jsp</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/ProductListServlet.java</file>
-            <file>file:/D:/Documents/DoAn/DoAn1/src/java/DAO/CartItemDAO.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/AddToCartServlet.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/admin.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/navbar.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/order_details.jsp</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/user_profile.jsp</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Model/CartItem.java</file>
-            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/XLSanPham.java</file>
-            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/XLGioHang.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/admin_product.jsp</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/ChangePasswordServlet.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/register.jsp</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/cart.jsp</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/ProductDetailServlet.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/DAO/OrderDetailDAO.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/order.jsp</file>
-            <file>file:/D:/Documents/DoAn/DoAn1/src/java/DAO/GioHangDAO.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/contact.jsp</file>
-            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Model/GioHang.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/login.jsp</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/checkout.jsp</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/AdminUserServlet.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/index.html</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/LienHeServlet.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Model/Product.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/RemoveFromCartServlet.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/product_detail.jsp</file>
@@ -55,8 +58,10 @@
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/ConfirmOrderServlet.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/user_list.jsp</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/LoginServlet.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/src/java/DAO/CartDAO.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Model/User.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/Controller/UpdateCartServlet.java</file>
+            <file>file:/D:/Documents/DoAn/DoAn1/web/add_user.jsp</file>
             <file>file:/D:/Documents/DoAn/DoAn1/src/java/DAO/UserDAO.java</file>
             <file>file:/D:/Documents/DoAn/DoAn1/web/footer.jsp</file>
         </group>

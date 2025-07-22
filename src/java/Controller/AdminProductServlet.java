@@ -4,23 +4,22 @@
  */
 package Controller;
 
-import DAO.CartDAO;
-import Model.CartItem;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+import Model.Product;
+import DAO.ProductDAO;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.List;
+
 /**
  *
  * @author PC
  */
-@WebServlet(name = "CartServlet", urlPatterns = {"/CartServlet"})
-public class CartServlet extends HttpServlet {
+@WebServlet(name = "AdminProductServlet", urlPatterns = {"/AdminProductServlet"})
+public class AdminProductServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +38,10 @@ public class CartServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CartServlet</title>");            
+            out.println("<title>Servlet AdminProductServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CartServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AdminProductServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,21 +59,16 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
+        ProductDAO dao = new ProductDAO();
+        List<Product> productList = dao.getAllProducts();
 
-        if (username == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
+        // Gửi danh sách sang JSP
+        request.setAttribute("productList", productList);
 
-        CartDAO cartDAO = new CartDAO();
-        List<CartItem> cartItems = cartDAO.getCartItems(username);
-
-        request.setAttribute("cartItems", cartItems);
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
+        // Chuyển tiếp đến trang hiển thị
+        RequestDispatcher dispatcher = request.getRequestDispatcher("admin_product.jsp");
+        dispatcher.forward(request, response);
     }
-    
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -88,6 +82,7 @@ public class CartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        doGet(request, response);
     }
 
     /**

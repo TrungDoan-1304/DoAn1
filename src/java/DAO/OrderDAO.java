@@ -6,18 +6,16 @@ package DAO;
 
 import java.sql.*;
 import java.util.List;
-import Model.CartItem;
 import Model.Order;
 import Util.BDconnect;
+import java.util.ArrayList;
 
 
 public class OrderDAO {
-    public boolean saveOrder(Order order, List<CartItem> cartItems) {
-        String insertOrderSQL = "INSERT INTO orders (username, HoTen, SDT, DiaChi, paymentMethod, note, NgayDatHang, totalAmount, status) " +
-                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+    public int saveOrder(Order order) {
+        String sql = "INSERT INTO orders (username, HoTen, SDT, DiaChi, paymentMethod, note, NgayDatHang, totalAmount, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = BDconnect.getConnection();
-             PreparedStatement ps = conn.prepareStatement(insertOrderSQL, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, order.getUsername());
             ps.setString(2, order.getHoTen());
@@ -31,50 +29,22 @@ public class OrderDAO {
 
             int rows = ps.executeUpdate();
             if (rows > 0) {
-                ResultSet generatedKeys = ps.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    int orderId = generatedKeys.getInt(1);
-
-                    // Lưu chi tiết đơn hàng
-                    return saveOrderDetails(conn, orderId, cartItems);
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    return rs.getInt(1);
                 }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
-    // Lưu chi tiết đơn hàng vào bảng order_details
-    private boolean saveOrderDetails(Connection conn, int orderId, List<CartItem> cartItems) {
-        String sql = "INSERT INTO order_details (orderID, productID, size, quantity, price, productName) VALUES (?, ?, ?, ?, ?, ?)";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            for (CartItem item : cartItems) {
-                ps.setInt(1, orderId);
-                ps.setInt(2, item.getProductID());
-                ps.setString(3, item.getSize());
-                ps.setInt(4, item.getQuantity());
-                ps.setDouble(5, item.getPrice());
-                ps.setString(6, item.getProductName());
-                ps.addBatch();
-            }
-            ps.executeBatch();
-            return true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    // Lấy danh sách đơn hàng theo username
-    public List<Order> getOrdersByUsername(String username) {
-        List<Order> orders = new java.util.ArrayList<>();
-
+     public List<Order> getOrdersByUsername(String username) {
+        List<Order> orders = new ArrayList<>();
         String sql = "SELECT * FROM orders WHERE username = ? ORDER BY NgayDatHang DESC";
+
         try (Connection conn = BDconnect.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -83,7 +53,9 @@ public class OrderDAO {
 
             while (rs.next()) {
                 Order order = new Order();
-                order.setOrderID(rs.getInt("orderID"));
+                int orderId = rs.getInt("orderID");
+
+                order.setOrderID(orderId);
                 order.setUsername(rs.getString("username"));
                 order.setHoTen(rs.getString("HoTen"));
                 order.setSDT(rs.getString("SDT"));
@@ -94,6 +66,10 @@ public class OrderDAO {
                 order.setTotalAmount(rs.getDouble("totalAmount"));
                 order.setStatus(rs.getString("status"));
 
+                // Lấy chi tiết đơn hàng
+                OrderDetailDAO detailDAO = new OrderDetailDAO();
+                order.setOrderDetails(detailDAO.getOrderDetailsByOrderId(orderId));
+
                 orders.add(order);
             }
 
@@ -102,17 +78,96 @@ public class OrderDAO {
         }
 
         return orders;
-}
-    public boolean updateOrderStatus(int orderID, String newStatus) {
-    String sql = "UPDATE orders SET status = ? WHERE orderID = ?";
+    }
+public static String getEmailByOrderId(int orderID) {
+    String email = null;
+    String sql = "SELECT u.email FROM orders o JOIN user u ON o.username = u.username WHERE o.orderID = ?";
     try (Connection conn = BDconnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, newStatus);
-        ps.setInt(2, orderID);
-        return ps.executeUpdate() > 0;
+        ps.setInt(1, orderID);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            email = rs.getString("email");
+            System.out.println("✅ Email lấy được: " + email);
+        } else {
+            System.out.println("⚠️ Không tìm thấy email cho orderID: " + orderID);
+        }
     } catch (Exception e) {
         e.printStackTrace();
-        return false;
     }
+    return email;
+}
+
+    public static List<Order> getAllOrders() {
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT * FROM orders ORDER BY orderID DESC";
+
+        try (Connection conn = BDconnect.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Order order = new Order();
+                 int orderId = rs.getInt("orderID");
+                order.setOrderID(rs.getInt("orderID"));
+                order.setUsername(rs.getString("username"));
+                order.setNgayDatHang(rs.getTimestamp("ngayDatHang"));
+                order.setPaymentMethod(rs.getString("paymentMethod"));
+                order.setStatus(rs.getString("status"));
+                order.setTotalAmount(rs.getDouble("totalAmount"));
+                orders.add(order);
+                OrderDetailDAO detailDAO = new OrderDetailDAO();
+                order.setOrderDetails(detailDAO.getOrderDetailsByOrderId(orderId));
+
+   
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
+    public static void updateStatus(int orderID, String newStatus) {
+        try (Connection conn = BDconnect.getConnection()) {
+             conn.setAutoCommit(true);  
+            String sql = "UPDATE orders SET status = ? WHERE orderID = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, newStatus);
+            ps.setInt(2, orderID);
+            int rowsAffected = ps.executeUpdate();
+             System.out.println("Updated " + rowsAffected + " rows.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static Order getOrderById(int orderId) {
+    Order order = null;
+    String sql = "SELECT * FROM orders WHERE orderID = ?";
+    try (Connection conn = BDconnect.getConnection();
+            
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, orderId);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            order = new Order();
+            order.setOrderID(rs.getInt("orderID"));
+            order.setUsername(rs.getString("username"));
+            order.setHoTen(rs.getString("HoTen"));
+            order.setSDT(rs.getString("SDT"));
+            order.setDiaChi(rs.getString("DiaChi"));
+            order.setPaymentMethod(rs.getString("paymentMethod"));
+            order.setNote(rs.getString("note"));
+            order.setNgayDatHang(rs.getDate("NgayDatHang"));
+            order.setTotalAmount(rs.getDouble("totalAmount"));
+            order.setStatus(rs.getString("status"));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return order;
 }
 }
+

@@ -6,7 +6,6 @@ package Controller;
 
 import DAO.UserDAO;
 import Model.EmailUtil;
-import Model.User;
 import jakarta.mail.MessagingException;
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -13,7 +13,7 @@
         }
 
         .form-container {
-            max-width: 600px;
+            max-width: 650px;
             margin: 50px auto;
             background-color: #ffffff;
             border-radius: 16px;
@@ -65,19 +65,14 @@
 
 <div class="container">
     <div class="form-container">
-        <a href="admin_user.jsp" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại danh sách</a>
+        <a href="AdminUserServlet" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại danh sách</a>
 
         <h3><i class="fas fa-user-plus text-primary"></i> Thêm người dùng mới</h3>
 
-        <form action="AddUserServlet" method="post">
+        <form action="AdminUserServlet?action=add" method="post">
             <div class="mb-3">
                 <label for="username" class="form-label">Tên đăng nhập</label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="nhập tên đăng nhập" required />
-            </div>
-
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" required />
             </div>
 
             <div class="mb-3">
@@ -86,18 +81,30 @@
             </div>
 
             <div class="mb-3">
+                <label for="HoTen" class="form-label">Họ tên</label>
+                <input type="text" class="form-control" id="HoTen" name="HoTen" placeholder="Nguyễn Văn A" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="SDT" class="form-label">Số điện thoại</label>
+                <input type="text" class="form-control" id="SDT" name="SDT" placeholder="0123456789" />
+            </div>
+
+            <div class="mb-3">
+                <label for="DiaChi" class="form-label">Địa chỉ</label>
+                <input type="text" class="form-control" id="DiaChi" name="DiaChi" placeholder="123 Đường ABC, Quận 1" />
+            </div>
+
+            <div class="mb-4">
                 <label for="role" class="form-label">Vai trò</label>
                 <select class="form-select" id="role" name="role" required>
                     <option value="user">Khách hàng</option>
                     <option value="admin">Quản trị viên</option>
-                </select>
-            </div>
-
-            <div class="mb-4">
-                <label for="status" class="form-label">Trạng thái</label>
-                <select class="form-select" id="status" name="status" required>
-                    <option value="active">Hoạt động</option>
-                    <option value="blocked">Bị khóa</option>
                 </select>
             </div>
 
@@ -110,7 +117,6 @@
     </div>
 </div>
 
-<!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -4,20 +4,22 @@
  */
 package Controller;
 
+import DAO.DashboardDAO;
+import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.List;
 
 /**
  *
  * @author PC
  */
-@WebServlet(name = "NguoiDung", urlPatterns = {"/NguoiDung"})
-public class XLNguoiDung extends HttpServlet {
+@WebServlet(name = "AdminDashboardServlet", urlPatterns = {"/AdminDashboardServlet"})
+public class AdminDashboardServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +38,10 @@ public class XLNguoiDung extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet NguoiDung</title>");            
+            out.println("<title>Servlet AdminDashboardServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet NguoiDung at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AdminDashboardServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,7 +59,20 @@ public class XLNguoiDung extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+     
+        DashboardDAO dao = new DashboardDAO();
+
+        double revenueMonth = dao.getMonthlyRevenue();
+        double revenueYear = dao.getYearlyRevenue();
+        int pendingRequests = dao.getPendingOrders();
+        List<Double> weeklyData = dao.getWeeklyRevenueData();
+
+        request.setAttribute("revenueMonth", revenueMonth);
+        request.setAttribute("revenueYear", revenueYear);
+        request.setAttribute("pendingRequests", pendingRequests);
+        request.setAttribute("weeklyData", weeklyData);
+
+        request.getRequestDispatcher("admin.jsp").forward(request, response);
     }
 
     /**

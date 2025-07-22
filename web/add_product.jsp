@@ -55,8 +55,8 @@
             <h4 class="mt-4 ms-3"><i class="fas fa-user-shield"></i> Admin</h4>
             <a href="admin.jsp"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
             <a href="admin_product.jsp"><i class="fas fa-tshirt"></i> Quản lý sản phẩm</a>
-            <a href="admin-user.jsp"><i class="fas fa-users"></i> Quản lý người dùng</a>
-            <a href="admin-order.jsp"><i class="fas fa-receipt"></i> Quản lý đơn hàng</a>
+            <a href="AdminUserServlet"><i class="fas fa-users"></i> Quản lý người dùng</a>
+            <a href="AdminOrderServlet"><i class="fas fa-receipt"></i> Quản lý đơn hàng</a>
             <a href="logout.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
         </div>
 
@@ -65,30 +65,26 @@
             <h3 class="mb-4"><i class="fas fa-plus-circle"></i> Thêm sản phẩm mới</h3>
 
             <div class="form-container">
-                <form action="AddProductServlet" method="post" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="productId" class="form-label">Mã sản phẩm</label>
-                        <input type="text" class="form-control" id="productId" name="productId" required>
-                    </div>
+                <form action="${pageContext.request.contextPath}/AddProductServlet" method="post">
                     <div class="mb-3">
                         <label for="productName" class="form-label">Tên sản phẩm</label>
                         <input type="text" class="form-control" id="productName" name="productName" required>
                     </div>
                     <div class="mb-3">
-                        <label for="price" class="form-label">Giá</label>
-                        <input type="number" class="form-control" id="price" name="price" required>
+                        <label for="gia" class="form-label">Giá (VNĐ)</label>
+                        <input type="number" class="form-control" id="gia" name="gia" required>
                     </div>
                     <div class="mb-3">
-                        <label for="quantity" class="form-label">Số lượng</label>
-                        <input type="number" class="form-control" id="quantity" name="quantity" required>
+                        <label for="sltrongkho" class="form-label">Số lượng trong kho</label>
+                        <input type="number" class="form-control" id="sltrongkho" name="sltrongkho" required>
                     </div>
                     <div class="mb-3">
-                        <label for="description" class="form-label">Mô tả</label>
-                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        <label for="ngaythem" class="form-label">Ngày thêm</label>
+                        <input type="date" class="form-control" id="ngaythem" name="ngaythem" required>
                     </div>
                     <div class="mb-3">
-                        <label for="image" class="form-label">Ảnh sản phẩm</label>
-                        <input class="form-control" type="file" id="image" name="image" accept="image/*" required>
+                        <label for="hinhanh" class="form-label">Đường dẫn ảnh (ví dụ: media/ao1.jpg)</label>
+                        <input type="text" class="form-control" id="hinhanh" name="hinhanh" required>
                     </div>
                     <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Lưu sản phẩm</button>
                     <a href="admin_product.jsp" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Quay lại</a>
@@ -98,7 +94,6 @@
     </div>
 </div>
 
-<!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

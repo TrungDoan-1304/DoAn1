@@ -4,7 +4,9 @@
  */
 package Model;
 
-import jakarta.resource.cci.ResultSet;
+import java.util.Date;
+
+
 
 /**
  *
@@ -15,16 +17,37 @@ public class Product {
     private String productName;
     private String hinhanh;
     private int gia;
-
+    private int sltrongkho;
+    private Date ngaythem;
     public Product() {
     }
 
-    public Product(int productID, String productName, String hinhanh, int gia) {
+    public Product(int productID, String productName, String hinhanh, int gia, int sltrongkho, Date ngaythem) {
         this.productID = productID;
         this.productName = productName;
         this.hinhanh = hinhanh;
         this.gia = gia;
+        this.sltrongkho = sltrongkho;
+        this.ngaythem = ngaythem;
     }
+
+    public int getSltrongkho() {
+        return sltrongkho;
+    }
+
+    public void setSltrongkho(int sltrongkho) {
+        this.sltrongkho = sltrongkho;
+    }
+
+    public Date getNgaythem() {
+        return ngaythem;
+    }
+
+    public void setNgaythem(Date ngaythem) {
+        this.ngaythem = ngaythem;
+    }
+
+   
 
     public int getProductID() {
         return productID;

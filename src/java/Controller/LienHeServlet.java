@@ -4,8 +4,7 @@
  */
 package Controller;
 
-import DAO.CartDAO;
-import Model.CartItem;
+import Model.EmailUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,15 +12,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
+
+
 /**
  *
  * @author PC
  */
-@WebServlet(name = "CartServlet", urlPatterns = {"/CartServlet"})
-public class CartServlet extends HttpServlet {
-
+@WebServlet(name = "LienHeServlet", urlPatterns = {"/LienHeServlet"})
+public class LienHeServlet extends HttpServlet {
+    private static final String ADMIN_EMAIL = "trunglay2k4@gmail.com";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,10 +38,10 @@ public class CartServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CartServlet</title>");            
+            out.println("<title>Servlet LienHeServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CartServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet LienHeServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,21 +59,8 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
-
-        if (username == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
-
-        CartDAO cartDAO = new CartDAO();
-        List<CartItem> cartItems = cartDAO.getCartItems(username);
-
-        request.setAttribute("cartItems", cartItems);
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
+        processRequest(request, response);
     }
-    
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -87,8 +73,38 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.setCharacterEncoding("UTF-8");
+
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String subject = request.getParameter("subject");
+        String message = request.getParameter("message");
+
+        // Email sẽ gửi đến admin
+        String adminEmail = "trunglay2k4@gmail.com";
+
+        // Nội dung gửi email
+        String fullMessage = "Họ tên: " + name + "\n"
+                           + "Email liên hệ: " + email + "\n"
+                           + "Chủ đề: " + subject + "\n\n"
+                           + "Nội dung:\n" + message;
+
+        try {
+            // Gửi email
+            EmailUtil.sendEmail(adminEmail, "Liên hệ từ người dùng: " + subject, fullMessage);
+
+            // Gửi lại thông báo về trang contact.jsp
+            request.setAttribute("success", "🟢 Gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "🔴 Gửi liên hệ thất bại. Vui lòng thử lại sau.");
+        }
+
+        // Quay lại trang contact.jsp
+        request.getRequestDispatcher("contact.jsp").forward(request, response);
     }
+    
+
 
     /**
      * Returns a short description of the servlet.

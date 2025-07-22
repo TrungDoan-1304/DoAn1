@@ -15,6 +15,21 @@
         <title>Giỏ Hàng</title>
         <link rel="stylesheet" href="style/user.css" />
         <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                font-family: "Segoe UI", sans-serif;
+                background: url('media/anh1.jpg') no-repeat center center fixed;
+                background-size: cover;
+                color: #2f3640;
+                height: 100%;
+            }
+
+            .page-wrapper {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
             body {
                 background: url('media/anh1.jpg') no-repeat center center fixed;
                 background-size: cover;
@@ -193,7 +208,7 @@
         </style>
     </head>
     <body>
-
+         <div class="page-wrapper">
         <!-- Navbar từ user -->
         <div class="navbar">
             <div class="logo">Shop Quần Áo Nam</div>
@@ -221,7 +236,7 @@
                 <span>Xin chào <%= username %></span>
                 <div class="dropdown" id="dropdownMenu">
                     <a href="user_profile.jsp">Tài Khoản Của Tôi</a>
-                    <a href="order.jsp">Đơn Mua</a>
+                    <a href="OrderServlet">Đơn Mua</a>
                     <a href="logout.jsp">Đăng Xuất</a>
                 </div>
             </div>
@@ -257,23 +272,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% double total = 0; 
+                        <% double total = 0;
                            for (CartItem item : cartItems) {
                                double itemTotal = item.getPrice() * item.getQuantity();
                                total += itemTotal;
                         %>
                         <tr>
                             <td><%= item.getProductName() %></td>
-                            <td><input type="text" name="newSize_<%= item.getProductID() %>" value="<%= item.getSize() %>" /></td>
-                            <td><%= item.getPrice() %>đ</td>
                             <td>
-                                <input type="number" name="quantity_<%= item.getProductID() %>" value="<%= item.getQuantity() %>" min="1" />
+                                <input type="text" name="newSize_<%= item.getProductID() %>" value="<%= item.getSize() %>"/>
                                 <input type="hidden" name="oldSize_<%= item.getProductID() %>" value="<%= item.getSize() %>"/>
                             </td>
+                            <td><%= item.getPrice() %>đ</td>
+                            <td><input type="number" name="quantity_<%= item.getProductID() %>" value="<%= item.getQuantity() %>" min="1" /></td>
                             <td><%= itemTotal %>đ</td>
                             <td>
-                                <button class="action-btn btn-update" formaction="UpdateCartServlet?productID=<%= item.getProductID() %>">Cập nhật</button>
-                                <button class="action-btn btn-delete" formaction="RemoveFromCartServlet?productID=<%= item.getProductID() %>&size=<%= item.getSize() %>">Xóa</button>
+                                <button class="btn btn-update" name="action" value="update_<%= item.getProductID() %>">Cập nhật</button>
+                                <button class="btn btn-delete" name="action" value="delete_<%= item.getProductID() %>_<%= item.getSize() %>">Xóa</button>
                             </td>
                         </tr>
                         <% } %>
@@ -286,10 +301,10 @@
                     <a href="ProductListServlet" class="btn-action left">⬅ Tiếp tục mua</a>
                     <a href="checkout.jsp" class="btn-action right">Thanh toán ➡</a>
                 </div>
-            </form>
+            </form
             <% } %>
         </div>
-
+    </div>
 
         <script>
             function deleteRow(button) {
@@ -321,6 +336,7 @@
                 🌐 <a href="https://facebook.com/tuyens.hoangs.33" style="color:#00cec9;" target="_blank">Facebook</a>
             </p>
         </footer>
-    </body>
+        </div>
+</body>
 </html>
 

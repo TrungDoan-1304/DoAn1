@@ -4,8 +4,10 @@
  */
 package Controller;
 
-import DAO.CartDAO;
-import Model.CartItem;
+import DAO.OrderDAO;
+import DAO.OrderDetailDAO;
+import Model.Order;
+import Model.OrderDetail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +15,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 /**
  *
  * @author PC
  */
-@WebServlet(name = "CartServlet", urlPatterns = {"/CartServlet"})
-public class CartServlet extends HttpServlet {
+@WebServlet(name = "AdminOrderServlet", urlPatterns = {"/AdminOrderServlet"})
+public class AdminOrderServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +44,10 @@ public class CartServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CartServlet</title>");            
+            out.println("<title>Servlet AdminOrderServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CartServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AdminOrderServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,21 +65,30 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
-
-        if (username == null) {
-            response.sendRedirect("login.jsp");
-            return;
+        String orderIdParam = request.getParameter("orderID");
+        if (orderIdParam != null && !orderIdParam.trim().isEmpty()) {
+            // Hiển thị chi tiết đơn hàng
+            int orderId = Integer.parseInt(orderIdParam);
+            Order order = OrderDAO.getOrderById(orderId);
+            List<OrderDetail> details = OrderDetailDAO.getOrderDetailsByOrderId(orderId);
+            request.setAttribute("order", order);
+            request.setAttribute("orderDetails", details);
+            request.getRequestDispatcher("order_details.jsp")
+                   .forward(request, response);
+        } else {
+            // Hiển thị danh sách tất cả đơn hàng
+            List<Order> list = OrderDAO.getAllOrders();
+            Map<Integer, List<OrderDetail>> detailMap = new HashMap<>();
+            for (Order o : list) {
+                detailMap.put(o.getOrderID(),
+                              OrderDetailDAO.getOrderDetailsByOrderId(o.getOrderID()));
+            }
+            request.setAttribute("orders", list);
+            request.setAttribute("orderDetailsMap", detailMap);
+            request.getRequestDispatcher("admin_order.jsp")
+                   .forward(request, response);
         }
-
-        CartDAO cartDAO = new CartDAO();
-        List<CartItem> cartItems = cartDAO.getCartItems(username);
-
-        request.setAttribute("cartItems", cartItems);
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
     }
-    
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -86,9 +100,10 @@ public class CartServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+            throws ServletException, IOException, UnsupportedEncodingException {
+                processRequest(request, response);
     }
+    
 
     /**
      * Returns a short description of the servlet.

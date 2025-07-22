@@ -14,7 +14,7 @@
 
             <div class="nav-links"> 
                 <a href="ProductListServlet">Sản phẩm</a>
-                <a href="cart.jsp">Giỏ hàng</a>
+                <a href="CartServlet">Giỏ hàng</a>
                 <a href="OrderServlet">Đơn Hàng</a>
                 <a href="ProfileServlet">Tài Khoản</a>
             </div>

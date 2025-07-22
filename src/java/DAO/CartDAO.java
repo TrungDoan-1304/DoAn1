@@ -137,18 +137,18 @@ public class CartDAO {
     }
 
     // Xóa sản phẩm khỏi giỏ hàng
-    public void removeCartItem(String username, int productID, String size) {
-        try (Connection conn = BDconnect.getConnection()) {
-            String sql = "DELETE FROM cart_items WHERE cartID = (SELECT cartID FROM carts WHERE username = ?) AND productID = ? AND size = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, username);
-            ps.setInt(2, productID);
-            ps.setString(3, size);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+public void removeFromCart(String username, int productID, String size) {
+    String sql = "DELETE FROM cart_items WHERE cartID = (SELECT cartID FROM carts WHERE username = ?) AND productID = ? AND size = ?";
+    try (Connection conn = BDconnect.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, username);
+        ps.setInt(2, productID);
+        ps.setString(3, size);
+        ps.executeUpdate();
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
 
     // Xóa toàn bộ giỏ hàng sau khi đặt hàng
     public void clearCart(String username) {

@@ -12,9 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.*;
-import Util.BDconnect;
-import jakarta.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  *
@@ -76,37 +74,40 @@ public class UpdateCartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
+        String username = (String) request.getSession().getAttribute("username");
 
-        if (username == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
+    if (username == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
 
-        // Lấy thông tin từ form
-        String productIdStr = request.getParameter("productID");
-        String oldSize = request.getParameter("oldSize"); // size cũ để xác định sản phẩm gốc
-        String newSize = request.getParameter("newSize");
-        String quantityStr = request.getParameter("quantity");
+    CartDAO dao = new CartDAO();
 
-        if (productIdStr != null && oldSize != null && newSize != null && quantityStr != null) {
-            try {
-                int productID = Integer.parseInt(productIdStr);
-                int quantity = Integer.parseInt(quantityStr);
+    Map<String, String[]> params = request.getParameterMap();
 
-                // Gọi DAO để cập nhật
-                CartDAO cartDAO = new CartDAO();
-                cartDAO.updateCartItem(username, productID, oldSize, newSize, quantity);
+    for (String key : params.keySet()) {
+        if (key.startsWith("action")) {
+            String value = request.getParameter(key);
 
-            } catch (NumberFormatException e) {
-                e.printStackTrace(); // hoặc log lỗi nếu cần
+            if (value.startsWith("update_")) {
+                int productID = Integer.parseInt(value.substring(7));
+                String oldSize = request.getParameter("oldSize_" + productID);
+                String newSize = request.getParameter("newSize_" + productID);
+                int quantity = Integer.parseInt(request.getParameter("quantity_" + productID));
+
+                dao.updateCartItem(username, productID, oldSize, newSize, quantity);
+
+            } else if (value.startsWith("delete_")) {
+                String[] parts = value.substring(7).split("_");
+                int productID = Integer.parseInt(parts[0]);
+                String size = parts[1];
+
+                dao.removeFromCart(username, productID, size);
             }
         }
+    }
 
-        // Quay lại trang trước
-        String referer = request.getHeader("referer");
-        response.sendRedirect(referer != null ? referer : "cart.jsp");
+    response.sendRedirect("CartServlet");
     }
     
     

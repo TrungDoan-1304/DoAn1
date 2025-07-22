@@ -12,6 +12,8 @@ import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeUtility;
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 /**
@@ -19,7 +21,7 @@ import java.util.Properties;
  * @author PC
  */
 public class EmailUtil {
-    public static void sendEmail(String toEmail, String subject, String body) throws MessagingException {
+    public static void sendEmail(String toEmail, String subject, String body) throws MessagingException, UnsupportedEncodingException {
         final String fromEmail = "trunglay2k4@gmail.com";
         final String password = "nrxh daaa qirq jvgn"; 
 
@@ -42,8 +44,10 @@ public class EmailUtil {
         message.setFrom(new InternetAddress(fromEmail));
         message.setRecipients(
                 Message.RecipientType.TO, InternetAddress.parse(toEmail));
-        message.setSubject(subject);
-        message.setText(body);
+        String encodedSubject = MimeUtility.encodeText(subject, "UTF-8", "B");
+        message.setSubject(encodedSubject);
+
+         message.setContent(body, "text/plain; charset=UTF-8");
 
         Transport.send(message);
         System.out.println("Gửi email thành công đến: " + toEmail);

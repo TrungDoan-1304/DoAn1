@@ -47,26 +47,68 @@ public class UserDAO {
         return user;
     }
 
-    public boolean insertUser(User user) {
-        String sql = "INSERT INTO user (username, password, HoTen, email, SDT, DiaChi, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    public static List<User> getAllUsersByRole(String role) {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM user WHERE role = ?";
 
-        try (Connection conn = BDconnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = BDconnect.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword());
-            ps.setString(3, user.getHoTen());
-            ps.setString(4, user.getEmail());
-            ps.setString(5, user.getSDT());
-            ps.setString(6, user.getDiaChi());
-            ps.setString(7, user.getRole());
+            ps.setString(1, role);
+            ResultSet rs = ps.executeQuery();
 
-            return ps.executeUpdate() > 0;
+            while (rs.next()) {
+                User user = new User();
+                user.setUserId(rs.getInt("userId"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setHoTen(rs.getString("HoTen"));
+                user.setEmail(rs.getString("email"));
+                user.setSDT(rs.getString("SDT"));
+                user.setDiaChi(rs.getString("DiaChi"));
+                user.setRole(rs.getString("role"));
+
+                users.add(user);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+        }
+        return users;
+    }
+
+    public static void deleteUser(int userId) {
+        String sql = "DELETE FROM user WHERE userId = ?";
+        try (Connection conn = BDconnect.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
+public static void insertUser(User user) {
+    String sql = "INSERT INTO user (username, password, HoTen, email, SDT, DiaChi, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    try (Connection conn = BDconnect.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, user.getUsername());
+        ps.setString(2, user.getPassword());
+        ps.setString(3, user.getHoTen());
+        ps.setString(4, user.getEmail());
+        ps.setString(5, user.getSDT());
+        ps.setString(6, user.getDiaChi());
+        ps.setString(7, user.getRole());
+
+        ps.executeUpdate();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
 
     public User getUserByusername(String username) {
         User user = null;

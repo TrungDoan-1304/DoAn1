@@ -13,8 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.sql.*;
-import Util.BDconnect;
+
 /**
  *
  * @author PC
@@ -91,7 +90,7 @@ public class RemoveFromCartServlet extends HttpServlet {
 
             // Gọi DAO để xóa sản phẩm trong cart của user
             CartDAO cartDAO = new CartDAO();
-            cartDAO.removeCartItem(username, productID, size);
+            cartDAO.removeFromCart(username, productID, size);
         }
 
         // Quay lại trang trước

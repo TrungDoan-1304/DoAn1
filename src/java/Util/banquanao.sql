@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th7 21, 2025 lúc 05:22 PM
+-- Thời gian đã tạo: Th7 22, 2025 lúc 07:30 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -37,7 +37,9 @@ CREATE TABLE `carts` (
 --
 
 INSERT INTO `carts` (`cartID`, `username`) VALUES
-('GH242069', 'tuan789');
+('GH184265', 'trung'),
+('GH242069', 'tuan789'),
+('GH725254', 'linh456');
 
 -- --------------------------------------------------------
 
@@ -60,7 +62,7 @@ CREATE TABLE `cart_items` (
 --
 
 INSERT INTO `cart_items` (`cartID`, `productID`, `productName`, `size`, `quantity`, `price`, `username`) VALUES
-('GH242069', 1, 'Áo sơ mi trắng', 'S', 1, 320000, 'tuan789');
+('GH725254', 1, 'Áo sơ mi trắng', 'S', 1, 320000, 'linh456');
 
 -- --------------------------------------------------------
 
@@ -92,7 +94,7 @@ INSERT INTO `danhmucsp` (`MaDanhMuc`, `DanhMuc`, `MoTa`) VALUES
 --
 
 CREATE TABLE `orders` (
-  `orderID` varchar(30) NOT NULL,
+  `orderID` int(11) NOT NULL,
   `username` varchar(30) NOT NULL,
   `HoTen` varchar(30) NOT NULL,
   `SDT` int(11) NOT NULL,
@@ -101,8 +103,20 @@ CREATE TABLE `orders` (
   `note` varchar(250) NOT NULL,
   `NgayDatHang` date NOT NULL,
   `totalAmount` double NOT NULL,
-  `status` enum('Chưa thanh toán','Đang giao','Đã giao thành công') DEFAULT 'Chưa thanh toán'
+  `status` enum('Chưa thanh toán','Đang giao hàng','Đã giao thành công') DEFAULT 'Chưa thanh toán'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `orders`
+--
+
+INSERT INTO `orders` (`orderID`, `username`, `HoTen`, `SDT`, `DiaChi`, `paymentMethod`, `note`, `NgayDatHang`, `totalAmount`, `status`) VALUES
+(3, 'tuan789', 'Lương Tuấn', 933445566, 'Hà nội', 'BANK', '', '2025-07-22', 440000, 'Đang giao hàng'),
+(4, 'tuan789', 'Lương Tuấn', 933445566, 'Hà nội', 'COD', '', '2025-07-22', 120000, 'Đã giao thành công'),
+(5, 'linh456', 'Trần Thị Linh', 933229929, 'Đà nẵng', 'MOMO', '', '2025-07-22', 300000, 'Đang giao hàng'),
+(6, 'trung', 'Đoàn Quốc Trung', 987654321, 'Hà Nội', 'COD', '', '2025-07-22', 320000, 'Chưa thanh toán'),
+(7, 'trung', 'Đoàn Quốc Trung', 987654321, 'Hà Nội', 'BANK', '', '2025-07-22', 300000, 'Đang giao hàng'),
+(8, 'trung', 'Đoàn Quốc Trung', 987654321, 'Hà Nội', 'MOMO', '', '2025-07-22', 320000, 'Đang giao hàng');
 
 -- --------------------------------------------------------
 
@@ -115,12 +129,25 @@ CREATE TABLE `order_details` (
   `orderID` int(11) NOT NULL,
   `username` varchar(30) DEFAULT NULL,
   `productID` int(11) NOT NULL,
-  `size` varchar(11) NOT NULL,
-  `tensanpham` varchar(30) NOT NULL,
+  `productName` varchar(30) NOT NULL,
+  `size` varchar(30) NOT NULL,
   `quantity` int(11) NOT NULL,
   `price` double NOT NULL,
-  `total` double NOT NULL
+  `totalAmount` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `order_details`
+--
+
+INSERT INTO `order_details` (`detailId`, `orderID`, `username`, `productID`, `productName`, `size`, `quantity`, `price`, `totalAmount`) VALUES
+(5, 3, 'tuan789', 1, 'Áo sơ mi trắng', 'S', 1, 320000, 320000),
+(6, 3, 'tuan789', 6, 'Nón lưỡi trai', 'S', 1, 120000, 120000),
+(7, 4, 'tuan789', 6, 'Nón lưỡi trai', 'S', 1, 120000, 120000),
+(8, 5, 'linh456', 4, 'Áo Hoodie', 'S', 1, 300000, 300000),
+(9, 6, 'trung', 1, 'Áo sơ mi trắng', 'S', 1, 320000, 320000),
+(10, 7, 'trung', 4, 'Áo Hoodie', 'S', 1, 300000, 300000),
+(11, 8, 'trung', 1, 'Áo sơ mi trắng', 'S', 1, 320000, 320000);
 
 -- --------------------------------------------------------
 
@@ -132,47 +159,22 @@ CREATE TABLE `product` (
   `productID` int(11) NOT NULL,
   `productName` varchar(30) NOT NULL,
   `hinhanh` varchar(30) NOT NULL,
-  `gia` int(11) NOT NULL
+  `gia` int(11) NOT NULL,
+  `sltrongkho` int(11) NOT NULL,
+  `ngaythem` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `product`
 --
 
-INSERT INTO `product` (`productID`, `productName`, `hinhanh`, `gia`) VALUES
-(1, 'Áo sơ mi trắng', 'media/somi1.jpg', 320000),
-(2, 'Áo thun đen basic', 'media/ao1.webp', 220000),
-(3, 'Quần Đùi nam', 'media/quandui1.jpg', 160000),
-(4, 'Áo Hoodie', 'media/aohoodie.jpeg', 300000),
-(5, 'Quần Jean đen', 'media/quanbo1.jpg', 450000),
-(6, 'Nón lưỡi trai', 'media/mu1.jpeg', 120000);
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `sanpham`
---
-
-CREATE TABLE `sanpham` (
-  `MaSP` int(11) NOT NULL,
-  `TenSP` varchar(30) NOT NULL,
-  `MoTa` varchar(255) NOT NULL,
-  `GiaBan` double NOT NULL,
-  `SLTrongKho` int(11) NOT NULL,
-  `DanhMuc` varchar(255) NOT NULL,
-  `NgayThemSP` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `sanpham`
---
-
-INSERT INTO `sanpham` (`MaSP`, `TenSP`, `MoTa`, `GiaBan`, `SLTrongKho`, `DanhMuc`, `NgayThemSP`) VALUES
-(1, 'Áo sơ mi trắng', 'Áo sơ mi trắng tay dài, vải cotton cao cấp.', 350000, 25, 'Áo sơ mi', '2025-07-01'),
-(2, 'Quần jeans xanh', 'Quần jeans co giãn, form slim fit.', 450000, 40, 'Quần jeans', '2025-07-01'),
-(3, 'Áo thun nam basic', 'Áo thun cổ tròn, chất liệu thấm hút mồ hôi.', 199000, 60, 'Áo thun', '2025-07-01'),
-(4, 'Áo khoác bomber', 'Áo khoác bomber thời trang, có khóa kéo.', 650000, 15, 'Áo khoác', '2025-07-01'),
-(5, 'Quần short kaki', 'Quần short kaki trẻ trung, thích hợp đi chơi.', 280000, 30, 'Quần short', '2025-07-01');
+INSERT INTO `product` (`productID`, `productName`, `hinhanh`, `gia`, `sltrongkho`, `ngaythem`) VALUES
+(1, 'Áo sơ mi trắng', 'media/somi1.jpg', 320000, 1500, '2025-07-01'),
+(2, 'Áo thun đen basic', 'media/ao1.webp', 220000, 1000, '2025-07-01'),
+(3, 'Quần Đùi nam', 'media/quandui1.jpg', 160000, 1000, '2025-07-01'),
+(4, 'Áo Hoodie', 'media/aohoodie.jpeg', 300000, 1000, '2025-07-01'),
+(5, 'Quần Jean đen', 'media/quanbo1.jpg', 450000, 1000, '2025-07-01'),
+(6, 'Nón lưỡi trai', 'media/mu1.jpeg', 120000, 1000, '2025-07-01');
 
 -- --------------------------------------------------------
 
@@ -197,12 +199,12 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`userId`, `username`, `password`, `HoTen`, `email`, `SDT`, `DiaChi`, `role`) VALUES
 (1, 'trungdoan', '123456', 'Đoàn Quốc Trung', 'trunglay2k4@gmail.com', '0393664604', 'Hà Nội', 'admin'),
-(2, 'linh456', '123456', 'Trần Thị Linh', 'linh456667@gmail.com', '0933229929', 'Đà nẵng', 'user'),
-(3, 'tuan789', 'tuan789', 'Lương Tuấn', 'tuan567@yahoo.com', '0933445566', 'Hà nội', 'user'),
+(2, 'linh456', '123456', 'Trần Hà Linh', 'linh456667@gmail.com', '0933229929', 'Đà nẵng', 'user'),
 (4, 'hoa111', 'hoahoaha', 'Phạm Thị Hoa', 'hoa111@outlook.com', '0922334455', 'Huế', 'user'),
 (5, 'khoa222', 'khoa222', 'Lê Văn Khoa', 'khoa222@gmail.com', '0933445566', 'Cần Thơ', 'user'),
-(6, 'trung', '123456', 'Đoàn Quốc Trung', 'trung@gmail.com', '0987654321', 'Hà Nội', 'user'),
-(7, 'linhtran', '123456', 'tran linh', 'tranlinh@gmail.com', '0993434575', 'Hà nội', 'user');
+(6, 'trung', 'trung123', 'Đoàn Quốc Trung', 'trung@gmail.com', '0998998898', 'Hà Nội', 'user'),
+(7, 'linhtran', '123456', 'tran linh', 'tranlinh@gmail.com', '0993434575', 'Hà nội', 'user'),
+(8, 'nam123', '123456', 'Hoàng Nam', 'Nam1121@gmail.com', '0988877887', 'Bắc Ninh', 'user');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -213,6 +215,12 @@ INSERT INTO `user` (`userId`, `username`, `password`, `HoTen`, `email`, `SDT`, `
 --
 ALTER TABLE `carts`
   ADD PRIMARY KEY (`cartID`);
+
+--
+-- Chỉ mục cho bảng `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`orderID`);
 
 --
 -- Chỉ mục cho bảng `order_details`
@@ -227,12 +235,6 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`productID`);
 
 --
--- Chỉ mục cho bảng `sanpham`
---
-ALTER TABLE `sanpham`
-  ADD PRIMARY KEY (`MaSP`);
-
---
 -- Chỉ mục cho bảng `user`
 --
 ALTER TABLE `user`
@@ -243,22 +245,28 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT cho bảng `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `orderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT cho bảng `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `detailId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `detailId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT cho bảng `product`
 --
 ALTER TABLE `product`
-  MODIFY `productID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `productID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `user`
 --
 ALTER TABLE `user`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

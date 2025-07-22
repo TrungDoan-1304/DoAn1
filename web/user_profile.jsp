@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.sql.*, java.util.*, Model.CartItem, DAO.CartDAO" %>
+<%@ page import="Model.Order,Model.OrderDetail" %>
+<%@ page import="DAO.OrderDAO" %>
 <%
     String username = (String) session.getAttribute("username");
     if (username == null) {
@@ -8,6 +10,51 @@
         return;
     }
 
+    List<Map<String, Object>> orders = new ArrayList<>();
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/banquanao", "root", "");
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM orders WHERE username = ? ORDER BY NgayDatHang DESC");
+        ps.setString(1, username);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Map<String, Object> order = new HashMap<>();
+            int orderID = rs.getInt("orderID");
+            order.put("orderID", orderID);
+            order.put("NgayDatHang", rs.getDate("NgayDatHang"));
+            order.put("paymentMethod", rs.getString("paymentMethod"));
+            order.put("status", rs.getString("status"));
+            order.put("totalAmount", rs.getDouble("totalAmount"));
+
+            // Lấy chi tiết đơn hàng cho mỗi orderID
+            PreparedStatement detailPs = conn.prepareStatement("SELECT * FROM order_details WHERE orderID = ?");
+            detailPs.setInt(1, orderID);
+            ResultSet detailRs = detailPs.executeQuery();
+
+            List<Map<String, Object>> details = new ArrayList<>();
+            while (detailRs.next()) {
+                Map<String, Object> detail = new HashMap<>();
+                detail.put("productID", detailRs.getInt("productID"));
+                detail.put("productName", detailRs.getString("productName"));
+                detail.put("size", detailRs.getString("size"));
+                detail.put("quantity", detailRs.getInt("quantity"));
+                detail.put("price", detailRs.getDouble("price"));
+                details.add(detail);
+            }
+            order.put("details", details);
+            detailRs.close();
+            detailPs.close();
+
+            orders.add(order);
+        }
+        rs.close();
+        ps.close();
+        conn.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+%>
+<%
     List<Map<String, Object>> cartItems = new ArrayList<>();
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -220,7 +267,7 @@
                 <div class="container">
                     <!-- Sidebar -->
                     <div class="sidebar">
-                       
+
                         <% if (username != null) { %>
                         <a onclick="showTab('notifications')">🔔 Thông báo</a>
                         <a onclick="showTab('orders')">📦 Đơn hàng</a>
@@ -245,96 +292,130 @@
                     </div>
 
                     <!-- Đơn hàng -->
-                    <div class="profile-form" id="orders" style="display: none">
-                        <h2>Đơn hàng của tôi</h2>
+                    <div class="profile-form" id="orders" style="display: none;">
+                        <h2>📦 Danh sách đơn hàng của <%= username %></h2>
+                        <% if (orders.isEmpty()) { %>
+                        <p>Bạn chưa có đơn hàng nào.</p>
+                        <% } else { %>
                         <table>
                             <thead>
                                 <tr>
                                     <th>Mã đơn</th>
                                     <th>Ngày đặt</th>
-                                    <th>Tổng tiền</th>
+                                    <th>Phương thức</th>
                                     <th>Trạng thái</th>
-                                    <th>Hành động</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Chi tiết</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <% for (Map<String, Object> order : orders) {
+                                    int oid = (int) order.get("orderID");
+                                %>
                                 <tr>
-                                    <td>DH001</td>
-                                    <td>10/07/2025</td>
-                                    <td>350,000đ</td>
-                                    <td>Đã giao</td>
-                                    <td>
-                                        <button onclick="alert('Chi tiết đơn DH001')">Xem</button>
-                                        <button onclick="deleteRow(this)">Xóa</button>
+                                    <td><%= oid %></td>
+                                    <td><%= order.get("NgayDatHang") %></td>
+                                    <td><%= order.get("paymentMethod") %></td>
+                                    <td><%= order.get("status") %></td>
+                                    <td><%= String.format("%,.0f", order.get("totalAmount")) %> đ</td>
+                                    <td><button onclick="toggleDetails('<%= oid %>')">Chi tiết</button></td>
+                                </tr>
+                                <tr id="detail-<%= oid %>" style="display: none;">
+                                    <td colspan="6">
+                                        <table style="width: 100%; border: 1px solid #ddd; margin-top: 10px;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Mã Sản Phẩm</th>
+                                                    <th>Tên sản phẩm </th>
+                                                    <th>Size</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Giá</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <%
+                                                    List<Map<String, Object>> details = (List<Map<String, Object>>) order.get("details");
+                                                    for (Map<String, Object> d : details) {
+                                                %>
+                                                <tr>
+                                                    <td><%= d.get("productID") %></td>
+                                                    <td><%= d.get("productName") %></td>
+                                                    <td><%= d.get("size") %></td>
+                                                    <td><%= d.get("quantity") %></td>
+                                                    <td><%= d.get("price") %></td>
+                                                </tr>
+                                                <% } %>
+                                            </tbody>
+                                        </table>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>DH002</td>
-                                    <td>11/07/2025</td>
-                                    <td>420,000đ</td>
-                                    <td>Đang xử lý</td>
-                                    <td>
-                                        <button onclick="alert('Chi tiết đơn DH002')">Xem</button>
-                                        <button onclick="deleteRow(this)">Xóa</button>
-                                    </td>
-                                </tr>
+                                <% } %>
                             </tbody>
                         </table>
+                        <% } %>
                     </div>
 
                     <!-- Giỏ hàng -->
                     <div class="profile-form" id="cart" style="display: none">
-   <h3>🛒 Giỏ hàng hiện tại</h3>
+                        <h3>🛒 Giỏ hàng hiện tại</h3>
 
-    <%
-        if (cartItems.size() == 0) {
-    %>
-        <div class="empty">Giỏ hàng của bạn đang trống.</div>
-    <%
-        } else {
-    %>
-        <table>
-            <tr>
-                <th>Tên sản phẩm</th>
-                <th>Size</th>
-                <th>Số lượng</th>
-                <th>Giá</th>
-                <th>Thành tiền</th>
-                <th>Thao tác</th>
-            </tr>
-            <%
-                for (Map<String, Object> item : cartItems) {
-                    int quantity = (int) item.get("quantity");
-                    double price = (double) item.get("price");
-                    double total = quantity * price;
-            %>
-            <tr>
-                <td><%= item.get("productName") %></td>
-                <td><%= item.get("size") %></td>
-                <td>
-                    <form action="UpdateCartServlet" method="post" style="display:inline;">
-                        <input type="hidden" name="productID" value="<%= item.get("productID") %>" />
-                        <input type="hidden" name="size" value="<%= item.get("size") %>" />
-                        <input type="number" name="quantity" value="<%= quantity %>" min="1" />
-                        <button type="submit" class="update-btn">Cập nhật</button>
-                    </form>
-                </td>
-                <td><%= price %></td>
-                <td><%= total %></td>
-                <td>
-                    <form action="RemoveFromCartServlet" method="post" style="display:inline;">
-                        <input type="hidden" name="productID" value="<%= item.get("productID") %>" />
-                        <input type="hidden" name="size" value="<%= item.get("size") %>" />
-                        <button type="submit" class="delete-btn" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này không?');">Xóa</button>
-                    </form>
-                </td>
-            </tr>
-            <% } %>
-        </table>
-    <% } %>
-                            <form action="checkout.jsp" method="post" style="margin-top: 15px;">
-                            <input type="submit" value="Thanh toán">
+                        <%
+                            if (cartItems == null || cartItems.isEmpty()) {
+                        %>
+                        <p>Giỏ hàng của bạn đang trống.</p>
+                        <%
+                            } else {
+                        %>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th>Size</th>
+                                    <th>Số lượng</th>
+                                    <th>Giá</th>
+                                    <th>Thành tiền</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%
+                                    for (Map<String, Object> item : cartItems) {
+                                        int productID = (int) item.get("productID");
+                                        String size = (String) item.get("size");
+                                        int quantity = (int) item.get("quantity");
+                                        double price = (double) item.get("price");
+                                        double total = price * quantity;
+                                %>
+                                <tr>
+                                    <td><%= item.get("productName") %></td>
+                            <form method="post" action="UpdateCartServlet">
+                                <td>
+                                    <input type="text" name="newSize" value="<%= size %>" required />
+                                    <input type="hidden" name="oldSize" value="<%= size %>" />
+                                    <input type="hidden" name="productID" value="<%= productID %>" />
+                                </td>
+                                <td>
+                                    <input type="number" name="quantity" value="<%= quantity %>" min="1" required />
+                                </td>
+                                <td><%= String.format("%,.0f", price) %> đ</td>
+                                <td><%= String.format("%,.0f", total) %> đ</td>
+                                <td>
+                                    <button type="submit">Cập nhật</button>
                             </form>
+                            <form method="post" action="RemoveFromCartServlet" style="display:inline;">
+                                <input type="hidden" name="productID" value="<%= productID %>" />
+                                <input type="hidden" name="size" value="<%= size %>" />
+                                <button type="submit" onclick="return confirm('Xóa sản phẩm này khỏi giỏ hàng?');">Xóa</button>
+                            </form>
+                            </td>
+                            </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                        <form action="checkout.jsp" method="post" style="margin-top: 20px;">
+                            <input type="submit" value="Thanh toán" style="padding: 10px 20px; background-color: #00b894; color: white; border-radius: 6px; font-weight: bold;">
+                        </form>
+                        <% } %>
                     </div>
 
                     <!-- Thông báo -->
@@ -375,6 +456,15 @@
                 }
             }
         </script>
-
+        <script>
+            function toggleDetails(orderID) {
+                const detailRow = document.getElementById('detail-' + orderID);
+                if (detailRow.style.display === 'none') {
+                    detailRow.style.display = 'table-row';
+                } else {
+                    detailRow.style.display = 'none';
+                }
+            }
+        </script>
     </body>
 </html>

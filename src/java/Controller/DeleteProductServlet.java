@@ -4,8 +4,7 @@
  */
 package Controller;
 
-import DAO.CartDAO;
-import Model.CartItem;
+import DAO.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +12,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
+
 /**
  *
  * @author PC
  */
-@WebServlet(name = "CartServlet", urlPatterns = {"/CartServlet"})
-public class CartServlet extends HttpServlet {
+@WebServlet(name = "DeleteProductServlet", urlPatterns = {"/DeleteProductServlet"})
+public class DeleteProductServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +37,10 @@ public class CartServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CartServlet</title>");            
+            out.println("<title>Servlet DeleteProductServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CartServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DeleteProductServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,21 +58,16 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
-
-        if (username == null) {
-            response.sendRedirect("login.jsp");
-            return;
+                try {
+            int productID = Integer.parseInt(request.getParameter("productID"));
+            ProductDAO dao = new ProductDAO();
+            dao.deleteProduct(productID);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        CartDAO cartDAO = new CartDAO();
-        List<CartItem> cartItems = cartDAO.getCartItems(username);
-
-        request.setAttribute("cartItems", cartItems);
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
+        response.sendRedirect("AdminProductServlet");
     }
-    
 
     /**
      * Handles the HTTP <code>POST</code> method.

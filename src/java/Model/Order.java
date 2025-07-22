@@ -22,7 +22,7 @@ public class Order {
     private Date ngayDatHang;
     private double totalAmount;
     private String status;
-
+    private List<OrderDetail> orderDetails;
     // Constructors
     public Order() {
     }
@@ -42,7 +42,13 @@ public class Order {
     }
 
     // Getters & Setters
+    public List<OrderDetail> getOrderDetails() {
+    return orderDetails;
+    }
 
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+    this.orderDetails = orderDetails;
+    }
     public int getOrderID() {
         return orderID;
     }

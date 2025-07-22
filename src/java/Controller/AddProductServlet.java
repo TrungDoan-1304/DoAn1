@@ -4,21 +4,23 @@
  */
 package Controller;
 
+import DAO.ProductDAO;
+import Model.Product;
+import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-
+import java.sql.Date;
 
 /**
  *
  * @author PC
  */
-@WebServlet(name = "SanPham", urlPatterns = {"/SanPham"})
-public class XLSanPham extends HttpServlet {
+@WebServlet(name = "AddProductServlet", urlPatterns = {"/AddProductServlet"})
+public class AddProductServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +39,10 @@ public class XLSanPham extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SanPham</title>");            
+            out.println("<title>Servlet AddProductServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SanPham at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddProductServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,7 +60,7 @@ public class XLSanPham extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+         doPost(request, response);
     }
 
     /**
@@ -72,7 +74,32 @@ public class XLSanPham extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+    request.setCharacterEncoding("UTF-8");
+
+    try {
+        String name = request.getParameter("productName");
+        String image = request.getParameter("hinhanh");
+        int price = Integer.parseInt(request.getParameter("gia"));
+        int sltrongkho = Integer.parseInt(request.getParameter("sltrongkho"));
+        Date ngayThem = Date.valueOf(request.getParameter("ngaythem"));  // yyyy-MM-dd
+
+        Product p = new Product();
+        p.setProductName(name);
+        p.setHinhanh(image);
+        p.setGia(price);
+        p.setSltrongkho(sltrongkho);
+        p.setNgaythem(ngayThem);
+
+        ProductDAO dao = new ProductDAO();
+        dao.addProduct(p);
+
+        // Chuyển hướng về danh sách sản phẩm
+        response.sendRedirect("AdminProductServlet?msg=success");
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        response.sendRedirect("add_product.jsp?error=1");
+    }
     }
 
     /**

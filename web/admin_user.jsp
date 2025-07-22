@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.*, Model.User" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -65,10 +66,10 @@
         <!-- Sidebar -->
         <div class="col-md-2 sidebar">
             <h4 class="mt-4 ms-3"><i class="fas fa-user-shield"></i> Admin</h4>
-            <a href="admin.jsp"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="admin_product.jsp"><i class="fas fa-tshirt"></i> Quản lý sản phẩm</a>
-            <a href="admin-user.jsp"><i class="fas fa-users"></i> Quản lý người dùng</a>
-            <a href="admin-order.jsp"><i class="fas fa-receipt"></i> Quản lý đơn hàng</a>
+            <a href="AdminDashboardServlet"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="AdminProductServlet"><i class="fas fa-tshirt"></i> Quản lý sản phẩm</a>
+            <a href="AdminUserServlet"><i class="fas fa-users"></i> Quản lý người dùng</a>
+            <a href="AdminOrderServlet"><i class="fas fa-receipt"></i> Quản lý đơn hàng</a>
             <a href="logout.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
         </div>
 
@@ -84,32 +85,48 @@
                     <tr>
                         <th>ID</th>
                         <th>Tên đăng nhập</th>
+                        <th>Họ tên</th>
                         <th>Email</th>
+                        <th>SĐT</th>
+                        <th>Địa chỉ</th>
                         <th>Vai trò</th>
-                        <th>Trạng thái</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>U001</td>
-                        <td>cubin2k4</td>
-                        <td>cubin2k4@gmail.com</td>
-                        <td>Khách hàng</td>
-                        <td>Hoạt động</td>
-                        <td>
-                            <a href="edit_user.jsp?id=U001" class="btn btn-sm btn-warning btn-action"><i class="fas fa-edit"></i></a>
-                            <a href="ban_user.jsp?id=U001" class="btn btn-sm btn-danger btn-action" onclick="return confirm('Bạn có chắc muốn chặn người dùng này?')"><i class="fas fa-ban"></i></a>
-                        </td>
-                    </tr>
-                    <!-- Lặp thêm user nếu có -->
+                    <%
+                        List<User> users = (List<User>) request.getAttribute("users");
+                        if (users != null && !users.isEmpty()) {
+                            for (User u : users) {
+                    %>
+                        <tr>
+                            <td><%= u.getUserId() %></td>
+                            <td><%= u.getUsername() %></td>
+                            <td><%= u.getHoTen() %></td>
+                            <td><%= u.getEmail() %></td>
+                            <td><%= u.getSDT() %></td>
+                            <td><%= u.getDiaChi() %></td>
+                            <td><%= u.getRole() %></td>
+                            <td>
+                                <a href="AdminUserServlet?action=delete&userId=<%= u.getUserId() %>" class="btn btn-sm btn-danger btn-action"
+                                   onclick="return confirm('Bạn có chắc muốn xóa người dùng này?')">
+                                   <i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    <%
+                            }
+                        } else {
+                    %>
+                        <tr><td colspan="8">Không có người dùng nào.</td></tr>
+                    <%
+                        }
+                    %>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
-<!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

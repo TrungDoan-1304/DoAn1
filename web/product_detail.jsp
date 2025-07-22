@@ -99,6 +99,30 @@
         .add-cart-btn:hover {
             background-color: #d63031;
         }
+            footer {
+        background-color: #2f3640;
+        color: #fff;
+        text-align: center;
+        padding: 30px 20px;
+        font-size: 14px;
+        margin-top: 60px;
+        line-height: 1.6;
+    }
+
+    footer a {
+        color: #00cec9;
+        text-decoration: none;
+        margin-left: 5px;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+
+    footer .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
     </style>
             <div class="navbar">
                 <h1 style="color: #00ffcc;">🛍 Shop Quần Áo Nam</h1>
@@ -134,11 +158,19 @@
 
                     <label for="quantity">Số lượng:</label>
                     <input type="number" name="quantity" min="1" value="1" required>
-
+                    <input type="hidden" name="sltrongkho" value="<%= product.getSoluongtrongkho() %>">
                     <button type="submit">🛒 Thêm vào giỏ hàng</button>
                 </form>
             </div>
-    </div>
 
+    </div>
+        <footer style= "background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px);color:white; padding:20px; text-align:center;">
+            <p>&copy; 2025 Shop Quần Áo Nam. All rights reserved.</p>
+            <p>📍 218 Lĩnh Nam, Hoàng Mai, Hà Nội | ☎ 0987 123 456</p>
+            <p>
+                ✉ <a href="mailto:shopquannaonam@gmail.com" style="color:#00cec9;">Email</a> |
+                🌐 <a href="https://facebook.com/tuyens.hoangs.33" style="color:#00cec9;" target="_blank">Facebook</a>
+            </p>
+        </footer>
 </body>
 </html>

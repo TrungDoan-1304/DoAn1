@@ -1,117 +1,109 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="Model.Order" %>
+<%@ page import="java.util.List" %>
+<%
+    List<Order> orders = (List<Order>) request.getAttribute("orders");
+%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <title>Quản lý đơn hàng</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style/user.css">
     <style>
         body {
-            background-color: #f8f9fc;
             font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
         }
 
-        .container-box {
-            max-width: 1200px;
+        .container {
+            max-width: 1100px;
             margin: 40px auto;
-            background: #fff;
+            background: white;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
         }
 
-        h3 {
+        h2 {
+            text-align: center;
             margin-bottom: 25px;
-            font-weight: 600;
-            color: #343a40;
+            color: #2d3436;
         }
 
-        .table th {
-            background-color: #4e73df;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #0984e3;
             color: white;
         }
 
-        .btn-action {
-            margin-right: 5px;
-            margin-bottom: 5px;
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ccc;
         }
 
-        .btn-primary:hover {
-            background-color: #375ab7;
+        a.btn {
+            display: inline-block;
+            padding: 8px 14px;
+            background-color: #00b894;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
         }
 
-        .btn-warning {
-            color: #fff;
+        a.btn:hover {
+            background-color: #d63031;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <a href="AdminDashboardServlet" class="btn btn-secondary">← Quay về trang quản lý</a>
+        <h2>📦 Quản lý đơn hàng</h2>
 
-<div class="container container-box">
-    <h3><i class="fas fa-receipt text-primary"></i> Quản lý đơn hàng</h3>
-
-    <table class="table table-hover align-middle">
-        <thead>
-            <tr>
-                <th>Mã Đơn</th>
-                <th>Người dùng</th>
-                <th>Ngày đặt</th>
-                <th>Tổng tiền</th>
-                <th>Trạng thái</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>DH001</td>
-                <td>cubin2k4</td>
-                <td>11/07/2025</td>
-                <td>850,000đ</td>
-                <td><span class="badge bg-success">Đã giao</span></td>
-                <td>
-                    <button class="btn btn-sm btn-info btn-action" onclick="alert('Chi tiết đơn hàng DH001')">
-                        <i class="fas fa-eye"></i> Xem
-                    </button>
-                    <button class="btn btn-sm btn-warning btn-action" onclick="alert('Gửi thông báo đến người dùng')">
-                        <i class="fas fa-paper-plane"></i> Gửi thông báo
-                    </button>
-                    <button class="btn btn-sm btn-secondary btn-action" onclick="alert('Cập nhật trạng thái đơn hàng')">
-                        <i class="fas fa-edit"></i> Cập nhật
-                    </button>
-                    <button class="btn btn-sm btn-danger btn-action" onclick="confirmDelete('DH001')">
-                        <i class="fas fa-trash-alt"></i> Xóa
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>DH002</td>
-                <td>nam123</td>
-                <td>10/07/2025</td>
-                <td>420,000đ</td>
-                <td><span class="badge bg-warning text-dark">Đang xử lý</span></td>
-                <td>
-                    <button class="btn btn-sm btn-info btn-action"><i class="fas fa-eye"></i> Xem</button>
-                    <button class="btn btn-sm btn-warning btn-action"><i class="fas fa-paper-plane"></i> Gửi thông báo</button>
-                    <button class="btn btn-sm btn-secondary btn-action"><i class="fas fa-edit"></i> Cập nhật</button>
-                    <button class="btn btn-sm btn-danger btn-action" onclick="confirmDelete('DH002')"><i class="fas fa-trash-alt"></i> Xóa</button>
-                </td>
-            </tr>
-            <!-- Thêm các đơn hàng khác tại đây -->
-        </tbody>
-    </table>
-</div>
-
-<!-- Xác nhận xóa -->
-<script>
-    function confirmDelete(orderId) {
-        if (confirm("Bạn có chắc chắn muốn xóa đơn hàng " + orderId + " không?")) {
-            alert("Đã xóa đơn hàng: " + orderId);
-            // Thực hiện xóa ở đây
-        }
-    }
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <%
+            if (orders != null && !orders.isEmpty()) {
+        %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Mã Đơn</th>
+                    <th>Người dùng</th>
+                    <th>Ngày đặt</th>
+                    <th>Phương thức</th>
+                    <th>Trạng thái</th>
+                    <th>Tổng tiền</th>
+                    <th>Chi tiết</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    for (Order order : orders) {
+                %>
+                <tr>
+                    <td><%= order.getOrderID() %></td>
+                    <td><%= order.getUsername() %></td>
+                    <td><%= order.getNgayDatHang() %></td>
+                    <td><%= order.getPaymentMethod() %></td>
+                    <td><%= order.getStatus() %></td>
+                    <td><%= String.format("%,.0f", order.getTotalAmount()) %> đ</td>
+                    <td>
+                      <a href="AdminOrderServlet?orderID=<%= order.getOrderID() %>" class="btn-view">Chi tiết</a>
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <% } else { %>
+        <p style="text-align:center;">⚠ Không có đơn hàng nào.</p>
+        <% } %>
+    </div>
 </body>
 </html>

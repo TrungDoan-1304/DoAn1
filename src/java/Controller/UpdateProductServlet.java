@@ -4,8 +4,8 @@
  */
 package Controller;
 
-import DAO.CartDAO;
-import Model.CartItem;
+import DAO.ProductDAO;
+import Model.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +13,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
+
 /**
  *
  * @author PC
  */
-@WebServlet(name = "CartServlet", urlPatterns = {"/CartServlet"})
-public class CartServlet extends HttpServlet {
+@WebServlet(name = "UpdateProductServlet", urlPatterns = {"/UpdateProductServlet"})
+public class UpdateProductServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +38,10 @@ public class CartServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CartServlet</title>");            
+            out.println("<title>Servlet UpdateProductServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CartServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateProductServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,21 +59,20 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
-
-        if (username == null) {
-            response.sendRedirect("login.jsp");
+        request.setCharacterEncoding("UTF-8");
+        String idRaw = request.getParameter("productID");
+        if (idRaw == null || idRaw.isEmpty()) {
+            response.sendRedirect("AdminProductServlet");
             return;
         }
 
-        CartDAO cartDAO = new CartDAO();
-        List<CartItem> cartItems = cartDAO.getCartItems(username);
+        int productID = Integer.parseInt(idRaw);
+        ProductDAO dao = new ProductDAO();
+        Product product = dao.getProductById(productID);
 
-        request.setAttribute("cartItems", cartItems);
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
+        request.setAttribute("product", product);
+        request.getRequestDispatcher("update_product.jsp").forward(request, response);
     }
-    
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -87,7 +85,27 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+         request.setCharacterEncoding("UTF-8");
+
+        try {
+            int productID = Integer.parseInt(request.getParameter("productID"));
+            int gia = Integer.parseInt(request.getParameter("gia"));
+            int sltrongkho = Integer.parseInt(request.getParameter("sltrongkho"));
+
+            Product p = new Product();
+            p.setProductID(productID);
+            p.setGia(gia);
+            p.setSltrongkho(sltrongkho);
+
+            ProductDAO dao = new ProductDAO();
+            dao.updateProduct(p);
+
+            response.sendRedirect("AdminProductServlet");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("error.jsp");
+        }
     }
 
     /**
@@ -97,7 +115,7 @@ public class CartServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+         return "Cập nhật sản phẩm";
     }// </editor-fold>
 
 }
